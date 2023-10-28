@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterCameraController : MonoBehaviour
@@ -7,7 +5,7 @@ public class CharacterCameraController : MonoBehaviour
     [SerializeField]
     private float sensitivity = 0.1f;
     [SerializeField]
-    private CharacterMovementController _characterMovementController;
+    private Transform playerTransform;
     [SerializeField]
     private float minimumAngle = -90f;
     [SerializeField]
@@ -27,6 +25,6 @@ public class CharacterCameraController : MonoBehaviour
         localRotation = Quaternion.Euler(_xRotation, localRotation.eulerAngles.y, localRotation.eulerAngles.z);
         transform.localRotation = localRotation;
 
-        _characterMovementController.transform.Rotate(LookInput.x * sensitivity * Vector3.up);
+        playerTransform.Rotate(LookInput.x * sensitivity * Vector3.up);
     }
 }
