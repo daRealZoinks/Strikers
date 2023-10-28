@@ -3,6 +3,15 @@ using UnityEngine.InputSystem;
 
 public class InputProvider : MonoBehaviour
 {
+    [SerializeField]
+    private CharacterCameraController characterCameraController;
+    private CharacterMovementController _characterMovementController;
+
+    private void Awake()
+    {
+        _characterMovementController = GetComponent<CharacterMovementController>();
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         var value = context.phase switch
@@ -11,7 +20,7 @@ public class InputProvider : MonoBehaviour
             _ => Vector2.zero,
         };
 
-        Debug.Log($"Move: {value}");
+        _characterMovementController.MovementInput = value;
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -22,14 +31,14 @@ public class InputProvider : MonoBehaviour
             _ => Vector2.zero
         };
 
-        Debug.Log($"Look: {value}");
+        characterCameraController.LookInput = value;
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.phase != InputActionPhase.Started) return;
 
-        Debug.Log("Jump");
+        _characterMovementController.Jump();
     }
 
     public void OnFire(InputAction.CallbackContext context)
