@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 4807040188356924075}
   - component: {fileID: 7337159812200287506}
   - component: {fileID: 6868403463112944893}
+  - component: {fileID: 7988933468598430389}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -233,6 +234,22 @@ MonoBehaviour:
   <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
   amplitude: 0.08
   frequency: 18.5
+--- !u!114 &7988933468598430389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728871998339904949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a11b13421c4e1dc469e4e7599879a4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <LateralHeadTiltEnabled>k__BackingField: 1
+  <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
+  angle: 2
+  speed: 5
 --- !u!1 &8092133516706228497
 GameObject:
   m_ObjectHideFlags: 0
