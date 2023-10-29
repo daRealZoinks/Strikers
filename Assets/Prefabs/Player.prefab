@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 0.1
-  _characterMovementController: {fileID: -5218604611035968172}
+  playerTransform: {fileID: 9174276532502103335}
   minimumAngle: -90
   maximumAngle: 90
 --- !u!1 &8092133516706228497
