@@ -6,10 +6,12 @@ public class InputProvider : MonoBehaviour
     [SerializeField]
     private CharacterCameraController characterCameraController;
     private CharacterMovementController _characterMovementController;
+    private CharacterWallRunController _characterWallRunController;
 
     private void Awake()
     {
         _characterMovementController = GetComponent<CharacterMovementController>();
+        _characterWallRunController = GetComponent<CharacterWallRunController>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -39,6 +41,7 @@ public class InputProvider : MonoBehaviour
         if (context.phase != InputActionPhase.Started) return;
 
         _characterMovementController.Jump();
+        _characterWallRunController.WallJump();
     }
 
     public void OnFire(InputAction.CallbackContext context)

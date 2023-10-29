@@ -30,6 +30,7 @@ public class CharacterMovementController : MonoBehaviour
 
     public Rigidbody Rigidbody { get; private set; }
     public bool IsGrounded { get; private set; }
+    public bool MovementEnabled { get; set; }
     public Vector2 MovementInput { get; set; }
 
     private void Awake()
