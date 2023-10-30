@@ -40,13 +40,11 @@ public class CharacterMovementController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        bool wasGrounded = IsGrounded;
-
-        IsGrounded = collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f);
-
-        if (!wasGrounded && IsGrounded)
+        if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
         {
-            OnLanded?.Invoke(-Rigidbody.velocity.y);
+            IsGrounded = true;
+
+            OnLanded?.Invoke(Rigidbody.velocity.y);
         }
     }
 
