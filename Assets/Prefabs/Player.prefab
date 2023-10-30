@@ -500,3 +500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494a973bf24992e49bb51f8d1bc4fd18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <WallCheckDistance>k__BackingField: 0.75
+  <WallJumpHeight>k__BackingField: 4
+  <WallRunInitialImpulse>k__BackingField: 7
+  <WallJumpSideForce>k__BackingField: 6
+  <WallJumpForwardForce>k__BackingField: 5
