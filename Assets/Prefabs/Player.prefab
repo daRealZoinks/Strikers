@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 2975639679276083022}
   - component: {fileID: 5119039066917414536}
   - component: {fileID: -5218604611035968172}
+  - component: {fileID: 1607004441106848934}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -487,3 +488,20 @@ MonoBehaviour:
   <AirControl>k__BackingField: 0.1
   <AirBreak>k__BackingField: 0
   <GravityScale>k__BackingField: 1.5
+--- !u!114 &1607004441106848934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092133516706228497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494a973bf24992e49bb51f8d1bc4fd18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <WallCheckDistance>k__BackingField: 0.75
+  <WallJumpHeight>k__BackingField: 4
+  <WallRunInitialImpulse>k__BackingField: 7
+  <WallJumpSideForce>k__BackingField: 6
+  <WallJumpForwardForce>k__BackingField: 5
