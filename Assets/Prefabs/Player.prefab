@@ -232,6 +232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <HeadBobEnabled>k__BackingField: 1
   <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
+  <CharacterWallRunController>k__BackingField: {fileID: 1607004441106848934}
   amplitude: 0.08
   frequency: 18.5
 --- !u!114 &7988933468598430389
@@ -248,7 +249,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LateralHeadTiltEnabled>k__BackingField: 1
   <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
+  <CharacterWallRunController>k__BackingField: {fileID: 1607004441106848934}
   angle: 2
+  wallRunAngle: 5
   speed: 5
 --- !u!1 &8092133516706228497
 GameObject:
