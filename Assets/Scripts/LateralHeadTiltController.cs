@@ -23,13 +23,6 @@ public class LateralHeadTiltController : MonoBehaviour
     [SerializeField]
     private float speed = 5f;
 
-    private Quaternion _originalRotation;
-
-    private void Start()
-    {
-        _originalRotation = transform.localRotation;
-    }
-
     private void Update()
     {
         if (!LateralHeadTiltEnabled) return;
@@ -38,32 +31,36 @@ public class LateralHeadTiltController : MonoBehaviour
         {
             var directionOfMovement = transform.InverseTransformDirection(CharacterMovementController.Rigidbody.velocity);
 
+            var normalizedVelocity = Mathf.Clamp01(CharacterMovementController.Rigidbody.velocity.magnitude / CharacterMovementController.MaxSpeed);
+
             var rotation = Quaternion.Euler(
-                _originalRotation.eulerAngles.x,
-                _originalRotation.eulerAngles.y,
-                -directionOfMovement.normalized.x * angle * Mathf.Clamp01(CharacterMovementController.Rigidbody.velocity.magnitude / CharacterMovementController.MaxSpeed));
+                transform.localRotation.eulerAngles.x,
+                transform.localRotation.eulerAngles.y,
+                -directionOfMovement.normalized.x * angle * normalizedVelocity);
 
             transform.localRotation = Quaternion.Lerp(transform.localRotation, rotation, Time.deltaTime * speed);
         }
         else if (CharacterWallRunController.IsWallRunning)
         {
-            Quaternion rotation = Quaternion.Euler(_originalRotation.eulerAngles.x, _originalRotation.eulerAngles.y, 0);
+            Quaternion tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
 
             if (CharacterWallRunController.IsWallRight)
             {
-                rotation = Quaternion.Euler(_originalRotation.eulerAngles.x, _originalRotation.eulerAngles.y, wallRunAngle);
+                tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, wallRunAngle);
             }
 
             if (CharacterWallRunController.IsWallLeft)
             {
-                rotation = Quaternion.Euler(_originalRotation.eulerAngles.x, _originalRotation.eulerAngles.y, -wallRunAngle);
+                tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -wallRunAngle);
             }
 
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, rotation, Time.deltaTime * speed);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, tiltAngle, Time.deltaTime * speed);
         }
         else
         {
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, _originalRotation, Time.deltaTime * speed);
+            var restTiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
+
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, restTiltAngle, Time.deltaTime * speed);
         }
     }
 }
