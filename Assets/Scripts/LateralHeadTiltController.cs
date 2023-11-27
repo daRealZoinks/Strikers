@@ -23,13 +23,6 @@ public class LateralHeadTiltController : MonoBehaviour
     [SerializeField]
     private float speed = 5f;
 
-    private Quaternion _originalRotation;
-
-    private void Start()
-    {
-        _originalRotation = transform.localRotation;
-    }
-
     private void Update()
     {
         if (!LateralHeadTiltEnabled) return;
@@ -49,23 +42,25 @@ public class LateralHeadTiltController : MonoBehaviour
         }
         else if (CharacterWallRunController.IsWallRunning)
         {
-            Quaternion rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
+            Quaternion tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
 
             if (CharacterWallRunController.IsWallRight)
             {
-                rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, wallRunAngle);
+                tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, wallRunAngle);
             }
 
             if (CharacterWallRunController.IsWallLeft)
             {
-                rotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -wallRunAngle);
+                tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -wallRunAngle);
             }
 
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, rotation, Time.deltaTime * speed);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, tiltAngle, Time.deltaTime * speed);
         }
         else
         {
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, _originalRotation, Time.deltaTime * speed);
+            var restTiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
+
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, restTiltAngle, Time.deltaTime * speed);
         }
     }
 }
