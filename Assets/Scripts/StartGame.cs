@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-public class StartGame : NetworkBehaviour
+public class StartGame : MonoBehaviour
 {
     [SerializeField]
     private string sceneName;
 
     private void OnGUI()
     {
-        if (!IsServer) return;
+        if (!NetworkManager.Singleton.IsServer) return;
 
         if (GUI.Button(new Rect(10, 90, 100, 30), "Start match"))
             StartMatch();
@@ -20,7 +20,7 @@ public class StartGame : NetworkBehaviour
 
     private void StartMatch()
     {
-        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
 #if UNITY_EDITOR
