@@ -1,10 +1,22 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
-    private NetworkVariable<int> _blueScore;
-    private NetworkVariable<int> _orangeScore;
+    [SerializeField]
+    private string sceneName;
+
+    private readonly NetworkVariable<int> _blueScore = new();
+    private readonly NetworkVariable<int> _orangeScore = new();
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(Screen.width / 2 - 50, 10, 100, 30), $"{_blueScore.Value} - {_orangeScore.Value}");
+    }
 
     public void OnBlueGoal()
     {
@@ -18,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Orange score: {_orangeScore.Value} ClientRpc");
     }
-    
+
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
@@ -39,8 +51,19 @@ public class GameManager : MonoBehaviour
     }
 
     [ClientRpc]
-    private static void OnTimerEndClientRpc()
+    private void OnTimerEndClientRpc()
     {
         Debug.Log("Timer ended ClientRpc");
+
+        NetworkManager.SceneManager.LoadScene("MenuScene", LoadSceneMode.Single);
     }
+
+#if UNITY_EDITOR
+    [SerializeField] private SceneAsset sceneAsset;
+
+    private void OnValidate()
+    {
+        if (sceneAsset != null) sceneName = sceneAsset.name;
+    }
+#endif
 }
