@@ -88,7 +88,7 @@ public class LobbyExample : MonoBehaviour
                 }
             };
 
-            var lobby = await Lobbies.Instance.CreateLobbyAsync("gerghrthrxrtcn", maxPlayers, createLobbyOptions);
+            var lobby = await Lobbies.Instance.CreateLobbyAsync("myrnetrveafhrsy", maxPlayers, createLobbyOptions);
 
             StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, 15));
 
