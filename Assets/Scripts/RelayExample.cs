@@ -14,6 +14,7 @@ public class RelayExample : MonoBehaviour
 
     [SerializeField]
     private UnityTransport _transport;
+
     private string _joinCodeText;
 
     private async void Awake()
@@ -23,16 +24,31 @@ public class RelayExample : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 100, 30), "Create Game"))
+        if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
         {
-            CreateGame();
+            GUI.Label(new Rect(10, 10, 300, 30), _joinCodeText);
+
+            if (NetworkManager.Singleton.IsServer)
+            {
+                if (GUI.Button(new Rect(10, 50, 100, 30), "Copy"))
+                {
+                    GUIUtility.systemCopyBuffer = _joinCodeText;
+                }
+            }
         }
-
-        _joinCodeText = GUI.TextField(new Rect(120, 10, 100, 30), _joinCodeText);
-
-        if (GUI.Button(new Rect(10, 50, 100, 30), "Join Game"))
+        else
         {
-            JoinGame();
+            if (GUI.Button(new Rect(10, 10, 100, 30), "Create Game"))
+            {
+                CreateGame();
+            }
+
+            _joinCodeText = GUI.TextField(new Rect(10, 50, 100, 30), _joinCodeText);
+
+            if (GUI.Button(new Rect(120, 50, 100, 30), "Join Game"))
+            {
+                JoinGame();
+            }
         }
     }
 
