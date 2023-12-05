@@ -4,10 +4,17 @@ using UnityEngine.Events;
 
 public class Timer : NetworkBehaviour
 {
+    public static Timer Instance { get; private set; }
+
     public NetworkVariable<float> timeRemaining = new();
     public NetworkVariable<bool> timerIsRunning = new();
 
     public UnityEvent onTimerEnd;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // ongui
     private void OnGUI()
@@ -16,7 +23,6 @@ public class Timer : NetworkBehaviour
         var minutes = (int)timeRemaining.Value / 60;
         GUI.Label(new Rect(Screen.width / 2 - 50, 40, 100, 30), $"{minutes:00}:{seconds:00}");
 
-        // when the last 10 seconds are reached, the timer will show on the center of the screen with a big font
         if (timeRemaining.Value <= 10)
         {
             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100), $"{timeRemaining.Value}");
