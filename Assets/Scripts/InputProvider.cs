@@ -5,6 +5,8 @@ public class InputProvider : MonoBehaviour
 {
     [SerializeField]
     private CharacterCameraController characterCameraController;
+    [SerializeField]
+    private MeleeAttackController meleeAttackController;
     private CharacterMovementController _characterMovementController;
     private CharacterWallRunController _characterWallRunController;
 
@@ -55,6 +57,6 @@ public class InputProvider : MonoBehaviour
     {
         if (context.phase != InputActionPhase.Started) return;
 
-        Debug.Log("Melee");
+        meleeAttackController.Attack();
     }
 }
