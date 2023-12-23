@@ -9,6 +9,9 @@ public class MeleeAttackController : MonoBehaviour
     [SerializeField]
     private Collider playerCollider;
 
+    [SerializeField]
+    private Transform cameraTransform;
+
     private SphereCollider _sphereCollider;
 
     private readonly Collider[] hitColliders = new Collider[10];
@@ -22,15 +25,14 @@ public class MeleeAttackController : MonoBehaviour
     {
         Physics.OverlapSphereNonAlloc(transform.position, _sphereCollider.radius, hitColliders);
 
-        var colliders = hitColliders.Where(collider => collider && collider != playerCollider);
+        var filteredColliders = hitColliders.Where(c => c && c != playerCollider);
 
-        foreach (var collider in colliders)
+        foreach (var filteredCollider in filteredColliders)
         {
-            if (collider.TryGetComponent<Rigidbody>(out var rb))
-            {
-                Vector3 direction = (rb.transform.position - transform.position).normalized;
-                rb.AddForce(direction * attackForce, ForceMode.Impulse);
-            }
+            if (!filteredCollider.TryGetComponent<Rigidbody>(out var rb)) continue;
+
+            var direction = (rb.transform.position - cameraTransform.position).normalized;
+            rb.AddForce(direction * attackForce, ForceMode.Impulse);
         }
     }
 }

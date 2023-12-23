@@ -532,8 +532,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23eab650838768440b424a8a5eb78960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 2000
+  attackForce: 1000
   playerCollider: {fileID: 463025270616869114}
+  cameraTransform: {fileID: 5997971073040926838}
 --- !u!1 &8092133516706228497
 GameObject:
   m_ObjectHideFlags: 0
