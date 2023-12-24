@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Components/DisplayMenu/DisplayMenu.uss?fileID=7433441132597879392&amp;guid=0b6b87acb267d1c42aadb56d7aa9316c&amp;type=3#DisplayMenu" />
+    <ui:VisualElement class="buttonsContainer">
+        <ui:DropdownField name="resolutionDropdown" label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" class="display-menu-dropdown-field"/>
+        <ui:DropdownField name="fullscreenDropdown" label="Fullscreen" index="-1" choices="System.Collections.Generic.List`1[System.String]" class="display-menu-dropdown-field"/>
+        <ui:Button name="backButton" text="Back" class="display-menu-button" />
+    </ui:VisualElement>
+</ui:UXML>

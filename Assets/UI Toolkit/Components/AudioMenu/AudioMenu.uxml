@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements"
+         xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements"
+         editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
+         editor-extension-mode="False">
+    <Style
+        src="project://database/Assets/UI%20Toolkit/Components/AudioMenu/AudioMenu.uss?fileID=7433441132597879392&amp;guid=9813a727d8adc0e49a7705a17f0ddd4e&amp;type=3#AudioMenu" />
+
+    <ui:VisualElement class="buttonsContainer">
+        <ui:Slider name="masterVolumeSlider" label="Master Volume" value="1" highValue="1" lowValue="0" class="audio-settings-slider"/>
+        <ui:Slider name="sfxVolumeSlider" label="Sfx Volume" value="1" highValue="1" lowValue="0" class="audio-settings-slider"/>
+        <ui:Slider name="musicVolumeSlider" label="Music Volume" value="1" highValue="1" lowValue="0" class="audio-settings-slider"/>
+        <ui:Button name="backButton" text="Back" class="audio-menu-button"/>
+    </ui:VisualElement>
+</ui:UXML>

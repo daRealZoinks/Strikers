@@ -4,9 +4,21 @@
          editor-extension-mode="False">
     <ui:Template name="MainMenu"
                  src="project://database/Assets/UI%20Toolkit/Components/MainMenu/MainMenu.uxml?fileID=9197481963319205126&amp;guid=3332897c747884f4dbdb48898dd90cf8&amp;type=3#MainMenu" />
+    <ui:Template name="OptionsMenu"
+                 src="project://database/Assets/UI%20Toolkit/Components/OptionsMenu/OptionsMenu.uxml?fileID=9197481963319205126&amp;guid=2535896c96a6d1e418f12da3df817493&amp;type=3#OptionsMenu" />
+    <ui:Template name="AudioMenu"
+                 src="project://database/Assets/UI%20Toolkit/Components/AudioMenu/AudioMenu.uxml?fileID=9197481963319205126&amp;guid=bfae2e5ec4ed3b943892dba3a67f4691&amp;type=3#AudioMenu" />
+    <ui:Template name="DisplayMenu"
+                 src="project://database/Assets/UI%20Toolkit/Components/DisplayMenu/DisplayMenu.uxml?fileID=9197481963319205126&amp;guid=2b79d0c8a93621947ad8eedf872feea4&amp;type=3#DisplayMenu" />
+    <ui:Template name="GraphicsMenu"
+                 src="project://database/Assets/UI%20Toolkit/Components/GraphicsMenu/GraphicsMenu.uxml?fileID=9197481963319205126&amp;guid=787e95e2b5cf1174fb75421036bcf753&amp;type=3#GraphicsMenu" />
     <Style
         src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
     <ui:VisualElement class="bottomCorner background">
         <ui:Instance template="MainMenu" name="MainMenu" />
+        <ui:Instance template="OptionsMenu" name="OptionsMenu" style="display: none;" />
+        <ui:Instance template="AudioMenu" name="AudioMenu" style="display: none;" />
+        <ui:Instance template="DisplayMenu" name="DisplayMenu" style="display: none;" />
+        <ui:Instance template="GraphicsMenu" name="GraphicsMenu" style="display: none;" />
     </ui:VisualElement>
 </ui:UXML>

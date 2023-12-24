@@ -1,8 +1,10 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Components/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=50fe05c2da019d9459cad891c6a34cec&amp;type=3#MainMenu" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance"
+         engine="UnityEngine.UIElements" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Components/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=50fe05c2da019d9459cad891c6a34cec&amp;type=3#MainMenu"/>
     <ui:VisualElement class="buttonsContainer">
-        <ui:Button name="playButton" text="Play" class="main-menu-button" />
-        <ui:Button name="optionsButton" text="Options" class="main-menu-button" />
-        <ui:Button name="exitButton" text="Exit" class="main-menu-button" />
+        <ui:Button name="playButton" text="Play" class="main-menu-button"/>
+        <ui:Button name="optionsButton" text="Options" class="main-menu-button"/>
+        <ui:Button name="exitButton" text="Exit" class="main-menu-button"/>
     </ui:VisualElement>
 </ui:UXML>
