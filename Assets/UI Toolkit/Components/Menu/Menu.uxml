@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
+         xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements"
+         editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+         editor-extension-mode="False">
+    <ui:Template name="MainMenu"
+                 src="project://database/Assets/UI%20Toolkit/Components/MainMenu/MainMenu.uxml?fileID=9197481963319205126&amp;guid=3332897c747884f4dbdb48898dd90cf8&amp;type=3#MainMenu" />
+    <Style
+        src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
+    <ui:VisualElement class="bottomCorner background">
+        <ui:Instance template="MainMenu" name="MainMenu" />
+    </ui:VisualElement>
+</ui:UXML>

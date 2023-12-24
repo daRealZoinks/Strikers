@@ -1,0 +1,8 @@
+.bottomCorner {
+    flex-direction: column-reverse;
+    flex-grow: 1;
+}
+
+.background {
+    background-color: black;
+}
