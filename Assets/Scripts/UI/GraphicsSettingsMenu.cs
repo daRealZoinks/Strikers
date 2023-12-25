@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GraphicsSettingsMenu : MonoBehaviour
@@ -9,14 +12,23 @@ public class GraphicsSettingsMenu : MonoBehaviour
         var qualityDropdown = root.Q<DropdownField>("qualityDropdown");
         var backButton = root.Q<VisualElement>("GraphicsMenu").Q<Button>("backButton");
 
+        InitializeQualityDropdown(qualityDropdown);
+
         qualityDropdown.RegisterValueChangedCallback(OnQualityChanged);
         backButton.clicked += OnBackClicked;
     }
 
-    private void OnQualityChanged(ChangeEvent<string> evt)
+    private static void InitializeQualityDropdown(DropdownField qualityDropdown)
     {
-        // Implement your logic to change the quality
-        Debug.Log("Quality changed to " + evt.newValue);
+        var qualityOptions = new List<string>(QualitySettings.names);
+        qualityDropdown.choices = qualityOptions;
+    }
+
+    private static void OnQualityChanged(ChangeEvent<string> evt)
+    {
+        var qualityIndex = QualitySettings.names.ToList().IndexOf(evt.newValue);
+
+        QualitySettings.SetQualityLevel(qualityIndex);
     }
 
     private void OnBackClicked()
