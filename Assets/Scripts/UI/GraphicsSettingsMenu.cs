@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,8 +19,10 @@ public class GraphicsSettingsMenu : MonoBehaviour
 
     private static void InitializeQualityDropdown(DropdownField qualityDropdown)
     {
-        var qualityOptions = new List<string>(QualitySettings.names);
-        qualityDropdown.choices = qualityOptions;
+        var qualityOptions = QualitySettings.names;
+        qualityOptions = qualityOptions.Reverse().ToArray();
+        qualityDropdown.choices = new List<string>(qualityOptions);
+        qualityDropdown.index = QualitySettings.names.Length - 1 - QualitySettings.GetQualityLevel();
     }
 
     private static void OnQualityChanged(ChangeEvent<string> evt)
