@@ -9,10 +9,10 @@ using UnityEngine;
 
 public class RelayExample : MonoBehaviour
 {
-    [field: SerializeField]
-    public int MaxPlayers { get; private set; }
+    [field: SerializeField] public int MaxPlayers { get; private set; }
 
-    [SerializeField]
+    public static RelayExample Instance { get; private set; }
+
     private UnityTransport _transport;
 
     private string _joinCodeText;
@@ -20,35 +20,19 @@ public class RelayExample : MonoBehaviour
     private async void Awake()
     {
         await Authenticate();
+        _transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
+        Instance = this;
     }
 
     private void OnGUI()
     {
-        if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
+        if (!NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsClient) return;
+        GUI.Label(new Rect(10, 10, 300, 30), _joinCodeText);
+
+        if (!NetworkManager.Singleton.IsServer) return;
+        if (GUI.Button(new Rect(10, 50, 100, 30), "Copy"))
         {
-            GUI.Label(new Rect(10, 10, 300, 30), _joinCodeText);
-
-            if (NetworkManager.Singleton.IsServer)
-            {
-                if (GUI.Button(new Rect(10, 50, 100, 30), "Copy"))
-                {
-                    GUIUtility.systemCopyBuffer = _joinCodeText;
-                }
-            }
-        }
-        else
-        {
-            if (GUI.Button(new Rect(10, 10, 100, 30), "Create Game"))
-            {
-                CreateGame();
-            }
-
-            _joinCodeText = GUI.TextField(new Rect(10, 50, 100, 30), _joinCodeText);
-
-            if (GUI.Button(new Rect(120, 50, 100, 30), "Join Game"))
-            {
-                JoinGame();
-            }
+            GUIUtility.systemCopyBuffer = _joinCodeText;
         }
     }
 
@@ -58,7 +42,7 @@ public class RelayExample : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    public async void CreateGame()
+    public async Task CreateGame()
     {
         var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
 
@@ -69,9 +53,9 @@ public class RelayExample : MonoBehaviour
         NetworkManager.Singleton.StartHost();
     }
 
-    public async void JoinGame()
+    public async Task JoinGame(string joinCode)
     {
-        var a = await RelayService.Instance.JoinAllocationAsync(_joinCodeText);
+        var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
         _transport.SetClientRelayData(a);
 
@@ -83,11 +67,14 @@ public static class UnityTransportExtensions
 {
     public static void SetHostRelayData(this UnityTransport transport, Allocation allocation)
     {
-        transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
+        transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port,
+            allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
     }
 
     public static void SetClientRelayData(this UnityTransport transport, JoinAllocation joinAllocation)
     {
-        transport.SetClientRelayData(joinAllocation.RelayServer.IpV4, (ushort)joinAllocation.RelayServer.Port, joinAllocation.AllocationIdBytes, joinAllocation.Key, joinAllocation.ConnectionData, joinAllocation.HostConnectionData);
+        transport.SetClientRelayData(joinAllocation.RelayServer.IpV4, (ushort)joinAllocation.RelayServer.Port,
+            joinAllocation.AllocationIdBytes, joinAllocation.Key, joinAllocation.ConnectionData,
+            joinAllocation.HostConnectionData);
     }
 }
