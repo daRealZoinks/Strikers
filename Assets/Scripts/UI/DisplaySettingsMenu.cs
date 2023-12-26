@@ -36,11 +36,15 @@ public class DisplaySettingsMenu : MonoBehaviour
             resolutionOptions.Add(resolution.width + "x" + resolution.height);
 
             // Add refresh rate to the list
-            refreshRateOptions.Add($"{resolution.refreshRateRatio.value:F3} Hz");
+            refreshRateOptions.Add($"{Math.Round(resolution.refreshRateRatio.value, 2)} Hz");
         }
 
         resolutionDropdown.choices = resolutionOptions;
+        resolutionDropdown.index = resolutionOptions.IndexOf(Screen.currentResolution.width + "x" +
+                                                             Screen.currentResolution.height);
         refreshRateDropdown.choices = refreshRateOptions;
+        refreshRateDropdown.index =
+            refreshRateOptions.IndexOf($"{Math.Round(Screen.currentResolution.refreshRateRatio.value, 2)} Hz");
     }
 
     private static void InitializeFullscreenDropdown(DropdownField fullscreenDropdown)
@@ -58,6 +62,14 @@ public class DisplaySettingsMenu : MonoBehaviour
         };
 
         fullscreenDropdown.choices = fullscreenOptions;
+        fullscreenDropdown.index = fullscreenOptions.IndexOf(Screen.fullScreenMode switch
+        {
+            FullScreenMode.ExclusiveFullScreen => "Exclusive Fullscreen",
+            FullScreenMode.FullScreenWindow => "Fullscreen Window",
+            FullScreenMode.MaximizedWindow => "Maximized Window",
+            FullScreenMode.Windowed => "Windowed",
+            _ => throw new ArgumentOutOfRangeException()
+        });
     }
 
     private static void OnResolutionChanged(ChangeEvent<string> evt)
