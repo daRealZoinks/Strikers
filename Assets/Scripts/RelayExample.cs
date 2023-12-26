@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -6,6 +7,7 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RelayExample : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class RelayExample : MonoBehaviour
 
     private UnityTransport _transport;
 
-    private string _joinCodeText;
+    public string JoinCodeText { get; private set; }
 
     private async void Awake()
     {
@@ -24,42 +26,48 @@ public class RelayExample : MonoBehaviour
         Instance = this;
     }
 
-    private void OnGUI()
-    {
-        if (!NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsClient) return;
-        GUI.Label(new Rect(10, 10, 300, 30), _joinCodeText);
-
-        if (!NetworkManager.Singleton.IsServer) return;
-        if (GUI.Button(new Rect(10, 50, 100, 30), "Copy"))
-        {
-            GUIUtility.systemCopyBuffer = _joinCodeText;
-        }
-    }
-
     private static async Task Authenticate()
     {
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    public async Task CreateGame()
+    public async Task<bool> CreateGame()
     {
-        var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
+        try
+        {
+            var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
 
-        _joinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
+            JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
-        _transport.SetHostRelayData(a);
+            _transport.SetHostRelayData(a);
 
-        NetworkManager.Singleton.StartHost();
+            NetworkManager.Singleton.StartHost();
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    public async Task JoinGame(string joinCode)
+    public async Task<bool> JoinGame(string joinCode)
     {
-        var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
+        try
+        {
+            var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
-        _transport.SetClientRelayData(a);
+            _transport.SetClientRelayData(a);
 
-        NetworkManager.Singleton.StartClient();
+            NetworkManager.Singleton.StartClient();
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
 

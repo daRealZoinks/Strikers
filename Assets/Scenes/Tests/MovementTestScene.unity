@@ -1872,7 +1872,8 @@ GameObject:
   - component: {fileID: 1603315003}
   - component: {fileID: 1603315002}
   - component: {fileID: 1603315005}
-  - component: {fileID: 1603315004}
+  - component: {fileID: 1603315006}
+  - component: {fileID: 1603315007}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -1912,7 +1913,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1603315004
+--- !u!114 &1603315005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603315001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d70b85e67fc28b4cb032c2531c26a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1603315006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1924,7 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1416713f68f5674fba7f398f3faf446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1603315005
+--- !u!114 &1603315007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1933,7 +1946,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1603315001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d70b85e67fc28b4cb032c2531c26a35, type: 3}
+  m_Script: {fileID: 11500000, guid: 16db924c9a29ca04a95801c0cc7e0ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!43 &1642942112

@@ -10,15 +10,14 @@ public class StartGame : MonoBehaviour
     [SerializeField]
     private string sceneName;
 
-    private void OnGUI()
-    {
-        if (!NetworkManager.Singleton.IsServer) return;
+    public static StartGame Instance { get; private set; }
 
-        if (GUI.Button(new Rect(10, 90, 100, 30), "Start match"))
-            StartMatch();
+    private void Awake()
+    {
+        Instance = this;
     }
 
-    private void StartMatch()
+    public void StartMatch()
     {
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
