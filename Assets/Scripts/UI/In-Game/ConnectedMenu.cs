@@ -25,7 +25,10 @@ public class ConnectedMenu : MonoBehaviour
     {
         GetComponent<CursorController>().IsCursorLocked = !isPaused;
         GetComponent<UIDocument>().rootVisualElement.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>().enabled = !isPaused;
+        if (NetworkManager.Singleton.LocalClient.PlayerObject)
+        {
+            NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>().enabled = !isPaused;
+        }
     }
 
     public void TogglePause()
@@ -66,6 +69,7 @@ public class ConnectedMenu : MonoBehaviour
 
     private void OnStartMatchButtonClicked()
     {
+        IsPaused = false;
         StartGame.Instance.StartMatch();
         OnGameStarted?.Invoke();
     }
