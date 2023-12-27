@@ -24,7 +24,7 @@ public class ConnectedMenu : MonoBehaviour
     private void UpdatePauseState(bool isPaused)
     {
         GetComponent<CursorController>().IsCursorLocked = !isPaused;
-        GetComponent<UIDocument>().enabled = isPaused;
+        GetComponent<UIDocument>().rootVisualElement.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
         NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>().enabled = !isPaused;
     }
 

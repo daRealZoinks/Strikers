@@ -27,8 +27,8 @@ public class InGameMenu : MonoBehaviour
 
     private void HideConnectMenu()
     {
-        var uiDocument = GetComponent<UIDocument>();
-        uiDocument.enabled = false;
+        var connectMenu = GetComponent<UIDocument>();
+        connectMenu.enabled = false;
     }
 
     private void ShowConnectedMenu()
