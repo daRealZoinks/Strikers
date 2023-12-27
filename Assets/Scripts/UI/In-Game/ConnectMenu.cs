@@ -14,6 +14,7 @@ public class ConnectMenu : MonoBehaviour
     private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
+        
         _connectMenu = root.Q<VisualElement>("ConnectMenu");
         var createGameButton = root.Q<Button>("createGameButton");
         var joinGameButton = root.Q<Button>("joinGameButton");

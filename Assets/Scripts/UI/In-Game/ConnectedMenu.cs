@@ -8,6 +8,24 @@ public class ConnectedMenu : MonoBehaviour
     private Label _roomCodeLabel;
     private Button _startMatchButton;
 
+    private bool _isPaused;
+
+    public bool IsPaused
+    {
+        get { return _isPaused; }
+        set
+        {
+            _isPaused = value;
+            UpdatePauseState(_isPaused);
+        }
+    }
+
+    private void UpdatePauseState(bool isPaused)
+    {
+        GetComponent<CursorController>().IsCursorLocked = !isPaused;
+        GetComponent<UIDocument>().enabled = isPaused;
+    }
+
     public event Action OnGameStarted;
 
     private void OnEnable()

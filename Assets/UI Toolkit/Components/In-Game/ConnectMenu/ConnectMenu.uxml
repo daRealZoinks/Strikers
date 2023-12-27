@@ -6,7 +6,7 @@
         src="project://database/Assets/UI%20Toolkit/Components/In-Game/Connect/Connect.uss?fileID=7433441132597879392&amp;guid=0ba1a234fdc7838459000873e6e7bc83&amp;type=3#Connect" />
     <Style
         src="project://database/Assets/UI%20Toolkit/Components/In-Game/In-Game.uss?fileID=7433441132597879392&amp;guid=15334390ee96ab64ebf800c03f36be12&amp;type=3#In-Game" />
-    <ui:VisualElement>
+    <ui:VisualElement name="ConnectMenu" class="background">
         <ui:VisualElement>
             <ui:Button name="createGameButton" text="Create Game" class="menu-button" />
         </ui:VisualElement>
