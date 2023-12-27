@@ -26,6 +26,11 @@ public class ConnectedMenu : MonoBehaviour
         GetComponent<UIDocument>().enabled = isPaused;
     }
 
+    public void TogglePause()
+    {
+        IsPaused = !IsPaused;
+    }
+
     public event Action OnGameStarted;
 
     private void OnEnable()
