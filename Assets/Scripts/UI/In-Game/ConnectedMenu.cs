@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class ConnectedMenu : MonoBehaviour
@@ -12,7 +13,7 @@ public class ConnectedMenu : MonoBehaviour
 
     public bool IsPaused
     {
-        get { return _isPaused; }
+        get => _isPaused;
         set
         {
             _isPaused = value;
@@ -24,6 +25,7 @@ public class ConnectedMenu : MonoBehaviour
     {
         GetComponent<CursorController>().IsCursorLocked = !isPaused;
         GetComponent<UIDocument>().enabled = isPaused;
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>().enabled = !isPaused;
     }
 
     public void TogglePause()

@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 82b4329720d1248429a5ffbefa2eb3f8, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 15078f4b37b032b44a1653917fdaba9e,
+  sourceAsset: {fileID: 9197481963319205126, guid: 28abc6943d35b224b800228d5554399d,
     type: 3}
   m_SortingOrder: 0
 --- !u!4 &1165945286
@@ -1835,7 +1835,7 @@ MonoBehaviour:
     m_ActionName: UI/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1180960287
