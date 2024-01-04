@@ -11,10 +11,23 @@ public class InGameMenu : MonoBehaviour
         var connectMenu = GetComponent<ConnectMenu>();
         connectMenu.OnGameCreated += OnGameCreated;
         connectMenu.OnGameJoined += OnGameJoined;
+        connectMenu.OnBackToMenu += OnBackToMenu;
 
         connectedMenu.OnGameStarted += OnGameStarted;
 
         NetworkManager.Singleton.OnClientStopped += OnClientStopped;
+    }
+
+    private void OnBackToMenu()
+    {
+        var connectMenu = GetComponent<ConnectMenu>();
+        connectMenu.OnGameCreated -= OnGameCreated;
+        connectMenu.OnGameJoined -= OnGameJoined;
+        connectMenu.OnBackToMenu -= OnBackToMenu;
+
+        connectedMenu.OnGameStarted -= OnGameStarted;
+
+        NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
     }
 
     private void OnGameCreated()
@@ -45,6 +58,11 @@ public class InGameMenu : MonoBehaviour
 
     private void OnClientStopped(bool wasHost)
     {
+        if (!connectedMenu)
+        {
+            return;
+        }
+
         connectedMenu.IsPaused = true;
         connectedMenu.gameObject.SetActive(false);
 

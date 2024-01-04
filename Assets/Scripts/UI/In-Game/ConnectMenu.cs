@@ -15,6 +15,8 @@ public class ConnectMenu : MonoBehaviour
     public event Action OnGameCreated;
     public event Action OnGameJoined;
 
+    public event Action OnBackToMenu;
+
     [SerializeField] private string sceneName;
 
     private void OnEnable()
@@ -77,6 +79,7 @@ public class ConnectMenu : MonoBehaviour
 
     private void OnExitButtonClicked()
     {
+        OnBackToMenu?.Invoke();
         RelayExample.Instance.Deauthenticate();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
