@@ -36,7 +36,6 @@
 
 .menu-dropdown-field {
     font-size: 50px;
-    color: white;
     width: 100%;
     margin: 10;
 }
