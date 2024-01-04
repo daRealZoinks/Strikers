@@ -4,7 +4,7 @@
 }
 
 .background {
-    margin: 30;
+    margin: 30px;
     background-color: rgba(0, 0, 0, 0.75);
     width: 450px;
 }
@@ -12,17 +12,15 @@
 .buttonsContainer {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
     height: 100%;
-    margin: 20;
+    margin: 20px;
 }
 
 .menu-button {
     color: black;
     background-color: white;
     font-size: 50px;
-    margin: 10;
+    margin: 10px;
     transition: 0.3s ease;
 }
 
@@ -40,7 +38,7 @@
     font-size: 50px;
     color: white;
     width: 100%;
-    margin: 10;
+    margin: 10px;
 }
 
 .menu-slider {
@@ -52,11 +50,15 @@
 .menu-label {
     font-size: 50px;
     color: white;
-    margin: 10;
+    margin: 10px;
     -unity-text-align: middle-center;
 }
 
 .menu-text-field {
     font-size: 50px;
-    margin: 10;
+    margin: 10px;
+}
+
+.spacer {
+    flex: 1 1 auto;
 }

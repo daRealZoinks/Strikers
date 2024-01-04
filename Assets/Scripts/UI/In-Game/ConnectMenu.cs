@@ -1,5 +1,9 @@
 using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class ConnectMenu : MonoBehaviour
@@ -11,17 +15,26 @@ public class ConnectMenu : MonoBehaviour
     public event Action OnGameCreated;
     public event Action OnGameJoined;
 
+    [SerializeField] private string sceneName;
+
     private void OnEnable()
     {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         var root = GetComponent<UIDocument>().rootVisualElement;
-        
+
         _connectMenu = root.Q<VisualElement>("ConnectMenu");
         var createGameButton = root.Q<Button>("createGameButton");
         var joinGameButton = root.Q<Button>("joinGameButton");
         _joinGameTextField = root.Q<TextField>("joinGameTextField");
+        var exitButton = root.Q<Button>("exitButton");
 
         createGameButton.clicked += OnCreateGameButtonClicked;
         joinGameButton.clicked += OnJoinGameButtonClicked;
+        exitButton.clicked += OnExitButtonClicked;
     }
 
     private void OnCreateGameButtonClicked()
@@ -61,4 +74,19 @@ public class ConnectMenu : MonoBehaviour
             }
         });
     }
+
+    private void OnExitButtonClicked()
+    {
+        RelayExample.Instance.Deauthenticate();
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+#if UNITY_EDITOR
+    [SerializeField] private SceneAsset sceneAsset;
+
+    private void OnValidate()
+    {
+        if (sceneAsset != null) sceneName = sceneAsset.name;
+    }
+#endif
 }

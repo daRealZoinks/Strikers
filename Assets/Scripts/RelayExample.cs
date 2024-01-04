@@ -1,4 +1,3 @@
-using System.Threading;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -7,7 +6,6 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class RelayExample : MonoBehaviour
 {
@@ -26,10 +24,15 @@ public class RelayExample : MonoBehaviour
         Instance = this;
     }
 
-    private static async Task Authenticate()
+    private async Task Authenticate()
     {
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    public void Deauthenticate()
+    {
+        AuthenticationService.Instance.SignOut();
     }
 
     public async Task<bool> CreateGame()
@@ -57,6 +60,8 @@ public class RelayExample : MonoBehaviour
         try
         {
             var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
+
+            JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
             _transport.SetClientRelayData(a);
 

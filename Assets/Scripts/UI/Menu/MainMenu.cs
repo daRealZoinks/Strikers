@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 #endif
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class MainMenu : MonoBehaviour
 {

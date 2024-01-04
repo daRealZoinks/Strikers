@@ -38,21 +38,21 @@ public class ConnectedMenu : MonoBehaviour
 
     public event Action OnGameStarted;
 
-    private void OnEnable()
+    public void InitializeUi()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
         _roomCodeLabel = root.Q<Label>("roomCodeLabel");
-        _startMatchButton = root.Q<Button>("startMatchButton");
-
         var copyRoomCodeButton = root.Q<Button>("copyRoomCodeButton");
-
-        _startMatchButton.clicked += OnStartMatchButtonClicked;
+        _startMatchButton = root.Q<Button>("startMatchButton");
+        var leaveButton = root.Q<Button>("leaveButton");
 
         copyRoomCodeButton.clicked += OnCopyRoomCodeButtonClicked;
+        _startMatchButton.clicked += OnStartMatchButtonClicked;
+        leaveButton.clicked += OnLeaveButtonClicked;
     }
 
-    public void Initialize()
+    public void InitializeValues()
     {
         if (NetworkManager.Singleton.IsServer)
         {
@@ -62,7 +62,7 @@ public class ConnectedMenu : MonoBehaviour
         _roomCodeLabel.text = RelayExample.Instance.JoinCodeText;
     }
 
-    private static void OnCopyRoomCodeButtonClicked()
+    private void OnCopyRoomCodeButtonClicked()
     {
         GUIUtility.systemCopyBuffer = RelayExample.Instance.JoinCodeText;
     }
@@ -72,5 +72,10 @@ public class ConnectedMenu : MonoBehaviour
         IsPaused = false;
         StartGame.Instance.StartMatch();
         OnGameStarted?.Invoke();
+    }
+
+    private void OnLeaveButtonClicked()
+    {
+        NetworkManager.Singleton.Shutdown();
     }
 }
