@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterMovementController : MonoBehaviour
+public class CharacterMovementController : NetworkBehaviour
 {
     [field: Header("Movement")]
     [field: SerializeField]
@@ -38,6 +39,23 @@ public class CharacterMovementController : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        NetworkManager.NetworkTickSystem.Tick += OnNetworkTick;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.NetworkTickSystem.Tick -= OnNetworkTick;
+    }
+
+    private void OnNetworkTick()
+    {
+        Move(MovementInput);
+
+        ApplyAditionalGravity();
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
@@ -51,13 +69,6 @@ public class CharacterMovementController : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         IsGrounded = false;
-    }
-
-    private void FixedUpdate()
-    {
-        Move(MovementInput);
-
-        ApplyAditionalGravity();
     }
 
     private void ApplyAditionalGravity()

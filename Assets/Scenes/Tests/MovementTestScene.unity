@@ -1526,6 +1526,7 @@ GameObject:
   - component: {fileID: 1103874897}
   - component: {fileID: 1103874900}
   - component: {fileID: 1103874901}
+  - component: {fileID: 1103874902}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1553,7 +1554,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: b6328b2906f966c4f8c07be15124b6b5, type: 2}
-    TickRate: 30
+    TickRate: 50
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
@@ -1656,6 +1657,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: Game
   sceneAsset: {fileID: 102900000, guid: ac8a1182bfb44ac46ba044fec352ece7, type: 3}
+--- !u!114 &1103874902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103874895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c682ea9fbb6f16242a121425fb20014b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1180960287
 GameObject:
   m_ObjectHideFlags: 0
