@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
@@ -33,6 +34,13 @@ public class CharacterMovementController : NetworkBehaviour
     public bool IsGrounded { get; private set; }
     public bool MovementEnabled { get; set; }
     public Vector2 MovementInput { get; set; }
+    public bool JumpInput { get; set; }
+    public bool CanJump { get; set; }
+
+    private const int bufferLength = 1024;
+    private InputSnapshot[] inputSnapshots = new InputSnapshot[bufferLength];
+    private StateSnapshot[] stateSnapshots = new StateSnapshot[bufferLength];
+    private Queue<InputSnapshot> inputSnapshotQueue = new Queue<InputSnapshot>();
 
     private void Awake()
     {
@@ -54,6 +62,12 @@ public class CharacterMovementController : NetworkBehaviour
         Move(MovementInput);
 
         ApplyAditionalGravity();
+
+        if (JumpInput)
+        {
+            Jump();
+            CanJump = false;
+        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -61,6 +75,11 @@ public class CharacterMovementController : NetworkBehaviour
         if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
         {
             IsGrounded = true;
+
+            if (!JumpInput)
+            {
+                CanJump = true;
+            }
 
             OnLanded?.Invoke(Rigidbody.velocity.y);
         }
@@ -78,6 +97,7 @@ public class CharacterMovementController : NetworkBehaviour
 
     private void Move(Vector2 movementInput)
     {
+        if (!MovementEnabled) return;
         var horizontalVelocity = new Vector3()
         {
             x = Rigidbody.velocity.x,
@@ -107,7 +127,7 @@ public class CharacterMovementController : NetworkBehaviour
 
     public void Jump()
     {
-        if (!IsGrounded) return;
+        if (!CanJump) return;
 
         Rigidbody.velocity = new Vector3()
         {
@@ -120,5 +140,31 @@ public class CharacterMovementController : NetworkBehaviour
         Rigidbody.AddForce(jumpForce, ForceMode.VelocityChange);
 
         OnJump?.Invoke();
+    }
+
+    private struct InputSnapshot : INetworkSerializable
+    {
+        public Vector2 MovementInput;
+        public bool JumpInput;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref MovementInput);
+            serializer.SerializeValue(ref JumpInput);
+        }
+    }
+
+    private struct StateSnapshot : INetworkSerializable
+    {
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Vector3 Velocity;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Position);
+            serializer.SerializeValue(ref Rotation);
+            serializer.SerializeValue(ref Velocity);
+        }
     }
 }

@@ -1,6 +1,8 @@
+using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterWallRunController : MonoBehaviour
+public class CharacterWallRunController : NetworkBehaviour
 {
     [field: Range(0.1f, 2f)]
     [field: SerializeField]
@@ -26,6 +28,8 @@ public class CharacterWallRunController : MonoBehaviour
     public bool IsWallLeft { get; private set; }
     public bool IsWallRunning => IsWallRight || IsWallLeft;
 
+    public bool CanJump { get; set; }
+
     private RaycastHit _rightHitInfo;
     private RaycastHit _leftHitInfo;
     private CharacterMovementController _characterMovementController;
@@ -35,12 +39,28 @@ public class CharacterWallRunController : MonoBehaviour
         _characterMovementController = GetComponent<CharacterMovementController>();
     }
 
-    private void Update()
+    public override void OnNetworkSpawn()
     {
-        _characterMovementController.MovementEnabled = !IsWallRunning;
+        NetworkManager.NetworkTickSystem.Tick += OnNetworkTick;
     }
 
-    private void FixedUpdate()
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.NetworkTickSystem.Tick -= OnNetworkTick;
+    }
+
+    private void OnNetworkTick()
+    {
+        _characterMovementController.MovementEnabled = !IsWallRunning;
+        CheckForWallRun();
+        if (_characterMovementController.JumpInput && CanJump)
+        {
+            WallJump();
+            CanJump = false;
+        }
+    }
+
+    private void CheckForWallRun()
     {
         if (_characterMovementController.IsGrounded)
         {
@@ -70,6 +90,11 @@ public class CharacterWallRunController : MonoBehaviour
 
         if (IsWallRight) _characterMovementController.Rigidbody.AddForce(-_rightHitInfo.normal, ForceMode.Acceleration);
         if (IsWallLeft) _characterMovementController.Rigidbody.AddForce(-_leftHitInfo.normal, ForceMode.Acceleration);
+
+        if (!_characterMovementController.JumpInput)
+        {
+            CanJump = IsWallRunning;
+        }
     }
 
     public void WallJump()
