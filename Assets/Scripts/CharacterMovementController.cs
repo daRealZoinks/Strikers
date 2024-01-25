@@ -9,25 +9,29 @@ public class CharacterMovementController : NetworkBehaviour
     [field: Header("Movement")]
     [field: SerializeField]
     public float MaxSpeed { get; private set; } = 13f;
-    [field: SerializeField]
-    public float Acceleration { get; private set; } = 64f;
-    [field: SerializeField]
-    public float Deceleration { get; private set; } = 128f;
+
+    [field: SerializeField] public float Acceleration { get; private set; } = 64f;
+    [field: SerializeField] public float Deceleration { get; private set; } = 128f;
+
     [field: Space]
     [field: Header("Jump")]
     [field: SerializeField]
     public float JumpHeight { get; private set; } = 3f;
+
     [field: Range(0, 1f)]
     [field: SerializeField]
     public float AirControl { get; private set; } = 0.1f; // 0 - 1
+
     [field: Range(0, 1f)]
     [field: SerializeField]
     public float AirBreak { get; private set; } = 0f; // 0 - 1
-    [field: SerializeField]
-    public float GravityScale { get; private set; } = 1.5f;
+
+    [field: SerializeField] public float GravityScale { get; private set; } = 1.5f;
 
     public event Action OnJump;
+
     public delegate void OnLandedDelegate(float fallSpeed);
+
     public event OnLandedDelegate OnLanded;
 
     public Rigidbody Rigidbody { get; private set; }
@@ -37,10 +41,13 @@ public class CharacterMovementController : NetworkBehaviour
     public bool JumpInput { get; set; }
     public bool CanJump { get; set; }
 
-    private const int bufferLength = 1024;
-    private InputSnapshot[] inputSnapshots = new InputSnapshot[bufferLength];
-    private StateSnapshot[] stateSnapshots = new StateSnapshot[bufferLength];
-    private Queue<InputSnapshot> inputSnapshotQueue = new Queue<InputSnapshot>();
+    private const int BufferLength = 1024;
+    private InputSnapshot[] inputSnapshots = new InputSnapshot[BufferLength];
+    private StateSnapshot[] stateSnapshots = new StateSnapshot[BufferLength];
+    private Queue<InputSnapshot> inputSnapshotQueue = new();
+
+    private NetworkVariable<StateSnapshot> stateSnapshot = new();
+    private StateSnapshot previousStateSnapshot;
 
     private void Awake()
     {
@@ -50,24 +57,93 @@ public class CharacterMovementController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         NetworkManager.NetworkTickSystem.Tick += OnNetworkTick;
+        stateSnapshot.OnValueChanged += OnStateSnapshotChanged;
     }
 
     public override void OnNetworkDespawn()
     {
         NetworkManager.NetworkTickSystem.Tick -= OnNetworkTick;
+        stateSnapshot.OnValueChanged -= OnStateSnapshotChanged;
     }
 
     private void OnNetworkTick()
     {
-        Move(MovementInput);
+        var inputSnapshot = new InputSnapshot
+        {
+            Tick = NetworkManager.NetworkTickSystem.LocalTime.Tick,
+            MovementInput = MovementInput,
+            JumpInput = JumpInput
+        };
 
-        ApplyAditionalGravity();
+        inputSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] = inputSnapshot;
 
-        if (JumpInput)
+        if (!IsServer)
+        {
+            if (IsOwner)
+            {
+                stateSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] =
+                    PerformMovement(inputSnapshot);
+
+                PerformMovementServerRpc(inputSnapshot);
+            }
+        }
+        else
+        {
+            if (IsOwnedByServer)
+            {
+                _ = PerformMovement(inputSnapshot);
+            }
+            else
+            {
+                var bufferIndex = -1;
+                while (inputSnapshotQueue.Count > 0)
+                {
+                    var snapshot = inputSnapshotQueue.Dequeue();
+
+                    bufferIndex = snapshot.Tick % BufferLength;
+
+                    stateSnapshots[bufferIndex] = PerformMovement(snapshot);
+                }
+
+                if (bufferIndex != -1)
+                {
+                    previousStateSnapshot = stateSnapshot.Value;
+                    stateSnapshot.Value = stateSnapshots[bufferIndex];
+                }
+            }
+        }
+    }
+
+    private void OnStateSnapshotChanged(StateSnapshot previousValue, StateSnapshot newValue)
+    {
+        previousStateSnapshot = previousValue;
+    }
+
+    [ServerRpc]
+    private void PerformMovementServerRpc(InputSnapshot inputSnapshot)
+    {
+        PerformMovement(inputSnapshot);
+    }
+
+    private StateSnapshot PerformMovement(InputSnapshot inputSnapshot)
+    {
+        Move(inputSnapshot.MovementInput);
+
+        ApplyAdditionalGravity();
+
+        if (inputSnapshot.JumpInput)
         {
             Jump();
             CanJump = false;
         }
+
+        return new StateSnapshot
+        {
+            Tick = inputSnapshot.Tick,
+            Position = Rigidbody.position,
+            Rotation = Rigidbody.rotation,
+            Velocity = Rigidbody.velocity
+        };
     }
 
     private void OnCollisionStay(Collision collision)
@@ -90,7 +166,7 @@ public class CharacterMovementController : NetworkBehaviour
         IsGrounded = false;
     }
 
-    private void ApplyAditionalGravity()
+    private void ApplyAdditionalGravity()
     {
         if (!IsGrounded) Rigidbody.AddForce(Physics.gravity * (GravityScale - 1), ForceMode.Acceleration);
     }
@@ -103,7 +179,8 @@ public class CharacterMovementController : NetworkBehaviour
             x = Rigidbody.velocity.x,
             z = Rigidbody.velocity.z
         };
-        var horizontalClampedVelocity = horizontalVelocity.normalized * Mathf.Clamp01(horizontalVelocity.magnitude / MaxSpeed);
+        var horizontalClampedVelocity =
+            horizontalVelocity.normalized * Mathf.Clamp01(horizontalVelocity.magnitude / MaxSpeed);
 
         var moveDirection = (movementInput.x * transform.right + movementInput.y * transform.forward).normalized;
 
@@ -144,11 +221,13 @@ public class CharacterMovementController : NetworkBehaviour
 
     private struct InputSnapshot : INetworkSerializable
     {
+        public int Tick;
         public Vector2 MovementInput;
         public bool JumpInput;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
+            serializer.SerializeValue(ref Tick);
             serializer.SerializeValue(ref MovementInput);
             serializer.SerializeValue(ref JumpInput);
         }
@@ -156,12 +235,14 @@ public class CharacterMovementController : NetworkBehaviour
 
     private struct StateSnapshot : INetworkSerializable
     {
+        public int Tick;
         public Vector3 Position;
         public Quaternion Rotation;
         public Vector3 Velocity;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
+            serializer.SerializeValue(ref Tick);
             serializer.SerializeValue(ref Position);
             serializer.SerializeValue(ref Rotation);
             serializer.SerializeValue(ref Velocity);
