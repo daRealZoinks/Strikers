@@ -1,21 +1,23 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class CharacterCameraController : MonoBehaviour
 {
-    [SerializeField]
-    private float sensitivity = 0.1f;
-    [SerializeField]
-    private Transform playerTransform;
-    [SerializeField]
-    private float minimumAngle = -90f;
-    [SerializeField]
-    private float maximumAngle = 90f;
+    [SerializeField] private float sensitivity = 0.1f;
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private float minimumAngle = -90f;
+    [SerializeField] private float maximumAngle = 90f;
 
     private float _xRotation;
 
     public Vector2 LookInput { get; set; }
 
-    private void Update()
+    private void Awake()
+    {
+        NetworkManager.Singleton.NetworkTickSystem.Tick += OnNetworkTick;
+    }
+
+    private void OnNetworkTick()
     {
         _xRotation -= LookInput.y * sensitivity;
         _xRotation = Mathf.Clamp(_xRotation, minimumAngle, maximumAngle);
