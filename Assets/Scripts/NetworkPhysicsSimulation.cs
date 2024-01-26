@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NetworkPhysicsSimulation : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class NetworkPhysicsSimulation : MonoBehaviour
 
     private void SimulatePhysics()
     {
+        InputSystem.Update();
         Physics.Simulate(NetworkManager.Singleton.LocalTime.FixedDeltaTime);
     }
 }

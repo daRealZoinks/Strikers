@@ -46,7 +46,7 @@ public class CharacterMovementController : NetworkBehaviour
     private StateSnapshot[] stateSnapshots = new StateSnapshot[BufferLength];
     private Queue<InputSnapshot> inputSnapshotQueue = new();
 
-    private NetworkVariable<StateSnapshot> stateSnapshot = new();
+    private NetworkVariable<StateSnapshot> serverStateSnapshot = new();
     private StateSnapshot previousStateSnapshot;
 
     private void Awake()
@@ -57,13 +57,13 @@ public class CharacterMovementController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         NetworkManager.NetworkTickSystem.Tick += OnNetworkTick;
-        stateSnapshot.OnValueChanged += OnStateSnapshotChanged;
+        serverStateSnapshot.OnValueChanged += OnStateSnapshotChanged;
     }
 
     public override void OnNetworkDespawn()
     {
         NetworkManager.NetworkTickSystem.Tick -= OnNetworkTick;
-        stateSnapshot.OnValueChanged -= OnStateSnapshotChanged;
+        serverStateSnapshot.OnValueChanged -= OnStateSnapshotChanged;
     }
 
     private void OnNetworkTick()
@@ -87,42 +87,27 @@ public class CharacterMovementController : NetworkBehaviour
                 PerformMovementServerRpc(inputSnapshot);
             }
         }
-        else
-        {
-            if (IsOwnedByServer)
-            {
-                _ = PerformMovement(inputSnapshot);
-            }
-            else
-            {
-                var bufferIndex = -1;
-                while (inputSnapshotQueue.Count > 0)
-                {
-                    var snapshot = inputSnapshotQueue.Dequeue();
-
-                    bufferIndex = snapshot.Tick % BufferLength;
-
-                    stateSnapshots[bufferIndex] = PerformMovement(snapshot);
-                }
-
-                if (bufferIndex != -1)
-                {
-                    previousStateSnapshot = stateSnapshot.Value;
-                    stateSnapshot.Value = stateSnapshots[bufferIndex];
-                }
-            }
-        }
     }
 
     private void OnStateSnapshotChanged(StateSnapshot previousValue, StateSnapshot newValue)
     {
-        previousStateSnapshot = previousValue;
+        if (IsServer) return;
+
+        if (stateSnapshots[newValue.Tick % BufferLength].Position != newValue.Position)
+        {
+            Rigidbody.position = newValue.Position;
+            Rigidbody.rotation = newValue.Rotation;
+            Rigidbody.velocity = newValue.Velocity;
+        }
     }
 
     [ServerRpc]
     private void PerformMovementServerRpc(InputSnapshot inputSnapshot)
     {
-        PerformMovement(inputSnapshot);
+        var stateSnapshot = PerformMovement(inputSnapshot);
+
+        previousStateSnapshot = serverStateSnapshot.Value;
+        serverStateSnapshot.Value = stateSnapshot;
     }
 
     private StateSnapshot PerformMovement(InputSnapshot inputSnapshot)
