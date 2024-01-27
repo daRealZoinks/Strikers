@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 
 public class CharacterMovementController : NetworkBehaviour
 {
+    #region Movement
+
     [field: Header("Movement")]
     [field: SerializeField]
     public float MaxSpeed { get; private set; } = 13f;
 
     [field: SerializeField] public float Acceleration { get; private set; } = 64f;
     [field: SerializeField] public float Deceleration { get; private set; } = 128f;
+
+    #endregion
+
+    #region Jump
 
     [field: Space]
     [field: Header("Jump")]
@@ -28,18 +35,61 @@ public class CharacterMovementController : NetworkBehaviour
 
     [field: SerializeField] public float GravityScale { get; private set; } = 1.5f;
 
+    #endregion
+
+    #region Camera
+
+    [field: Space]
+    [field: Header("Camera")]
+    [field: SerializeField]
+    private CinemachineVirtualCamera VirtualCamera { get; set; }
+
+    [field: SerializeField] private float Sensitivity { get; set; } = 0.1f;
+    [field: SerializeField] private float MinimumAngle { get; set; } = -90f;
+    [field: SerializeField] private float MaximumAngle { get; set; } = 90f;
+
+    #endregion
+
+    #region Wall Run
+
+    [field: Space]
+    [field: Header("Wall Run Settings")]
+    [field: Range(0.1f, 2f)]
+    [field: SerializeField]
+    public float WallCheckDistance { get; private set; } = 0.75f;
+
+    [field: SerializeField] public float WallJumpHeight { get; private set; } = 4f;
+    [field: SerializeField] public float WallRunInitialImpulse { get; private set; } = 7f;
+
+    [field: Header("Wall Jump Settings")]
+    [field: SerializeField]
+    public float WallJumpSideForce { get; private set; } = 6f;
+
+    [field: SerializeField] public float WallJumpForwardForce { get; private set; } = 5f;
+
+    #endregion
+
     public event Action OnJump;
 
     public delegate void OnLandedDelegate(float fallSpeed);
 
     public event OnLandedDelegate OnLanded;
-
     public Rigidbody Rigidbody { get; private set; }
     public bool IsGrounded { get; private set; }
     public bool MovementEnabled { get; set; }
+    public bool CanJump { get; set; }
+    public bool IsWallRight { get; private set; }
+    public bool IsWallLeft { get; private set; }
+    public bool IsWallRunning => IsWallRight || IsWallLeft;
+    public bool CanWallJump { get; set; }
+
     public Vector2 MovementInput { get; set; }
     public bool JumpInput { get; set; }
-    public bool CanJump { get; set; }
+    public Vector2 LookInput { get; set; }
+
+    private float _xRotation;
+    private RaycastHit _rightHitInfo;
+    private RaycastHit _leftHitInfo;
 
     private const int BufferLength = 1024;
     private InputSnapshot[] inputSnapshots = new InputSnapshot[BufferLength];
@@ -72,6 +122,7 @@ public class CharacterMovementController : NetworkBehaviour
         {
             Tick = NetworkManager.NetworkTickSystem.LocalTime.Tick,
             MovementInput = MovementInput,
+            LookInput = LookInput,
             JumpInput = JumpInput
         };
 
@@ -79,12 +130,16 @@ public class CharacterMovementController : NetworkBehaviour
 
         if (!IsServer)
         {
-            if (IsOwner)
-            {
-                stateSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] =
-                    PerformMovement(inputSnapshot);
+            stateSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] =
+                PerformMovement(inputSnapshot);
 
-                PerformMovementServerRpc(inputSnapshot);
+            PerformMovementServerRpc(inputSnapshot);
+        }
+        else
+        {
+            if (IsOwnedByServer)
+            {
+                PerformMovement(inputSnapshot);
             }
         }
     }
@@ -112,14 +167,29 @@ public class CharacterMovementController : NetworkBehaviour
 
     private StateSnapshot PerformMovement(InputSnapshot inputSnapshot)
     {
+        MovementEnabled = !IsWallRunning;
+
         Move(inputSnapshot.MovementInput);
+
+        UpdateCameraRotation(inputSnapshot.LookInput);
 
         ApplyAdditionalGravity();
 
+        CheckForWallRun();
+
         if (inputSnapshot.JumpInput)
         {
-            Jump();
-            CanJump = false;
+            if (CanJump)
+            {
+                Jump();
+                CanJump = false;
+            }
+
+            if (CanWallJump)
+            {
+                WallJump();
+                CanWallJump = false;
+            }
         }
 
         return new StateSnapshot
@@ -133,20 +203,19 @@ public class CharacterMovementController : NetworkBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
+        if (!collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f)) return;
+
+        IsGrounded = true;
+
+        if (!JumpInput)
         {
-            IsGrounded = true;
-
-            if (!JumpInput)
-            {
-                CanJump = true;
-            }
-
-            OnLanded?.Invoke(Rigidbody.velocity.y);
+            CanJump = true;
         }
+
+        OnLanded?.Invoke(Rigidbody.velocity.y);
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnCollisionExit()
     {
         IsGrounded = false;
     }
@@ -187,11 +256,22 @@ public class CharacterMovementController : NetworkBehaviour
         Rigidbody.AddForce(finalForce, ForceMode.Acceleration);
     }
 
-    public void Jump()
+    private void UpdateCameraRotation(Vector2 lookInput)
     {
-        if (!CanJump) return;
+        _xRotation -= lookInput.y * Sensitivity;
+        _xRotation = Mathf.Clamp(_xRotation, MinimumAngle, MaximumAngle);
 
-        Rigidbody.velocity = new Vector3()
+        var localRotation = VirtualCamera.transform.localRotation;
+
+        localRotation = Quaternion.Euler(_xRotation, localRotation.eulerAngles.y, localRotation.eulerAngles.z);
+        VirtualCamera.transform.localRotation = localRotation;
+
+        transform.Rotate(lookInput.x * Sensitivity * Vector3.up);
+    }
+
+    private void Jump()
+    {
+        Rigidbody.velocity = new Vector3
         {
             x = Rigidbody.velocity.x,
             z = Rigidbody.velocity.z
@@ -204,16 +284,93 @@ public class CharacterMovementController : NetworkBehaviour
         OnJump?.Invoke();
     }
 
+    private void CheckForWallRun()
+    {
+        if (IsGrounded)
+        {
+            IsWallRight = false;
+            IsWallLeft = false;
+            return;
+        }
+
+        var rightRay = new Ray(transform.position, transform.right);
+        var leftRay = new Ray(transform.position, -transform.right);
+
+        var wasWallRight = IsWallRight;
+        var wasWallLeft = IsWallLeft;
+
+        IsWallRight = Physics.Raycast(rightRay, out _rightHitInfo, WallCheckDistance) &&
+                      (IsWallRight || MovementInput.x > 0);
+        IsWallLeft = Physics.Raycast(leftRay, out _leftHitInfo, WallCheckDistance) &&
+                     (IsWallLeft || MovementInput.x < 0);
+
+        var boostForce = Vector3.zero;
+
+        if (IsWallRight && !wasWallRight)
+            boostForce = -Vector3.Cross(_rightHitInfo.normal, transform.up) * WallRunInitialImpulse;
+
+        if (IsWallLeft && !wasWallLeft)
+            boostForce = Vector3.Cross(_leftHitInfo.normal, transform.up) * WallRunInitialImpulse;
+
+        Rigidbody.AddForce(boostForce, ForceMode.VelocityChange);
+
+        if (IsWallRight) Rigidbody.AddForce(-_rightHitInfo.normal, ForceMode.Acceleration);
+        if (IsWallLeft) Rigidbody.AddForce(-_leftHitInfo.normal, ForceMode.Acceleration);
+
+        if (!JumpInput)
+        {
+            CanWallJump = IsWallRunning;
+        }
+    }
+
+    private void WallJump()
+    {
+        if (!IsWallRunning) return;
+
+        var sideForce = Vector3.zero;
+        if (IsWallRight) sideForce = _rightHitInfo.normal * WallJumpSideForce;
+        if (IsWallLeft) sideForce = _leftHitInfo.normal * WallJumpSideForce;
+
+        var jumpForce = Vector3.up * Mathf.Sqrt(WallJumpHeight * -2 * Physics.gravity.y);
+
+        var forwardForce = transform.forward * WallJumpForwardForce;
+
+        var finalForce = jumpForce + sideForce + forwardForce;
+
+        Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, 0f, Rigidbody.velocity.z);
+
+        if (IsWallRight)
+        {
+            var velocity = Vector3.Project(Rigidbody.velocity, _rightHitInfo.normal);
+
+            Rigidbody.velocity -= velocity;
+        }
+
+        if (IsWallLeft)
+        {
+            var velocity = Vector3.Project(Rigidbody.velocity, _leftHitInfo.normal);
+
+            Rigidbody.velocity -= velocity;
+        }
+
+        IsWallRight = false;
+        IsWallLeft = false;
+
+        Rigidbody.AddForce(finalForce, ForceMode.VelocityChange);
+    }
+
     private struct InputSnapshot : INetworkSerializable
     {
         public int Tick;
         public Vector2 MovementInput;
+        public Vector2 LookInput;
         public bool JumpInput;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref Tick);
             serializer.SerializeValue(ref MovementInput);
+            serializer.SerializeValue(ref LookInput);
             serializer.SerializeValue(ref JumpInput);
         }
     }

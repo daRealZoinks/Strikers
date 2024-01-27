@@ -249,7 +249,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5997971073040926838}
   - component: {fileID: 4807040188356924075}
-  - component: {fileID: 7337159812200287506}
   - component: {fileID: 6868403463112944893}
   - component: {fileID: 7988933468598430389}
   - component: {fileID: 5931924047097793237}
@@ -317,22 +316,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 473783148626862832}
---- !u!114 &7337159812200287506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728871998339904949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eac9ead2947c585419e30d3f26987526, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: 0.1
-  playerTransform: {fileID: 9174276532502103335}
-  minimumAngle: -90
-  maximumAngle: 90
 --- !u!114 &6868403463112944893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,8 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HeadBobEnabled>k__BackingField: 1
-  <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
-  <CharacterWallRunController>k__BackingField: {fileID: 1607004441106848934}
+  <CharacterMovementController>k__BackingField: {fileID: 0}
   amplitude: 0.08
   frequency: 18.5
 --- !u!114 &7988933468598430389
@@ -363,8 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <LateralHeadTiltEnabled>k__BackingField: 1
-  <CharacterMovementController>k__BackingField: {fileID: -5218604611035968172}
-  <CharacterWallRunController>k__BackingField: {fileID: 1607004441106848934}
+  <CharacterMovementController>k__BackingField: {fileID: 0}
   angle: 2
   wallRunAngle: 5
   speed: 5
@@ -380,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2740f247b54b7a94b9f462cfe8710e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterMovementController: {fileID: -5218604611035968172}
+  characterMovementController: {fileID: 0}
   animeLines: {fileID: 8662438033282305043}
   maxSpeed: 30
 --- !u!1 &4314121236562609186
@@ -549,8 +530,7 @@ GameObject:
   - component: {fileID: 2975639679276083022}
   - component: {fileID: 5119039066917414536}
   - component: {fileID: 2547656714771901853}
-  - component: {fileID: -5218604611035968172}
-  - component: {fileID: 1607004441106848934}
+  - component: {fileID: 2758261215101075822}
   - component: {fileID: 5374704892588695544}
   m_Layer: 0
   m_Name: Player
@@ -789,7 +769,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b467dc0542dc9474ca41b658383a00ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterCameraController: {fileID: 7337159812200287506}
   meleeAttackController: {fileID: 6141529127320468583}
 --- !u!114 &2547656714771901853
 MonoBehaviour:
@@ -803,7 +782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2553326025
+  GlobalObjectIdHash: 947292821
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -811,7 +790,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &-5218604611035968172
+--- !u!114 &2758261215101075822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -830,18 +809,10 @@ MonoBehaviour:
   <AirControl>k__BackingField: 0.1
   <AirBreak>k__BackingField: 0
   <GravityScale>k__BackingField: 1.5
---- !u!114 &1607004441106848934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8092133516706228497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494a973bf24992e49bb51f8d1bc4fd18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  <VirtualCamera>k__BackingField: {fileID: 4807040188356924075}
+  <Sensitivity>k__BackingField: 0.1
+  <MinimumAngle>k__BackingField: -90
+  <MaximumAngle>k__BackingField: 90
   <WallCheckDistance>k__BackingField: 0.75
   <WallJumpHeight>k__BackingField: 4
   <WallRunInitialImpulse>k__BackingField: 7
@@ -877,18 +848,6 @@ MonoBehaviour:
   _doOnSpawnIfNotOwner:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7337159812200287506}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2975639679276083022}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -913,7 +872,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -5218604611035968172}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6

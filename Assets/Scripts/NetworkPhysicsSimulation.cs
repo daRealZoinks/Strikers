@@ -24,10 +24,10 @@ public class NetworkPhysicsSimulation : MonoBehaviour
 
     private void OnNetworkTick()
     {
-        SimulatePhysics();
+        Simulate();
     }
 
-    private void SimulatePhysics()
+    private void Simulate()
     {
         InputSystem.Update();
         Physics.Simulate(NetworkManager.Singleton.LocalTime.FixedDeltaTime);

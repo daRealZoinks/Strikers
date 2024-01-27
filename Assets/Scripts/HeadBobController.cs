@@ -8,9 +8,6 @@ public class HeadBobController : MonoBehaviour
     [field: SerializeField]
     public CharacterMovementController CharacterMovementController { get; set; }
 
-    [field: SerializeField]
-    public CharacterWallRunController CharacterWallRunController { get; set; }
-
     [SerializeField]
     private float amplitude = 0.08f;
 
@@ -28,7 +25,7 @@ public class HeadBobController : MonoBehaviour
     {
         if (!HeadBobEnabled) return;
 
-        if (CharacterMovementController.IsGrounded || CharacterWallRunController.IsWallRunning)
+        if (CharacterMovementController.IsGrounded || CharacterMovementController.IsWallRunning)
         {
             var speed = Mathf.Clamp01(CharacterMovementController.Rigidbody.velocity.magnitude / CharacterMovementController.MaxSpeed);
 
