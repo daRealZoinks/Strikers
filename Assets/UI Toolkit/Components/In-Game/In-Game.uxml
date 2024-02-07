@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="ConnectedMenu" src="project://database/Assets/UI%20Toolkit/Components/In-Game/ConnectedMenu/ConnectedMenu.uxml?fileID=9197481963319205126&amp;guid=28abc6943d35b224b800228d5554399d&amp;type=3#ConnectedMenu" />
+    <Style src="project://database/Assets/UI%20Toolkit/Components/In-Game/In-Game.uss?fileID=7433441132597879392&amp;guid=15334390ee96ab64ebf800c03f36be12&amp;type=3#In-Game" />
+    <ui:VisualElement class="background">
+        <ui:Instance template="ConnectedMenu" name="ConnectedMenu" />
+    </ui:VisualElement>
+</ui:UXML>

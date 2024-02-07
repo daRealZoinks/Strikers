@@ -9,73 +9,70 @@ using UnityEngine;
 
 public class RelayExample : MonoBehaviour
 {
-    [field: SerializeField]
-    public int MaxPlayers { get; private set; }
+    [field: SerializeField] public int MaxPlayers { get; private set; }
 
-    [SerializeField]
+    public static RelayExample Instance { get; private set; }
+
     private UnityTransport _transport;
 
-    private string _joinCodeText;
+    public string JoinCodeText { get; private set; }
 
     private async void Awake()
     {
         await Authenticate();
+        _transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
+        Instance = this;
     }
 
-    private void OnGUI()
-    {
-        if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
-        {
-            GUI.Label(new Rect(10, 10, 300, 30), _joinCodeText);
-
-            if (NetworkManager.Singleton.IsServer)
-            {
-                if (GUI.Button(new Rect(10, 50, 100, 30), "Copy"))
-                {
-                    GUIUtility.systemCopyBuffer = _joinCodeText;
-                }
-            }
-        }
-        else
-        {
-            if (GUI.Button(new Rect(10, 10, 100, 30), "Create Game"))
-            {
-                CreateGame();
-            }
-
-            _joinCodeText = GUI.TextField(new Rect(10, 50, 100, 30), _joinCodeText);
-
-            if (GUI.Button(new Rect(120, 50, 100, 30), "Join Game"))
-            {
-                JoinGame();
-            }
-        }
-    }
-
-    private static async Task Authenticate()
+    private async Task Authenticate()
     {
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    public async void CreateGame()
+    public void Deauthenticate()
     {
-        var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
-
-        _joinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
-
-        _transport.SetHostRelayData(a);
-
-        NetworkManager.Singleton.StartHost();
+        AuthenticationService.Instance.SignOut();
     }
 
-    public async void JoinGame()
+    public async Task<bool> CreateGame()
     {
-        var a = await RelayService.Instance.JoinAllocationAsync(_joinCodeText);
+        try
+        {
+            var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
 
-        _transport.SetClientRelayData(a);
+            JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
-        NetworkManager.Singleton.StartClient();
+            _transport.SetHostRelayData(a);
+
+            NetworkManager.Singleton.StartHost();
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> JoinGame(string joinCode)
+    {
+        try
+        {
+            var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
+
+            JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
+
+            _transport.SetClientRelayData(a);
+
+            NetworkManager.Singleton.StartClient();
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
 
@@ -83,11 +80,14 @@ public static class UnityTransportExtensions
 {
     public static void SetHostRelayData(this UnityTransport transport, Allocation allocation)
     {
-        transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
+        transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port,
+            allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
     }
 
     public static void SetClientRelayData(this UnityTransport transport, JoinAllocation joinAllocation)
     {
-        transport.SetClientRelayData(joinAllocation.RelayServer.IpV4, (ushort)joinAllocation.RelayServer.Port, joinAllocation.AllocationIdBytes, joinAllocation.Key, joinAllocation.ConnectionData, joinAllocation.HostConnectionData);
+        transport.SetClientRelayData(joinAllocation.RelayServer.IpV4, (ushort)joinAllocation.RelayServer.Port,
+            joinAllocation.AllocationIdBytes, joinAllocation.Key, joinAllocation.ConnectionData,
+            joinAllocation.HostConnectionData);
     }
 }
