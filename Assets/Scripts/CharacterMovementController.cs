@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterMovementController : NetworkBehaviour
+public class CharacterMovementController : MonoBehaviour
 {
     #region Movement
 
@@ -77,142 +76,46 @@ public class CharacterMovementController : NetworkBehaviour
     public Rigidbody Rigidbody { get; private set; }
     public bool IsGrounded { get; private set; }
     public bool MovementEnabled { get; set; }
-    public bool CanJump { get; set; }
     public bool IsWallRight { get; private set; }
     public bool IsWallLeft { get; private set; }
     public bool IsWallRunning => IsWallRight || IsWallLeft;
-    public bool CanWallJump { get; set; }
 
     public Vector2 MovementInput { get; set; }
-    public bool JumpInput { get; set; }
     public Vector2 LookInput { get; set; }
 
     private float _xRotation;
     private RaycastHit _rightHitInfo;
     private RaycastHit _leftHitInfo;
 
-    private const int BufferLength = 1024;
-    private InputSnapshot[] inputSnapshots = new InputSnapshot[BufferLength];
-    private StateSnapshot[] stateSnapshots = new StateSnapshot[BufferLength];
-    private Queue<InputSnapshot> inputSnapshotQueue = new();
-
-    private NetworkVariable<StateSnapshot> serverStateSnapshot = new();
-    private StateSnapshot previousStateSnapshot;
-
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
     }
 
-    public override void OnNetworkSpawn()
-    {
-        NetworkManager.NetworkTickSystem.Tick += OnNetworkTick;
-        serverStateSnapshot.OnValueChanged += OnStateSnapshotChanged;
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        NetworkManager.NetworkTickSystem.Tick -= OnNetworkTick;
-        serverStateSnapshot.OnValueChanged -= OnStateSnapshotChanged;
-    }
-
-    private void OnNetworkTick()
-    {
-        var inputSnapshot = new InputSnapshot
-        {
-            Tick = NetworkManager.NetworkTickSystem.LocalTime.Tick,
-            MovementInput = MovementInput,
-            LookInput = LookInput,
-            JumpInput = JumpInput
-        };
-
-        inputSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] = inputSnapshot;
-
-        if (!IsServer)
-        {
-            stateSnapshots[NetworkManager.NetworkTickSystem.LocalTime.Tick % BufferLength] =
-                PerformMovement(inputSnapshot);
-
-            PerformMovementServerRpc(inputSnapshot);
-        }
-        else
-        {
-            if (IsOwnedByServer)
-            {
-                PerformMovement(inputSnapshot);
-            }
-        }
-    }
-
-    private void OnStateSnapshotChanged(StateSnapshot previousValue, StateSnapshot newValue)
-    {
-        if (IsServer) return;
-
-        if (stateSnapshots[newValue.Tick % BufferLength].Position != newValue.Position)
-        {
-            Rigidbody.position = newValue.Position;
-            Rigidbody.rotation = newValue.Rotation;
-            Rigidbody.velocity = newValue.Velocity;
-        }
-    }
-
-    [ServerRpc]
-    private void PerformMovementServerRpc(InputSnapshot inputSnapshot)
-    {
-        var stateSnapshot = PerformMovement(inputSnapshot);
-
-        previousStateSnapshot = serverStateSnapshot.Value;
-        serverStateSnapshot.Value = stateSnapshot;
-    }
-
-    private StateSnapshot PerformMovement(InputSnapshot inputSnapshot)
+    private void FixedUpdate()
     {
         MovementEnabled = !IsWallRunning;
 
-        Move(inputSnapshot.MovementInput);
-
-        UpdateCameraRotation(inputSnapshot.LookInput);
+        Move(MovementInput);
 
         ApplyAdditionalGravity();
 
         CheckForWallRun();
+    }
 
-        if (inputSnapshot.JumpInput)
-        {
-            if (CanJump)
-            {
-                Jump();
-                CanJump = false;
-            }
-
-            if (CanWallJump)
-            {
-                WallJump();
-                CanWallJump = false;
-            }
-        }
-
-        return new StateSnapshot
-        {
-            Tick = inputSnapshot.Tick,
-            Position = Rigidbody.position,
-            Rotation = Rigidbody.rotation,
-            Velocity = Rigidbody.velocity
-        };
+    private void Update()
+    {
+        UpdateCameraRotation(LookInput);
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (!collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f)) return;
-
-        IsGrounded = true;
-
-        if (!JumpInput)
+        if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
         {
-            CanJump = true;
-        }
+            IsGrounded = true;
 
-        OnLanded?.Invoke(Rigidbody.velocity.y);
+            OnLanded?.Invoke(Rigidbody.velocity.y);
+        }
     }
 
     private void OnCollisionExit()
@@ -228,11 +131,13 @@ public class CharacterMovementController : NetworkBehaviour
     private void Move(Vector2 movementInput)
     {
         if (!MovementEnabled) return;
-        var horizontalVelocity = new Vector3()
+
+        var horizontalVelocity = new Vector3
         {
             x = Rigidbody.velocity.x,
             z = Rigidbody.velocity.z
         };
+
         var horizontalClampedVelocity =
             horizontalVelocity.normalized * Mathf.Clamp01(horizontalVelocity.magnitude / MaxSpeed);
 
@@ -266,11 +171,19 @@ public class CharacterMovementController : NetworkBehaviour
         localRotation = Quaternion.Euler(_xRotation, localRotation.eulerAngles.y, localRotation.eulerAngles.z);
         VirtualCamera.transform.localRotation = localRotation;
 
-        transform.Rotate(lookInput.x * Sensitivity * Vector3.up);
+        Rigidbody.MoveRotation(Rigidbody.rotation * Quaternion.Euler(0f, lookInput.x * Sensitivity, 0f));
     }
 
-    private void Jump()
+    public void Jump()
     {
+        GroundJump();
+        WallJump();
+    }
+
+    private void GroundJump()
+    {
+        if (!IsGrounded) return;
+
         Rigidbody.velocity = new Vector3
         {
             x = Rigidbody.velocity.x,
@@ -299,10 +212,8 @@ public class CharacterMovementController : NetworkBehaviour
         var wasWallRight = IsWallRight;
         var wasWallLeft = IsWallLeft;
 
-        IsWallRight = Physics.Raycast(rightRay, out _rightHitInfo, WallCheckDistance) &&
-                      (IsWallRight || MovementInput.x > 0);
-        IsWallLeft = Physics.Raycast(leftRay, out _leftHitInfo, WallCheckDistance) &&
-                     (IsWallLeft || MovementInput.x < 0);
+        IsWallRight = Physics.Raycast(rightRay, out _rightHitInfo, WallCheckDistance);
+        IsWallLeft = Physics.Raycast(leftRay, out _leftHitInfo, WallCheckDistance);
 
         var boostForce = Vector3.zero;
 
@@ -316,11 +227,6 @@ public class CharacterMovementController : NetworkBehaviour
 
         if (IsWallRight) Rigidbody.AddForce(-_rightHitInfo.normal, ForceMode.Acceleration);
         if (IsWallLeft) Rigidbody.AddForce(-_leftHitInfo.normal, ForceMode.Acceleration);
-
-        if (!JumpInput)
-        {
-            CanWallJump = IsWallRunning;
-        }
     }
 
     private void WallJump()
@@ -357,37 +263,5 @@ public class CharacterMovementController : NetworkBehaviour
         IsWallLeft = false;
 
         Rigidbody.AddForce(finalForce, ForceMode.VelocityChange);
-    }
-
-    private struct InputSnapshot : INetworkSerializable
-    {
-        public int Tick;
-        public Vector2 MovementInput;
-        public Vector2 LookInput;
-        public bool JumpInput;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref Tick);
-            serializer.SerializeValue(ref MovementInput);
-            serializer.SerializeValue(ref LookInput);
-            serializer.SerializeValue(ref JumpInput);
-        }
-    }
-
-    private struct StateSnapshot : INetworkSerializable
-    {
-        public int Tick;
-        public Vector3 Position;
-        public Quaternion Rotation;
-        public Vector3 Velocity;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref Tick);
-            serializer.SerializeValue(ref Position);
-            serializer.SerializeValue(ref Rotation);
-            serializer.SerializeValue(ref Velocity);
-        }
     }
 }

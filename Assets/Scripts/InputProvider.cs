@@ -36,13 +36,9 @@ public class InputProvider : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        var value = context.phase switch
-        {
-            InputActionPhase.Started or InputActionPhase.Performed => true,
-            _ => false
-        };
+        if (context.phase != InputActionPhase.Started) return;
 
-        _characterMovementController.JumpInput = value;
+        _characterMovementController.Jump();
     }
 
     public void OnFire(InputAction.CallbackContext context)
