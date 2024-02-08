@@ -4,16 +4,12 @@ using UnityEngine.InputSystem;
 public class InputProvider : MonoBehaviour
 {
     [SerializeField]
-    private CharacterCameraController characterCameraController;
-    [SerializeField]
     private MeleeAttackController meleeAttackController;
     private CharacterMovementController _characterMovementController;
-    private CharacterWallRunController _characterWallRunController;
 
     private void Awake()
     {
         _characterMovementController = GetComponent<CharacterMovementController>();
-        _characterWallRunController = GetComponent<CharacterWallRunController>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -35,7 +31,7 @@ public class InputProvider : MonoBehaviour
             _ => Vector2.zero
         };
 
-        characterCameraController.LookInput = value;
+        _characterMovementController.LookInput = value;
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -43,7 +39,6 @@ public class InputProvider : MonoBehaviour
         if (context.phase != InputActionPhase.Started) return;
 
         _characterMovementController.Jump();
-        _characterWallRunController.WallJump();
     }
 
     public void OnFire(InputAction.CallbackContext context)
