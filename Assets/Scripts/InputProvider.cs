@@ -5,6 +5,9 @@ public class InputProvider : MonoBehaviour
 {
     [SerializeField]
     private MeleeAttackController meleeAttackController;
+    [SerializeField]
+    private GunManager gunManager;
+    
     private CharacterMovementController _characterMovementController;
 
     private void Awake()
@@ -45,7 +48,7 @@ public class InputProvider : MonoBehaviour
     {
         if (context.phase != InputActionPhase.Started) return;
 
-        Debug.Log("Fire");
+        gunManager.Shoot();
     }
 
     public void OnMelee(InputAction.CallbackContext context)
