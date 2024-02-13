@@ -2,7 +2,7 @@
 
 public class Sniper : HitScanWeapon
 {
-    public float Force { get; set; }
+    [field: SerializeField] public float Force { get; set; }
 
     protected override void Shoot()
     {

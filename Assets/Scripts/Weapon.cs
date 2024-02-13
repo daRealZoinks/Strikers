@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -6,10 +7,12 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected int maxAmmo;
     [SerializeField] protected float fireRate;
 
+    public event Action OnEmptyAmmo;
+
     private bool _canShoot;
     private int _currentAmmo;
 
-    private void Awake()
+    public void Reload()
     {
         _currentAmmo = maxAmmo;
         _canShoot = true;
@@ -25,9 +28,10 @@ public abstract class Weapon : MonoBehaviour
         Invoke(nameof(ResetCanShoot), fireRate);
         _currentAmmo--;
 
-        if (_currentAmmo > 0) return;
-        _currentAmmo = 0;
-        _canShoot = false;
+        if (_currentAmmo <= 0)
+        {
+            OnEmptyAmmo?.Invoke();
+        }
     }
 
     protected abstract void Shoot();

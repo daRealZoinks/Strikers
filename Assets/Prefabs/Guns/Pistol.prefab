@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4e9d52d66948ae9c58872b54db97f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firepoint: {fileID: 5321821960734697939}
+  firepoint: {fileID: 6897764386108421208}
   maxAmmo: 6
   fireRate: 1
-  projectilePrefab: {fileID: 7922097899287063708, guid: 88018f0d016fd50438dc8e682ddb35a3,
+  projectilePrefab: {fileID: 8565842949440041567, guid: 88018f0d016fd50438dc8e682ddb35a3,
     type: 3}
   projectileSpeed: 100
   range: 20
@@ -63,7 +63,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4762549395590035166}
   - component: {fileID: 6897764386108421208}
-  - component: {fileID: 5321821960734697939}
   m_Layer: 0
   m_Name: FIrePoint
   m_TagString: Untagged
@@ -98,18 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74952417d53f41a89467d031e0c88959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5321821960734697939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7503079855334828102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74952417d53f41a89467d031e0c88959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  cinemachineVirtualCamera: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!1 &7880524658567977341
 GameObject:
   m_ObjectHideFlags: 0
