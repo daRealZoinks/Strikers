@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class GunManager : MonoBehaviour
     public List<Weapon> weapons;
     public Weapon currentWeapon;
 
+    public Action OnWeaponChanged { get; set; }
+    
     // just for testing
     private void OnGUI()
     {
@@ -49,5 +52,7 @@ public class GunManager : MonoBehaviour
         weapon.gameObject.SetActive(true);
         currentWeapon = weapon;
         currentWeapon.Reload();
+        
+        OnWeaponChanged?.Invoke();
     }
 }

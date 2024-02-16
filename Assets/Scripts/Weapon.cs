@@ -1,7 +1,8 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : NetworkBehaviour
 {
     [SerializeField] protected FirePoint firePoint;
     [field: SerializeField] public int MaxAmmo { get; set; }
@@ -29,13 +30,32 @@ public abstract class Weapon : MonoBehaviour
         if (!_canShoot || _isReloading) return;
 
         _canShoot = false;
-        Shoot();
+
+        if (IsOwner)
+        {
+            ShootServerRpc();
+
+            Shoot();
+        }
+
         Invoke(nameof(ResetCanShoot), FireRate);
         CurrentAmmo--;
 
         if (CurrentAmmo > 0) return;
 
         OnEmptyAmmo?.Invoke();
+    }
+
+    [ServerRpc]
+    private void ShootServerRpc()
+    {
+        ShootClientRpc();
+    }
+
+    [ClientRpc]
+    private void ShootClientRpc()
+    {
+        if (!IsOwner) Shoot();
     }
 
     protected abstract void Shoot();
