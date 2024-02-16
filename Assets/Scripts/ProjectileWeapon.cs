@@ -8,8 +8,8 @@ public abstract class ProjectileWeapon : Weapon
 
     protected override void Shoot()
     {
-        var firepointTransform = firepoint.transform;
-        var projectile = Instantiate(projectilePrefab, firepointTransform.position, firepointTransform.rotation);
+        var firePointTransform = firePoint.transform;
+        var projectile = Instantiate(projectilePrefab, firePointTransform.position, firePointTransform.rotation);
         projectile.Launch(projectileSpeed);
 
         Destroy(projectile.gameObject, range / projectileSpeed);

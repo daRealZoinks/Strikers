@@ -129,9 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510b815933f244639ecc62902bc09c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firepoint: {fileID: 7956668975772383685}
-  maxAmmo: 3
-  fireRate: 3
+  firePoint: {fileID: 7956668975772383685}
+  <MaxAmmo>k__BackingField: 3
+  <FireRate>k__BackingField: 3
+  <ReloadTime>k__BackingField: 3
   range: 100
   <Force>k__BackingField: 1000
 --- !u!1 &7170047389649610492

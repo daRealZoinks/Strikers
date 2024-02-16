@@ -1,8 +1,7 @@
-﻿using System;
-using Cinemachine;
+﻿using Cinemachine;
 using UnityEngine;
 
-public class Firepoint : MonoBehaviour
+public class FirePoint : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
 

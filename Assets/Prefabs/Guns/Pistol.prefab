@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4e9d52d66948ae9c58872b54db97f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firepoint: {fileID: 6897764386108421208}
-  maxAmmo: 6
-  fireRate: 1
+  firePoint: {fileID: 6897764386108421208}
+  <MaxAmmo>k__BackingField: 6
+  <FireRate>k__BackingField: 1
+  <ReloadTime>k__BackingField: 3
   projectilePrefab: {fileID: 8565842949440041567, guid: 88018f0d016fd50438dc8e682ddb35a3,
     type: 3}
   projectileSpeed: 100

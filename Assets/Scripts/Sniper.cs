@@ -6,15 +6,14 @@ public class Sniper : HitScanWeapon
 
     protected override void Shoot()
     {
-        var firePointTransform = firepoint.transform;
+        var firePointTransform = firePoint.transform;
         var ray = new Ray(firePointTransform.position, firePointTransform.forward);
 
-        if (!Physics.Raycast(ray, out var hit, range)) return;
+        if (!Physics.Raycast(ray, out var hit, Range)) return;
 
         var hitRigidbody = hit.rigidbody;
-        if (hitRigidbody != null)
-        {
-            hitRigidbody.AddForceAtPosition(firePointTransform.forward * Force, hit.point, ForceMode.Impulse);
-        }
+
+        if (!hitRigidbody) return;
+        hitRigidbody.AddForceAtPosition(firePointTransform.forward * Force, hit.point, ForceMode.Impulse);
     }
 }

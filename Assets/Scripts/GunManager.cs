@@ -6,6 +6,14 @@ public class GunManager : MonoBehaviour
     public List<Weapon> weapons;
     public Weapon currentWeapon;
 
+    // just for testing
+    private void OnGUI()
+    {
+        var ammo = currentWeapon.CurrentAmmo;
+        var maxAmmo = currentWeapon.MaxAmmo;
+        GUI.Label(new Rect(10, 10, 100, 20), $"Ammo: {ammo}/{maxAmmo}");
+    }
+
     private void Awake()
     {
         ChangeToPistol();
@@ -30,7 +38,6 @@ public class GunManager : MonoBehaviour
 
     public void GiveWeapon(Weapon weapon)
     {
-        // search for weapon in weapons list
         var weaponInList = weapons.Find(w => w.GetType() == weapon.GetType());
 
         ChangeWeapon(weaponInList);

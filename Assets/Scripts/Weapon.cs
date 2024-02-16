@@ -3,35 +3,39 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected Firepoint firepoint;
-    [SerializeField] protected int maxAmmo;
-    [SerializeField] protected float fireRate;
+    [SerializeField] protected FirePoint firePoint;
+    [field: SerializeField] public int MaxAmmo { get; set; }
+    [field: SerializeField] protected float FireRate { get; set; }
+    [field: SerializeField] protected float ReloadTime { get; set; }
+
+    public int CurrentAmmo { get; private set; }
 
     public event Action OnEmptyAmmo;
 
     private bool _canShoot;
-    private int _currentAmmo;
+    private bool _isReloading;
 
     public void Reload()
     {
-        _currentAmmo = maxAmmo;
-        _canShoot = true;
+        if (_isReloading) return;
+
+        CurrentAmmo = 0;
+        _isReloading = true;
+        Invoke(nameof(ExecuteReloading), ReloadTime);
     }
 
     public void ExecuteShoot()
     {
-        if (!_canShoot) return;
-
-        Shoot();
+        if (!_canShoot || _isReloading) return;
 
         _canShoot = false;
-        Invoke(nameof(ResetCanShoot), fireRate);
-        _currentAmmo--;
+        Shoot();
+        Invoke(nameof(ResetCanShoot), FireRate);
+        CurrentAmmo--;
 
-        if (_currentAmmo <= 0)
-        {
-            OnEmptyAmmo?.Invoke();
-        }
+        if (CurrentAmmo > 0) return;
+
+        OnEmptyAmmo?.Invoke();
     }
 
     protected abstract void Shoot();
@@ -39,5 +43,12 @@ public abstract class Weapon : MonoBehaviour
     private void ResetCanShoot()
     {
         _canShoot = true;
+    }
+
+    private void ExecuteReloading()
+    {
+        _isReloading = false;
+        CurrentAmmo = MaxAmmo;
+        ResetCanShoot();
     }
 }
