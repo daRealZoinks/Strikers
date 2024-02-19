@@ -46,45 +46,12 @@ public class WeaponDispenser : NetworkBehaviour
     {
         if (!_isReadyToDispense) return;
 
-        WeaponPicker weaponPicker;
+        var weaponPicker = other.GetComponent<WeaponPicker>();
 
-        if (IsServer)
-        {
-            weaponPicker = other.GetComponent<WeaponPicker>();
+        if (!weaponPicker) return;
+        var gunManager = weaponPicker.gunManager;
+        gunManager.GiveWeapon(weapon);
 
-            if (!weaponPicker) return;
-            var gunManager = weaponPicker.gunManager;
-            gunManager.GiveWeapon(weapon);
-
-            weapon.gameObject.SetActive(false);
-            _isReadyToDispense = false;
-        }
-        else
-        {
-            if (!IsOwner) return;
-
-            weaponPicker = NetworkManager.LocalClient.PlayerObject.gameObject.GetComponent<WeaponPicker>();
-
-            if (!weaponPicker) return;
-            var gunManager = weaponPicker.gunManager;
-            gunManager.GiveWeapon(weapon);
-
-            DisableWeaponServerRpc();
-        }
-    }
-
-    [ServerRpc]
-    private void DisableWeaponServerRpc()
-    {
-        weapon.gameObject.SetActive(false);
-        _isReadyToDispense = false;
-
-        DisableWeaponClientRpc();
-    }
-
-    [ClientRpc]
-    private void DisableWeaponClientRpc()
-    {
         weapon.gameObject.SetActive(false);
         _isReadyToDispense = false;
     }
