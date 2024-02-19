@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class GunManager : MonoBehaviour
+public class GunManager : NetworkBehaviour
 {
     public List<Weapon> weapons;
     public Weapon currentWeapon;
 
+    private bool _canShoot;
+    private bool _isReloading;
+
     public Action OnWeaponChanged { get; set; }
-    
+
     // just for testing
     private void OnGUI()
     {
@@ -21,7 +25,7 @@ public class GunManager : MonoBehaviour
     {
         ChangeToPistol();
 
-        currentWeapon.Reload();
+        Reload();
 
         foreach (var weapon in weapons)
         {
@@ -36,7 +40,27 @@ public class GunManager : MonoBehaviour
 
     public void Shoot()
     {
+        if (!_canShoot || _isReloading) return;
+
+        _canShoot = false;
+
+        if (!IsOwner) return;
+
+        ShootServerRpc();
         currentWeapon.ExecuteShoot();
+        Invoke(nameof(ResetCanShoot), currentWeapon.FireRate);
+    }
+
+    [ServerRpc]
+    private void ShootServerRpc()
+    {
+        ShootClientRpc();
+    }
+
+    [ClientRpc]
+    private void ShootClientRpc()
+    {
+        if (!IsOwner) currentWeapon.ExecuteShoot();
     }
 
     public void GiveWeapon(Weapon weapon)
@@ -51,8 +75,29 @@ public class GunManager : MonoBehaviour
         weapons.ForEach(w => w.gameObject.SetActive(false));
         weapon.gameObject.SetActive(true);
         currentWeapon = weapon;
-        currentWeapon.Reload();
-        
+        Reload();
+
         OnWeaponChanged?.Invoke();
+    }
+
+    private void ResetCanShoot()
+    {
+        _canShoot = true;
+    }
+
+    private void Reload()
+    {
+        if (_isReloading) return;
+
+        currentWeapon.CurrentAmmo = 0;
+        _isReloading = true;
+        Invoke(nameof(ExecuteReloading), currentWeapon.ReloadTime);
+    }
+
+    private void ExecuteReloading()
+    {
+        _isReloading = false;
+        currentWeapon.CurrentAmmo = currentWeapon.MaxAmmo;
+        ResetCanShoot();
     }
 }

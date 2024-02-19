@@ -18,4 +18,12 @@ public class FirePoint : MonoBehaviour
 
         transform.LookAt(hit.point);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        var thisTransform = transform;
+        var position = thisTransform.position;
+        Gizmos.DrawLine(position, position + thisTransform.forward * 10);
+    }
 }

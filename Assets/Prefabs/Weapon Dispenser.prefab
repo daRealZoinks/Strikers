@@ -24,14 +24,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5869963417391011862}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.41343504, y: -0, z: -0, w: 0.9105336}
-  m_LocalPosition: {x: 0, y: -0.4785388, z: 0.428715}
+  m_LocalRotation: {x: -0.41343814, y: 0, z: 0, w: 0.91053224}
+  m_LocalPosition: {x: 0, y: 0.4785388, z: 0.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3537166467916696132}
   m_Father: {fileID: 6465574903504958783}
-  m_LocalEulerAnglesHint: {x: 48.842, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -48.842, y: 0, z: 0}
 --- !u!1 &7695017934894894177
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6465574903504958783}
   - component: {fileID: 5200915065897456267}
+  - component: {fileID: 6180611056313045371}
   - component: {fileID: 1400942790835546651}
   m_Layer: 0
   m_Name: Weapon Dispenser
@@ -173,6 +174,26 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6180611056313045371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334886619333961780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3080499438
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &1400942790835546651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 6947853089420783694}
+  <RespawnTime>k__BackingField: 5
 --- !u!1001 &4628557667083772443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -194,6 +216,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3536154291766447285}
     m_Modifications:
+    - target: {fileID: -4418301612972648075, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3534294433
+      objectReference: {fileID: 0}
     - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: m_Name

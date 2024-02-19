@@ -1,40 +1,61 @@
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public class NetworkGunManager : MonoBehaviour
+public class NetworkGunManager : NetworkBehaviour
 {
     private GunManager _gunManager;
 
-    private readonly NetworkVariable<List<bool>> _activeWeapons =
-        new(new List<bool>(), writePerm: NetworkVariableWritePermission.Owner,
-            readPerm: NetworkVariableReadPermission.Everyone);
+    [SerializeField] private NetworkVariable<int> weaponIndex = new(
+        writePerm: NetworkVariableWritePermission.Owner,
+        readPerm: NetworkVariableReadPermission.Everyone);
 
     private void Awake()
     {
         _gunManager = GetComponent<GunManager>();
-
-        _gunManager.OnWeaponChanged += OnGunManagerOnWeaponChanged;
-
-        _activeWeapons.OnValueChanged += OnActiveWeaponsChanged;
     }
 
-    private void OnActiveWeaponsChanged(List<bool> previousValue, List<bool> newValue)
+    public override void OnNetworkSpawn()
     {
-        for (var i = 0; i < newValue.Count; i++)
+        weaponIndex.OnValueChanged += OnWeaponIndexOnValueChanged;
+
+        _gunManager.OnWeaponChanged += OnWeaponChanged;
+
+        if (IsOwner)
         {
-            if (newValue[i] != previousValue[i])
-            {
-                _gunManager.weapons[i].gameObject.SetActive(newValue[i]);
-            }
+            weaponIndex.Value = _gunManager.weapons.IndexOf(_gunManager.currentWeapon);
+        }
+        else
+        {
+            _gunManager.weapons.ForEach(w => w.gameObject.SetActive(false));
+            _gunManager.weapons[weaponIndex.Value].gameObject.SetActive(true);
+
+            _gunManager.currentWeapon = _gunManager.weapons[weaponIndex.Value];
         }
     }
 
-    private void OnGunManagerOnWeaponChanged()
+    private void OnWeaponIndexOnValueChanged(int previousValue, int newValue)
     {
-        var activeWeapons = _gunManager.weapons.Select(weapon => weapon.gameObject.activeSelf).ToList();
+        if (IsOwner) return;
 
-        _activeWeapons.Value = activeWeapons;
+        if (newValue < 0 || newValue >= _gunManager.weapons.Count) return;
+
+        _gunManager.weapons.ForEach(w => w.gameObject.SetActive(false));
+        _gunManager.weapons[newValue].gameObject.SetActive(true);
+
+        _gunManager.currentWeapon = _gunManager.weapons[newValue];
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        weaponIndex.OnValueChanged -= OnWeaponIndexOnValueChanged;
+
+        _gunManager.OnWeaponChanged -= OnWeaponChanged;
+    }
+
+    private void OnWeaponChanged()
+    {
+        if (!IsOwner) return;
+
+        weaponIndex.Value = _gunManager.weapons.IndexOf(_gunManager.currentWeapon);
     }
 }
