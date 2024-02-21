@@ -15,6 +15,7 @@ public class ExplosiveProjectile : Projectile
     {
         var colliders = new Collider[10];
         var size = Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, colliders);
+
         for (var i = 0; i < size; i++)
         {
             var hitRigidbody = colliders[i].attachedRigidbody;

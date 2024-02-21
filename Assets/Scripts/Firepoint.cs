@@ -1,17 +1,29 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 
-public class Firepoint : MonoBehaviour
+public class FirePoint : MonoBehaviour
 {
+    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+
+    [SerializeField] private LayerMask layerMask;
+
     private void Update()
     {
-        var ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out var hit))
-        {
-            transform.LookAt(hit.point);
-        }
-        else
-        {
-            transform.localEulerAngles = new Vector3(0, 0, 0);
-        }
+        if (!cinemachineVirtualCamera) return;
+
+        var cinemachineVirtualCameraTransform = cinemachineVirtualCamera.transform;
+        var ray = new Ray(cinemachineVirtualCameraTransform.position, cinemachineVirtualCameraTransform.forward);
+
+        if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask)) return;
+
+        transform.LookAt(hit.point);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        var thisTransform = transform;
+        var position = thisTransform.position;
+        Gizmos.DrawLine(position, position + thisTransform.forward * 10);
     }
 }

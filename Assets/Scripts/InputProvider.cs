@@ -7,7 +7,7 @@ public class InputProvider : MonoBehaviour
     private MeleeAttackController meleeAttackController;
     [SerializeField]
     private GunManager gunManager;
-    
+
     private CharacterMovementController _characterMovementController;
 
     private void Awake()

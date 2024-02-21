@@ -165,6 +165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1987118298355008350}
   - component: {fileID: 923748481978925444}
+  - component: {fileID: 3559758534739729877}
   m_Layer: 0
   m_Name: Gun Manager
   m_TagString: Untagged
@@ -186,6 +187,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7627164579012901846}
+  - {fileID: 6485249774189454333}
   m_Father: {fileID: 5997971073040926838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &923748481978925444
@@ -202,7 +204,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 2111864091402740628}
-  currentWeaponIndex: 0
+  - {fileID: 827833250597640695}
+  currentWeapon: {fileID: 2111864091402740628}
+--- !u!114 &3559758534739729877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6262cd66f173dc438a06f7429a9352b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2393356564967973815
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +345,7 @@ GameObject:
   - component: {fileID: 6868403463112944893}
   - component: {fileID: 7988933468598430389}
   - component: {fileID: 5931924047097793237}
+  - component: {fileID: 7385209408800553988}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -443,6 +459,36 @@ MonoBehaviour:
   characterMovementController: {fileID: 2758261215101075822}
   animeLines: {fileID: 8662438033282305043}
   maxSpeed: 30
+--- !u!114 &7385209408800553988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728871998339904949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4711cfb1d3ea43247b7d8d787884d9ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &3762231457451941134
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +616,7 @@ GameObject:
   - component: {fileID: 3113666386995234127}
   - component: {fileID: 8775381345475719651}
   - component: {fileID: 6141529127320468583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Melee Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,6 +691,7 @@ GameObject:
   - component: {fileID: 2758261215101075822}
   - component: {fileID: 5374704892588695544}
   - component: {fileID: 7228158128516191069}
+  - component: {fileID: 5778670090606009846}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1003,9 +1050,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1223743237460030424}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5778670090606009846}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 923748481978925444}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1051,6 +1110,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1223743237460030424}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2393356564967973815}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -1077,6 +1148,110 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teleportEnabled: 0
   teleportIfDistanceGreaterThan: 3
+--- !u!114 &5778670090606009846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092133516706228497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cc593ee5ef4443aa59b5aca2725d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunManager: {fileID: 923748481978925444}
+--- !u!1001 &3111220753418668962
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1987118298355008350}
+    m_Modifications:
+    - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_Name
+      value: Sniper
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956668975772383685, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: cinemachineVirtualCamera
+      value: 
+      objectReference: {fileID: 4807040188356924075}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b25fdc47939ee2947af7c96578ada2d8, type: 3}
+--- !u!114 &827833250597640695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2328443737051943509, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510b815933f244639ecc62902bc09c4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &6485249774189454333 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8867695467465520502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1140,6 +1315,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6897764386108421208, guid: 9f7670d84db34f447b52611cab00626a,
+        type: 3}
+      propertyPath: cinemachineVirtualCamera
+      value: 
+      objectReference: {fileID: 4807040188356924075}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

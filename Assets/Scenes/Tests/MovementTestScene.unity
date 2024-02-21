@@ -3404,6 +3404,79 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!1001 &3483179166075026618
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6180611056313045371, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3080499438
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465574903504958783, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334886619333961780, guid: d92bcf08d432eda41a9e6037aa873903,
+        type: 3}
+      propertyPath: m_Name
+      value: Weapon Dispenser
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d92bcf08d432eda41a9e6037aa873903, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3413,9 +3486,9 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1180960293}
+  - {fileID: 1103874898}
   - {fileID: 1891558623}
   - {fileID: 244101735}
-  - {fileID: 1103874898}
   - {fileID: 2121976957}
   - {fileID: 635694425}
   - {fileID: 228892623}
@@ -3424,3 +3497,4 @@ SceneRoots:
   - {fileID: 313547811}
   - {fileID: 1603315003}
   - {fileID: 1165945286}
+  - {fileID: 3483179166075026618}
