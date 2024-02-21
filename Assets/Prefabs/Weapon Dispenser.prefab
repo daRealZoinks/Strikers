@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3536154291766447285}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Weapon Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1675794992194590979}
   - component: {fileID: 1243613825595566818}
   - component: {fileID: 7155128586911214049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 5200915065897456267}
   - component: {fileID: 6180611056313045371}
   - component: {fileID: 1400942790835546651}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Weapon Dispenser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,10 +221,25 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3534294433
       objectReference: {fileID: 0}
+    - target: {fileID: 6732703168305702284, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: m_Name
       value: Sniper
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170047389649610492, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
