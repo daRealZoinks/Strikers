@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicManager : MonoBehaviour
 {
     [SerializeField] private AudioClip[] songs;
     private AudioSource _audioSource;
-    private int _currentSongIndex;
+    private List<AudioClip> _availableSongs = new();
 
     public static MusicManager Instance { get; private set; }
 
@@ -20,10 +22,10 @@ public class MusicManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.clip = songs[0];
-        _audioSource.Play();
+        GoToRandomSong();
     }
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         if (GUI.Button(new Rect(10, 10, 150, 100), "Next Song"))
@@ -31,6 +33,7 @@ public class MusicManager : MonoBehaviour
             GoToRandomSong();
         }
     }
+#endif
 
     private void Update()
     {
@@ -42,10 +45,15 @@ public class MusicManager : MonoBehaviour
 
     public static void GoToRandomSong()
     {
-        Instance._currentSongIndex = Random.Range(0, Instance.songs.Length);
-        Instance._audioSource.clip = Instance.songs[Instance._currentSongIndex];
+        if (Instance._availableSongs.Count == 0)
+        {
+            Instance._availableSongs = Instance.songs.ToList();
+        }
+
+        var currentSongIndex = Random.Range(0, Instance._availableSongs.Count);
+        Instance._audioSource.clip = Instance._availableSongs[currentSongIndex];
         Instance._audioSource.Play();
 
-        Debug.LogFormat("Playing song {0}", Instance._currentSongIndex);
+        Instance._availableSongs.RemoveAt(currentSongIndex);
     }
 }
