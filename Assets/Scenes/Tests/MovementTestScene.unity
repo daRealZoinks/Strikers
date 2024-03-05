@@ -11833,149 +11833,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1103874895
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1103874898}
-  - component: {fileID: 1103874896}
-  - component: {fileID: 1103874899}
-  - component: {fileID: 1103874897}
-  - component: {fileID: 1103874900}
-  - component: {fileID: 1103874901}
-  m_Layer: 0
-  m_Name: Network Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1103874896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkConfig:
-    ProtocolVersion: 0
-    NetworkTransport: {fileID: 1103874899}
-    PlayerPrefab: {fileID: 8092133516706228497, guid: 73acf923c9d34f9499501e190902a183,
-      type: 3}
-    Prefabs:
-      NetworkPrefabsLists:
-      - {fileID: 11400000, guid: b6328b2906f966c4f8c07be15124b6b5, type: 2}
-    TickRate: 120
-    ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
-    ConnectionData: 
-    EnableTimeResync: 0
-    TimeResyncInterval: 30
-    EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
-    ForceSamePrefabs: 1
-    RecycleNetworkIds: 1
-    NetworkIdRecycleDelay: 120
-    RpcHashSize: 0
-    LoadSceneTimeOut: 120
-    SpawnTimeout: 1
-    EnableNetworkLogs: 1
-    OldPrefabList: []
-  RunInBackground: 1
-  LogLevel: 0
---- !u!114 &1103874897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5878c4d4ccacc74a970970b8da05373, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxPlayers>k__BackingField: 2
---- !u!4 &1103874898
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1103874899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ProtocolType: 0
-  m_UseWebSockets: 0
-  m_UseEncryption: 0
-  m_MaxPacketQueueSize: 128
-  m_MaxPayloadSize: 6144
-  m_HeartbeatTimeoutMS: 500
-  m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 60
-  m_DisconnectTimeoutMS: 30000
-  ConnectionData:
-    Address: 127.0.0.1
-    Port: 7777
-    ServerListenAddress: 127.0.0.1
-  DebugSimulator:
-    PacketDelayMS: 0
-    PacketJitterMS: 0
-    PacketDropRate: 0
---- !u!114 &1103874900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29e6712ac8ce3fb4c804371abb6ca046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _transport: {fileID: 1103874899}
---- !u!114 &1103874901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103874895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 631d6b07836d41b4f8b796ff8c97aae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: Game
-  sceneAsset: {fileID: 102900000, guid: ac8a1182bfb44ac46ba044fec352ece7, type: 3}
 --- !u!1001 &1151705194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12186,6 +12043,7 @@ GameObject:
   - component: {fileID: 1165945285}
   - component: {fileID: 1165945287}
   - component: {fileID: 1165945288}
+  - component: {fileID: 1165945290}
   - component: {fileID: 1165945289}
   m_Layer: 5
   m_Name: PauseMenu
@@ -12193,7 +12051,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1165945285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12250,6 +12108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16db924c9a29ca04a95801c0cc7e0ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joinHostScreenSceneName: JoinHostScreen
+  joinHostScreenSceneAsset: {fileID: 102900000, guid: 7ac5f370b0e001d4e8ccc8df4d52695e,
+    type: 3}
 --- !u!114 &1165945289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12357,6 +12218,20 @@ MonoBehaviour:
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1165945290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165945284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631d6b07836d41b4f8b796ff8c97aae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Game
+  sceneAsset: {fileID: 102900000, guid: ac8a1182bfb44ac46ba044fec352ece7, type: 3}
 --- !u!1 &1180960287
 GameObject:
   m_ObjectHideFlags: 0
@@ -14440,84 +14315,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1603315001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1603315003}
-  - component: {fileID: 1603315002}
-  - component: {fileID: 1603315006}
-  - component: {fileID: 1603315007}
-  m_Layer: 5
-  m_Name: UIDocument
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1603315002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603315001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 82b4329720d1248429a5ffbefa2eb3f8, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: d03119661faccee46af5ad0f796da0a9,
-    type: 3}
-  m_SortingOrder: 0
---- !u!4 &1603315003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603315001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1603315006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603315001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1416713f68f5674fba7f398f3faf446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: Menu
-  sceneAsset: {fileID: 102900000, guid: 3a038cf0f4373844c92f3328a5e7e651, type: 3}
---- !u!114 &1603315007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603315001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d70b85e67fc28b4cb032c2531c26a35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connectedMenu: {fileID: 1165945288}
 --- !u!43 &1642942112
 Mesh:
   m_ObjectHideFlags: 0
@@ -19314,8 +19111,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 412977484}
-  - {fileID: 1103874898}
-  - {fileID: 1603315003}
   - {fileID: 1165945286}
   - {fileID: 375785752}
   - {fileID: 1725366770}

@@ -1,10 +1,12 @@
 using System;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ConnectMenu : MonoBehaviour
 {
@@ -12,12 +14,10 @@ public class ConnectMenu : MonoBehaviour
 
     private TextField _joinGameTextField;
 
-    public event Action OnGameCreated;
-    public event Action OnGameJoined;
-
     public event Action OnBackToMenu;
 
-    [SerializeField] private string sceneName;
+    [SerializeField] private string menuSceneName;
+    [SerializeField] private string lobbySceneName;
 
     private void OnEnable()
     {
@@ -49,7 +49,7 @@ public class ConnectMenu : MonoBehaviour
         {
             if (gameCreationTask.Result)
             {
-                OnGameCreated?.Invoke();
+                NetworkManager.Singleton.SceneManager.LoadScene(lobbySceneName, LoadSceneMode.Single);
             }
             else
             {
@@ -66,11 +66,7 @@ public class ConnectMenu : MonoBehaviour
 
         gameJoiningTask.GetAwaiter().OnCompleted(() =>
         {
-            if (gameJoiningTask.Result)
-            {
-                OnGameJoined?.Invoke();
-            }
-            else
+            if (!gameJoiningTask.Result)
             {
                 _connectMenu.SetEnabled(true);
             }
@@ -81,15 +77,24 @@ public class ConnectMenu : MonoBehaviour
     {
         OnBackToMenu?.Invoke();
         RelayExample.Instance.Deauthenticate();
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        SceneManager.LoadScene(menuSceneName, LoadSceneMode.Single);
     }
 
 #if UNITY_EDITOR
-    [SerializeField] private SceneAsset sceneAsset;
+    [SerializeField] private SceneAsset menuSceneAsset;
+    [SerializeField] private SceneAsset lobbySceneAsset;
 
     private void OnValidate()
     {
-        if (sceneAsset != null) sceneName = sceneAsset.name;
+        if (menuSceneAsset != null)
+        {
+            menuSceneName = menuSceneAsset.name;
+        }
+
+        if (lobbySceneAsset != null)
+        {
+            lobbySceneName = lobbySceneAsset.name;
+        }
     }
 #endif
 }

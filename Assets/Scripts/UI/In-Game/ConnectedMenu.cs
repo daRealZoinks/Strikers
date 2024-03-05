@@ -1,11 +1,17 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ConnectedMenu : MonoBehaviour
 {
+    [SerializeField] private string joinHostScreenSceneName;
+
     private Label _roomCodeLabel;
     private Button _startMatchButton;
 
@@ -25,9 +31,12 @@ public class ConnectedMenu : MonoBehaviour
     {
         GetComponent<CursorController>().IsCursorLocked = !isPaused;
         GetComponent<UIDocument>().rootVisualElement.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
-        if (NetworkManager.Singleton.LocalClient.PlayerObject)
+
+        var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
+
+        if (playerObject)
         {
-            NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>().enabled = !isPaused;
+            playerObject.GetComponent<PlayerInput>().enabled = !isPaused;
         }
     }
 
@@ -36,9 +45,7 @@ public class ConnectedMenu : MonoBehaviour
         IsPaused = !IsPaused;
     }
 
-    public event Action OnGameStarted;
-
-    public void InitializeUi()
+    private void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -50,16 +57,15 @@ public class ConnectedMenu : MonoBehaviour
         copyRoomCodeButton.clicked += OnCopyRoomCodeButtonClicked;
         _startMatchButton.clicked += OnStartMatchButtonClicked;
         leaveButton.clicked += OnLeaveButtonClicked;
-    }
 
-    public void InitializeValues()
-    {
         if (NetworkManager.Singleton.IsServer)
         {
             _startMatchButton.style.display = DisplayStyle.Flex;
         }
 
         _roomCodeLabel.text = RelayExample.Instance.JoinCodeText;
+
+        IsPaused = false;
     }
 
     private void OnCopyRoomCodeButtonClicked()
@@ -71,11 +77,24 @@ public class ConnectedMenu : MonoBehaviour
     {
         IsPaused = false;
         StartGame.Instance.StartMatch();
-        OnGameStarted?.Invoke();
     }
 
     private void OnLeaveButtonClicked()
     {
         NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+        SceneManager.LoadScene(joinHostScreenSceneName);
     }
+
+#if UNITY_EDITOR
+    [SerializeField] private SceneAsset joinHostScreenSceneAsset;
+
+    private void OnValidate()
+    {
+        if (joinHostScreenSceneAsset != null)
+        {
+            joinHostScreenSceneName = joinHostScreenSceneAsset.name;
+        }
+    }
+#endif
 }
