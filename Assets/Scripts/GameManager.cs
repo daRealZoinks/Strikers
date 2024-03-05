@@ -77,47 +77,40 @@ public class GameManager : NetworkBehaviour
     {
         _orangeScore.Value++;
 
-        if (IsServer)
-        {
-            StartCoroutine(ResetGameAfterGoal());
-        }
+        StartCoroutine(ResetGameAfterGoal());
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
 
-        if (IsServer)
-        {
-            StartCoroutine(ResetGameAfterGoal());
-        }
+        StartCoroutine(ResetGameAfterGoal());
     }
 
     private IEnumerator ResetGameAfterGoal()
     {
-        ball.SetActive(false);
+        SetBallActiveClientRpc(false);
 
-        if (IsServer)
-        {
-            Timer.Instance.timerIsRunning.Value = false;
+        Timer.Instance.timerIsRunning.Value = false;
 
-            yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3);
 
-            ResetPlayerClientRpc();
+        ResetPlayerClientRpc();
 
-            ResetBall();
+        ResetBall();
 
-            Timer.Instance.timerIsRunning.Value = true;
+        Timer.Instance.timerIsRunning.Value = true;
 
-            RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
-            RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
-        }
-        else
-        {
-            yield return new WaitForSeconds(3);
-        }
+        RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
+        RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
 
-        ball.SetActive(true);
+        SetBallActiveClientRpc(true);
+    }
+
+    [ClientRpc]
+    private void SetBallActiveClientRpc(bool active)
+    {
+        ball.SetActive(active);
     }
 
     private void ResetBall()
