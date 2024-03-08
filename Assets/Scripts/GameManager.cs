@@ -4,101 +4,157 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class GameManager : NetworkBehaviour
 {
-    [SerializeField]
-    private string sceneName;
+    [SerializeField] private string sceneName;
 
-    [SerializeField]
-    private List<Transform> spawnPoints;
+    [SerializeField] private List<Transform> blueSpawnPoints;
+    [SerializeField] private List<Transform> orangeSpawnPoints;
 
-    [SerializeField]
-    private GameObject ball;
+    [SerializeField] private GameObject ball;
 
-    [SerializeField]
-    private Transform ballSpawnPoint;
+    [SerializeField] private Transform ballSpawnPoint;
 
     private readonly NetworkVariable<int> _blueScore = new();
     private readonly NetworkVariable<int> _orangeScore = new();
 
+    private readonly NetworkList<long> _blueSpawnPointsRandomIndices = new();
+    private readonly NetworkList<long> _orangeSpawnPointsRandomIndices = new();
+
     private void OnGUI()
     {
-        GUI.Label(new Rect(Screen.width / 2 - 50, 10, 100, 30), $"{_blueScore.Value} - {_orangeScore.Value}");
+        GUI.Label(new Rect(Screen.width / 2f - 50, 10, 100, 30), $"{_blueScore.Value} - {_orangeScore.Value}");
+    }
+
+    private void Start()
+    {
+        if (!IsServer) return;
+
+        foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            var playerObject = player.PlayerObject;
+
+            if (playerObject.GetComponent<NetworkPlayerManager>().Team == Team.Blue)
+            {
+                _blueSpawnPointsRandomIndices.Add((long)playerObject.OwnerClientId);
+            }
+            else
+            {
+                _orangeSpawnPointsRandomIndices.Add((long)playerObject.OwnerClientId);
+            }
+        }
+
+        for (var i = 0; i <= blueSpawnPoints.Count - _blueSpawnPointsRandomIndices.Count; i++)
+        {
+            _blueSpawnPointsRandomIndices.Add(-1);
+        }
+
+        for (var i = 0; i <= orangeSpawnPoints.Count - _orangeSpawnPointsRandomIndices.Count; i++)
+        {
+            _orangeSpawnPointsRandomIndices.Add(-1);
+        }
+
+        ResetPlayerClientRpc();
+
+        RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
+        RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
+    }
+
+    private static void RandomizeSpawnPointIndices(NetworkList<long> spawnPointsRandomIndices)
+    {
+        for (var i = 0; i < spawnPointsRandomIndices.Count; i++)
+        {
+            var temp = spawnPointsRandomIndices[i];
+            var randomIndex = Random.Range(i, spawnPointsRandomIndices.Count);
+            spawnPointsRandomIndices[i] = spawnPointsRandomIndices[randomIndex];
+            spawnPointsRandomIndices[randomIndex] = temp;
+        }
     }
 
     public void OnBlueGoal()
     {
         _orangeScore.Value++;
-        Debug.Log($"Orange score: {_orangeScore.Value}");
 
-        if (IsServer)
-        {
-            StartCoroutine(ResetGameAfterGoal());
-        }
+        StartCoroutine(ResetGame());
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
-        Debug.Log($"Blue score: {_blueScore.Value}");
 
-        if (IsServer)
-        {
-            StartCoroutine(ResetGameAfterGoal());
-        }
+        StartCoroutine(ResetGame());
+    }
+
+    private IEnumerator ResetGame()
+    {
+        SetBallActiveClientRpc(false);
+
+        Timer.Instance.timerIsRunning.Value = false;
+
+        yield return new WaitForSeconds(3);
+
+        ResetPlayerClientRpc();
+
+        ResetBall();
+
+        Timer.Instance.timerIsRunning.Value = true;
+
+        RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
+        RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
+
+        SetBallActiveClientRpc(true);
     }
 
     [ClientRpc]
-    private void OnGoalScoredClientRpc()
+    private void SetBallActiveClientRpc(bool active)
     {
-        if (!IsServer)
-        {
-            StartCoroutine(ResetGameAfterGoal());
-        }
+        ball.SetActive(active);
     }
 
-    private IEnumerator ResetGameAfterGoal()
+    private void ResetBall()
     {
-        // Disable the ball
-        ball.SetActive(false);
+        ball.transform.position = ballSpawnPoint.position;
+        var ballRigibody = ball.GetComponent<Rigidbody>();
 
-        // Only the server should modify the game state
-        if (IsServer)
+        ballRigibody.velocity = Vector3.zero;
+        ballRigibody.angularVelocity = Vector3.zero;
+    }
+
+    [ClientRpc]
+    private void ResetPlayerClientRpc()
+    {
+        var playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
+
+        List<Transform> spawnPoints;
+        NetworkList<long> spawnPointsRandomIndices;
+
+        if (playerObject.GetComponent<NetworkPlayerManager>().Team == Team.Blue)
         {
-            // Stop the timer
-            Timer.Instance.timerIsRunning.Value = false;
-
-            // Wait for a few seconds
-            yield return new WaitForSeconds(3);
-
-            // Place all players at their spawn points
-            var clients = NetworkManager.Singleton.ConnectedClientsList;
-            for (int i = 0; i < clients.Count; i++)
-            {
-                var player = clients[i].PlayerObject;
-                player.transform.SetPositionAndRotation(spawnPoints[i % spawnPoints.Count].position, spawnPoints[i % spawnPoints.Count].rotation);
-            }
-
-            // Place the ball at the center of the field and set its velocity to zero
-            ball.transform.position = ballSpawnPoint.position;
-            ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-            // Start the timer
-            Timer.Instance.timerIsRunning.Value = true;
+            spawnPoints = blueSpawnPoints;
+            spawnPointsRandomIndices = _blueSpawnPointsRandomIndices;
         }
         else
         {
-            // Clients should only wait for the server to update the game state
-            yield return new WaitForSeconds(3);
+            spawnPoints = orangeSpawnPoints;
+            spawnPointsRandomIndices = _orangeSpawnPointsRandomIndices;
         }
 
-        // Enable the ball
-        ball.SetActive(true);
+        var localClientId = NetworkManager.Singleton.LocalClientId;
+
+        var index = spawnPointsRandomIndices.IndexOf((long)localClientId);
+
+        var spawnPoint = spawnPoints[index];
+
+        playerObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+
+        var rigidbody = playerObject.GetComponent<Rigidbody>();
+
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
     }
 
     public void OnTimerEnd()
@@ -112,7 +168,7 @@ public class GameManager : NetworkBehaviour
     {
         Debug.Log("Timer ended ClientRpc");
 
-        NetworkManager.SceneManager.LoadScene("MenuScene", LoadSceneMode.Single);
+        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
 #if UNITY_EDITOR

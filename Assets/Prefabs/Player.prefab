@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0fb1a824b2cb7144a197a2a3e7e59c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doOnSpawnIfOwner:
+  doOnSpawnIfOwner:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4807040188356924075}
@@ -1388,7 +1388,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _doOnSpawnIfNotOwner:
+  doOnSpawnIfNotOwner:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2975639679276083022}

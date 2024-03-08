@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 3a038cf0f4373844c92f3328a5e7e651
   - enabled: 1
+    path: Assets/Scenes/JoinHostScreen.unity
+    guid: 7ac5f370b0e001d4e8ccc8df4d52695e
+  - enabled: 1
     path: Assets/Scenes/Tests/MovementTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1

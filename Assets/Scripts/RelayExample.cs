@@ -19,15 +19,23 @@ public class RelayExample : MonoBehaviour
 
     private async void Awake()
     {
-        await Authenticate();
+        if (NetworkManager.Singleton != GetComponent<NetworkManager>())
+        {
+            Destroy(gameObject);
+        }
+
+        if (UnityServices.State != ServicesInitializationState.Initialized)
+        {
+            await UnityServices.InitializeAsync();
+        }
+
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+
         _transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
         Instance = this;
-    }
-
-    private async Task Authenticate()
-    {
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
     public void Deauthenticate()

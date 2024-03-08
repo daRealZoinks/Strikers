@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-public class StartGame : MonoBehaviour
+public class StartGame : NetworkBehaviour
 {
-    [SerializeField]
-    private string sceneName;
+    [SerializeField] private string sceneName;
 
     public static StartGame Instance { get; private set; }
 
@@ -19,7 +18,17 @@ public class StartGame : MonoBehaviour
 
     public void StartMatch()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        UnpauseAllClientsClientRpc();
+
+        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    [ClientRpc]
+    private void UnpauseAllClientsClientRpc()
+    {
+        if (IsServer) return;
+
+        GetComponent<ConnectedMenu>().IsPaused = false;
     }
 
 #if UNITY_EDITOR
