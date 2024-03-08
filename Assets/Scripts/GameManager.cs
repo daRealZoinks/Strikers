@@ -58,6 +58,8 @@ public class GameManager : NetworkBehaviour
             _orangeSpawnPointsRandomIndices.Add(-1);
         }
 
+        ResetPlayerClientRpc();
+
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
     }
@@ -77,17 +79,17 @@ public class GameManager : NetworkBehaviour
     {
         _orangeScore.Value++;
 
-        StartCoroutine(ResetGameAfterGoal());
+        StartCoroutine(ResetGame());
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
 
-        StartCoroutine(ResetGameAfterGoal());
+        StartCoroutine(ResetGame());
     }
 
-    private IEnumerator ResetGameAfterGoal()
+    private IEnumerator ResetGame()
     {
         SetBallActiveClientRpc(false);
 
