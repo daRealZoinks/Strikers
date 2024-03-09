@@ -337,6 +337,9 @@ GameObject:
   - component: {fileID: 1987118298355008350}
   - component: {fileID: 923748481978925444}
   - component: {fileID: 3559758534739729877}
+  - component: {fileID: 4327586754628836272}
+  - component: {fileID: 195546442951393048}
+  - component: {fileID: 9086151182569478262}
   m_Layer: 0
   m_Name: Gun Manager
   m_TagString: Untagged
@@ -353,7 +356,7 @@ Transform:
   m_GameObject: {fileID: 2184960151543513625}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.796, y: -0.386, z: 1.239}
+  m_LocalPosition: {x: 0.662, y: -0.201, z: 1.295}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -391,6 +394,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponIndex:
     m_InternalValue: 0
+--- !u!114 &4327586754628836272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409ecd2c5e614a44fbcc3cb3a58de165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &195546442951393048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a3431f044ae1343a0bdc543f8bdadf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9086151182569478262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b6cfe23fbeaf04a9b3c8ebd383e2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2297683248200710364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,7 +1352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 947292821
+  GlobalObjectIdHash: 1495543573
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
