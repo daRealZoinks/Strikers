@@ -1591,6 +1591,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.67
+      objectReference: {fileID: 0}
     - target: {fileID: 7956668975772383685, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: cinemachineVirtualCamera
