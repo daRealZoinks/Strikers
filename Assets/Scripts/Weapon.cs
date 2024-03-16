@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -11,8 +10,7 @@ public abstract class Weapon : MonoBehaviour
     [field: SerializeField] public float ReloadTime { get; set; }
 
     public int CurrentAmmo { get; set; }
-
-    public event Action OnEmptyAmmo;
+    public bool IsEmpty => CurrentAmmo <= 0;
 
     public void ExecuteShoot()
     {
@@ -21,10 +19,6 @@ public abstract class Weapon : MonoBehaviour
         weaponAnimator.SetTrigger("Shoot");
 
         CurrentAmmo--;
-        if (CurrentAmmo <= 0)
-        {
-            OnEmptyAmmo?.Invoke();
-        }
     }
 
     public void PlayReloadAnimation()

@@ -49,12 +49,12 @@ MonoBehaviour:
   firePoint: {fileID: 6897764386108421208}
   weaponAnimator: {fileID: 731877022227358759}
   <MaxAmmo>k__BackingField: 6
-  <FireRate>k__BackingField: 1
+  <FireRate>k__BackingField: 0.5
   <ReloadTime>k__BackingField: 3
   projectilePrefab: {fileID: 8565842949440041567, guid: 88018f0d016fd50438dc8e682ddb35a3,
     type: 3}
   projectileSpeed: 100
-  range: 20
+  range: 100
 --- !u!1 &7503079855334828102
 GameObject:
   m_ObjectHideFlags: 0
