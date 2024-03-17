@@ -27,10 +27,10 @@ public class GunManager : NetworkBehaviour
 
         Reload();
 
-        foreach (var weapon in weapons)
-        {
-            weapon.OnEmptyAmmo += ChangeToPistol;
-        }
+        // foreach (var weapon in weapons)
+        // {
+        //     weapon.OnEmptyAmmo += ChangeToPistol;
+        // }
     }
 
     private void ChangeToPistol()
@@ -83,6 +83,10 @@ public class GunManager : NetworkBehaviour
     private void ResetCanShoot()
     {
         _canShoot = true;
+        if (currentWeapon.IsEmpty)
+        {
+            ChangeToPistol();
+        }
     }
 
     private void Reload()
@@ -92,6 +96,7 @@ public class GunManager : NetworkBehaviour
         currentWeapon.CurrentAmmo = 0;
         _isReloading = true;
         Invoke(nameof(ExecuteReloading), currentWeapon.ReloadTime);
+        currentWeapon.PlayReloadAnimation();
     }
 
     private void ExecuteReloading()

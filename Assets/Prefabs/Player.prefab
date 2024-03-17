@@ -337,6 +337,9 @@ GameObject:
   - component: {fileID: 1987118298355008350}
   - component: {fileID: 923748481978925444}
   - component: {fileID: 3559758534739729877}
+  - component: {fileID: 4327586754628836272}
+  - component: {fileID: 195546442951393048}
+  - component: {fileID: 9086151182569478262}
   m_Layer: 0
   m_Name: Gun Manager
   m_TagString: Untagged
@@ -353,7 +356,7 @@ Transform:
   m_GameObject: {fileID: 2184960151543513625}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.796, y: -0.386, z: 1.239}
+  m_LocalPosition: {x: 0.598, y: -0.209, z: 1.295}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -391,6 +394,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponIndex:
     m_InternalValue: 0
+--- !u!114 &4327586754628836272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409ecd2c5e614a44fbcc3cb3a58de165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &195546442951393048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a3431f044ae1343a0bdc543f8bdadf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterMovementController: {fileID: 2758261215101075822}
+  <Amount>k__BackingField: 1
+  <MaxAmount>k__BackingField: 0.1
+  <SmoothAmount>k__BackingField: 1
+--- !u!114 &9086151182569478262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184960151543513625}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b6cfe23fbeaf04a9b3c8ebd383e2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Amount>k__BackingField: 5
+  <MaxAmount>k__BackingField: 200
+  <SmoothAmount>k__BackingField: 0.95
+  characterMovementController: {fileID: 2758261215101075822}
 --- !u!1 &2297683248200710364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1120,7 @@ Transform:
   m_GameObject: {fileID: 8092133516706228497}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1539,6 +1586,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sniper
       objectReference: {fileID: 0}
+    - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.67
+      objectReference: {fileID: 0}
     - target: {fileID: 7956668975772383685, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: cinemachineVirtualCamera
@@ -1625,6 +1687,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1987118298355008350}
     m_Modifications:
+    - target: {fileID: 731877022227358759, guid: 9f7670d84db34f447b52611cab00626a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: bec694b88233bc048b8af1f297ce9ade, type: 2}
     - target: {fileID: 863276263577596282, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
       propertyPath: m_Name
@@ -1633,7 +1700,7 @@ PrefabInstance:
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.129
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
@@ -1643,7 +1710,7 @@ PrefabInstance:
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
