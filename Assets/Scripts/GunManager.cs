@@ -13,24 +13,11 @@ public class GunManager : NetworkBehaviour
 
     public Action OnWeaponChanged { get; set; }
 
-    // just for testing
-    private void OnGUI()
-    {
-        var ammo = currentWeapon.CurrentAmmo;
-        var maxAmmo = currentWeapon.MaxAmmo;
-        GUI.Label(new Rect(10, 10, 100, 20), $"Ammo: {ammo}/{maxAmmo}");
-    }
-
     private void Awake()
     {
         ChangeToPistol();
 
         Reload();
-
-        // foreach (var weapon in weapons)
-        // {
-        //     weapon.OnEmptyAmmo += ChangeToPistol;
-        // }
     }
 
     private void ChangeToPistol()
