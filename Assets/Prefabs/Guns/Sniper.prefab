@@ -53,6 +53,8 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 3
   range: 100
   <Force>k__BackingField: 1000
+  bulletTrailPrefab: {fileID: 7510380165430627918, guid: 26455770c33f9a943a0e5312135f70b7,
+    type: 3}
 --- !u!1 &7170047389649610492
 GameObject:
   m_ObjectHideFlags: 0
