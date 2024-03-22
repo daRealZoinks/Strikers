@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class HitScanBulletTrail : MonoBehaviour
 {
+    [SerializeField] private VisualEffect impactEffect;
+
     private LineRenderer _lineRenderer;
 
     private void Awake()
@@ -15,5 +18,12 @@ public class HitScanBulletTrail : MonoBehaviour
     {
         _lineRenderer.SetPosition(0, start);
         _lineRenderer.SetPosition(1, end);
+    }
+
+    public void PlayImpactEffect(Vector3 position, Quaternion rotation)
+    {
+        var impactEffectInstance = Instantiate(impactEffect, position, rotation);
+        impactEffectInstance.Play();
+        Destroy(impactEffectInstance.gameObject, 1f);
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7312797199551642360}
   - component: {fileID: 7510380165430627918}
   m_Layer: 0
-  m_Name: HitscanBulletTrail
+  m_Name: Hitscan Bullet Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,3 +149,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b34a4fb21fd7a408aad02cdfe026f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffect: {fileID: 7397463891840883261, guid: b48c172b18cff8846bae412d61ba1448,
+    type: 3}

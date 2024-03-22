@@ -6,6 +6,8 @@ public class Sniper : HitScanWeapon
 
     [SerializeField] private HitScanBulletTrail bulletTrailPrefab;
 
+    [SerializeField] private LayerMask layerMask;
+
     protected override void Shoot()
     {
         var firePointTransform = firePoint.transform;
@@ -19,9 +21,10 @@ public class Sniper : HitScanWeapon
 
         var bulletTrail = Instantiate(bulletTrailPrefab, position, Quaternion.identity);
 
-        if (Physics.Raycast(ray, out var hit, Range))
+        if (Physics.Raycast(ray, out var hit, Range, layerMask))
         {
             bulletTrail.SetPositions(firePointTransform.position, hit.point);
+            bulletTrail.PlayImpactEffect(hit.point, Quaternion.LookRotation(hit.normal));
 
             var hitRigidbody = hit.rigidbody;
 
