@@ -212,8 +212,23 @@ public class CharacterMovementController : MonoBehaviour
         var wasWallRight = IsWallRight;
         var wasWallLeft = IsWallLeft;
 
-        IsWallRight = Physics.Raycast(rightRay, out _rightHitInfo, WallCheckDistance);
-        IsWallLeft = Physics.Raycast(leftRay, out _leftHitInfo, WallCheckDistance);
+        if (Physics.Raycast(rightRay, out _rightHitInfo, WallCheckDistance))
+        {
+            IsWallRight = !_rightHitInfo.collider.isTrigger;
+        }
+        else
+        {
+            IsWallRight = false;
+        }
+
+        if (Physics.Raycast(leftRay, out _leftHitInfo, WallCheckDistance))
+        {
+            IsWallLeft = !_leftHitInfo.collider.isTrigger;
+        }
+        else
+        {
+            IsWallLeft = false;
+        }
 
         var boostForce = Vector3.zero;
 
