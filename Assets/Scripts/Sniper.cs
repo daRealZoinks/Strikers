@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VFX;
 
 public class Sniper : HitScanWeapon
 {
@@ -8,22 +9,28 @@ public class Sniper : HitScanWeapon
 
     [SerializeField] private LayerMask layerMask;
 
+    [SerializeField] private VisualEffect muzzleFlash;
+
     protected override void Shoot()
     {
         var firePointTransform = firePoint.transform;
 
-        var forward = firePointTransform.forward;
-        var position = firePointTransform.position;
+        muzzleFlash.Play();
 
-        var ray = new Ray(position, forward);
+        var firePointForward = firePointTransform.forward;
+        var firePointPosition = firePointTransform.position;
 
-        var hitPoint = position + forward * Range;
+        var ray = new Ray(firePointPosition, firePointForward);
 
-        var bulletTrail = Instantiate(bulletTrailPrefab, position, Quaternion.identity);
+        var hitPoint = firePointPosition + firePointForward * Range;
+
+        var bulletTrail = Instantiate(bulletTrailPrefab, firePointPosition, Quaternion.identity);
 
         if (Physics.Raycast(ray, out var hit, Range, layerMask))
         {
-            bulletTrail.SetPositions(firePointTransform.position, hit.point);
+            var middlePoint = (firePointPosition + hit.point) / 2f;
+
+            bulletTrail.SetPositions(firePointPosition, middlePoint, hit.point);
             bulletTrail.PlayImpactEffect(hit.point, Quaternion.LookRotation(hit.normal));
 
             var hitRigidbody = hit.rigidbody;
@@ -34,7 +41,9 @@ public class Sniper : HitScanWeapon
         }
         else
         {
-            bulletTrail.SetPositions(firePointTransform.position, hitPoint);
+            var middlePoint = (firePointPosition + hit.point) / 2f;
+
+            bulletTrail.SetPositions(firePointPosition, middlePoint, hitPoint);
         }
     }
 }
