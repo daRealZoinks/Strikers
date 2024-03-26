@@ -159,7 +159,7 @@ public class GameManager : NetworkBehaviour
         playerRigidbody.velocity = Vector3.zero;
         playerRigidbody.angularVelocity = Vector3.zero;
 
-        playerObject.GetComponent<GunManager>().ChangeToPistol();
+        playerObject.GetComponentInChildren<GunManager>().ChangeToPistol();
     }
 
     public void OnTimerEnd()
