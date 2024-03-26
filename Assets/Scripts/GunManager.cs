@@ -20,7 +20,7 @@ public class GunManager : NetworkBehaviour
         Reload();
     }
 
-    private void ChangeToPistol()
+    public void ChangeToPistol()
     {
         ChangeWeapon(weapons[0]);
     }

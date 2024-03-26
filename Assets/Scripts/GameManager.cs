@@ -118,10 +118,10 @@ public class GameManager : NetworkBehaviour
     private void ResetBall()
     {
         ball.transform.position = ballSpawnPoint.position;
-        var ballRigibody = ball.GetComponent<Rigidbody>();
+        var ballRigidbody = ball.GetComponent<Rigidbody>();
 
-        ballRigibody.velocity = Vector3.zero;
-        ballRigibody.angularVelocity = Vector3.zero;
+        ballRigidbody.velocity = Vector3.zero;
+        ballRigidbody.angularVelocity = Vector3.zero;
     }
 
     [ClientRpc]
@@ -132,15 +132,18 @@ public class GameManager : NetworkBehaviour
         List<Transform> spawnPoints;
         NetworkList<long> spawnPointsRandomIndices;
 
-        if (playerObject.GetComponent<NetworkPlayerManager>().Team == Team.Blue)
+        switch (playerObject.GetComponent<NetworkPlayerManager>().Team)
         {
-            spawnPoints = blueSpawnPoints;
-            spawnPointsRandomIndices = _blueSpawnPointsRandomIndices;
-        }
-        else
-        {
-            spawnPoints = orangeSpawnPoints;
-            spawnPointsRandomIndices = _orangeSpawnPointsRandomIndices;
+            case Team.Blue:
+                spawnPoints = blueSpawnPoints;
+                spawnPointsRandomIndices = _blueSpawnPointsRandomIndices;
+                break;
+            case Team.Orange:
+                spawnPoints = orangeSpawnPoints;
+                spawnPointsRandomIndices = _orangeSpawnPointsRandomIndices;
+                break;
+            default:
+                return;
         }
 
         var localClientId = NetworkManager.Singleton.LocalClientId;
@@ -151,10 +154,12 @@ public class GameManager : NetworkBehaviour
 
         playerObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
 
-        var rigidbody = playerObject.GetComponent<Rigidbody>();
+        var playerRigidbody = playerObject.GetComponent<Rigidbody>();
 
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
+        playerRigidbody.velocity = Vector3.zero;
+        playerRigidbody.angularVelocity = Vector3.zero;
+
+        playerObject.GetComponent<GunManager>().ChangeToPistol();
     }
 
     public void OnTimerEnd()
