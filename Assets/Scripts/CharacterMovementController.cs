@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Cinemachine;
-using Unity.Netcode;
 using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
@@ -115,6 +114,10 @@ public class CharacterMovementController : MonoBehaviour
             IsGrounded = true;
 
             OnLanded?.Invoke(Rigidbody.velocity.y);
+        }
+        else
+        {
+            IsGrounded = false;
         }
     }
 
