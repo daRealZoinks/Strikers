@@ -1498,11 +1498,53 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: 56058bcd179333c4c932c0fe087bf5f8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 56058bcd179333c4c932c0fe087bf5f8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1860336230}
   m_SourcePrefab: {fileID: 100100000, guid: 56058bcd179333c4c932c0fe087bf5f8, type: 3}
+--- !u!1 &1860336229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7029948723529949830, guid: 56058bcd179333c4c932c0fe087bf5f8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1860336228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1860336230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860336229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72117784a6505b847893b9363e0d3e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onGoal:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 224781748}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnBlueGoal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1860336231 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56058bcd179333c4c932c0fe087bf5f8,

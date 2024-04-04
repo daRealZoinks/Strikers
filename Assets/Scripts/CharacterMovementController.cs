@@ -109,6 +109,11 @@ public class CharacterMovementController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
+        foreach (var contactPoint in collision.contacts)
+        {
+            Debug.DrawRay(contactPoint.point, contactPoint.normal, Color.red);
+        }
+
         if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
         {
             IsGrounded = true;
