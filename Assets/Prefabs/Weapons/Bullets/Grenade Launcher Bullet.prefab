@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 7301884966613442629}
   - component: {fileID: 5408072954338345772}
   - component: {fileID: 4231111201907710513}
-  - component: {fileID: 8565842949440041567}
+  - component: {fileID: -3400298428836583949}
   - component: {fileID: 678930547782514772}
   m_Layer: 0
-  m_Name: Pistol Bullet
+  m_Name: Grenade Launcher Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,7 +116,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3160357842888223934}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -130,12 +130,12 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &8565842949440041567
+--- !u!114 &-3400298428836583949
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,9 +144,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3160357842888223934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ddf1cabc49f4f9f90e9b0461c87d904, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c2a945e4a314268819c37f74a0c1feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionRadius: 5
+  explosionForce: 1000
+  explosionEffect: {fileID: 1446766090218869955, guid: 2ac2030b626aa004ba77952726db1ad9,
+    type: 3}
 --- !u!96 &678930547782514772
 TrailRenderer:
   serializedVersion: 3
@@ -189,7 +193,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.05
+  m_Time: 0.15
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -199,7 +203,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.15
+        value: 0.3
         inSlope: 0
         outSlope: 0
         tangentMode: 0

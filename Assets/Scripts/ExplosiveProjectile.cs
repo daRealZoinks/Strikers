@@ -1,28 +1,40 @@
 ﻿using UnityEngine;
+using UnityEngine.VFX;
 
 public class ExplosiveProjectile : Projectile
 {
     [SerializeField] private float explosionRadius;
     [SerializeField] private float explosionForce;
 
-    private void OnCollisionEnter()
+    [SerializeField] private VisualEffect explosionEffect;
+
+    private void OnCollisionEnter(Collision other)
     {
         Explode();
-        Destroy(gameObject);
     }
 
     private void Explode()
     {
-        var colliders = new Collider[10];
-        var size = Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, colliders);
+        var affectedColliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
-        for (var i = 0; i < size; i++)
+        foreach (var affectedCollider in affectedColliders)
         {
-            var hitRigidbody = colliders[i].attachedRigidbody;
+            var hitRigidbody = affectedCollider.attachedRigidbody;
             if (hitRigidbody != null)
             {
-                hitRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                hitRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 0,
+                    ForceMode.Impulse);
             }
         }
+
+        CreateAndPlayExplosionEffect();
+        Destroy(gameObject);
+    }
+
+    private void CreateAndPlayExplosionEffect()
+    {
+        var explosionEffectInstance = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        explosionEffectInstance.Play();
+        Destroy(explosionEffectInstance.gameObject, 5f);
     }
 }
