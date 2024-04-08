@@ -3,26 +3,28 @@ using UnityEngine.VFX;
 
 public class ExplosiveProjectile : Projectile
 {
-    [SerializeField] private float explosionRadius;
-    [SerializeField] private float explosionForce;
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 1000f;
+    [SerializeField] private float upwardsModifier = 50f;
 
     [SerializeField] private VisualEffect explosionEffect;
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter()
     {
         Explode();
     }
 
     private void Explode()
     {
-        var affectedColliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        var detectedColliders = new Collider[100];
+        var size = Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, detectedColliders);
 
-        foreach (var affectedCollider in affectedColliders)
+        for (var i = 0; i < size; i++)
         {
-            var hitRigidbody = affectedCollider.attachedRigidbody;
+            var hitRigidbody = detectedColliders[i].attachedRigidbody;
             if (hitRigidbody != null)
             {
-                hitRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 0,
+                hitRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, upwardsModifier,
                     ForceMode.Impulse);
             }
         }

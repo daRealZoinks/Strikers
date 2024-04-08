@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: 5
   explosionForce: 1000
+  upwardsModifier: 50
   explosionEffect: {fileID: 1446766090218869955, guid: 2ac2030b626aa004ba77952726db1ad9,
     type: 3}
 --- !u!96 &678930547782514772
