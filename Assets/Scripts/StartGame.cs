@@ -5,22 +5,30 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-public class StartGame : MonoBehaviour
+public class StartGame : NetworkBehaviour
 {
-    [SerializeField]
-    private string sceneName;
+    [SerializeField] private string sceneName;
 
-    private void OnGUI()
+    public static StartGame Instance { get; private set; }
+
+    private void Awake()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
-
-        if (GUI.Button(new Rect(10, 90, 100, 30), "Start match"))
-            StartMatch();
+        Instance = this;
     }
 
-    private void StartMatch()
+    public void StartMatch()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        UnpauseAllClientsClientRpc();
+
+        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    [ClientRpc]
+    private void UnpauseAllClientsClientRpc()
+    {
+        if (IsServer) return;
+
+        GetComponent<ConnectedMenu>().IsPaused = false;
     }
 
 #if UNITY_EDITOR

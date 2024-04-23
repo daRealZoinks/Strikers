@@ -11,9 +11,6 @@ public class LateralHeadTiltController : MonoBehaviour
     [field: SerializeField]
     public CharacterMovementController CharacterMovementController { get; set; }
 
-    [field: SerializeField]
-    public CharacterWallRunController CharacterWallRunController { get; set; }
-
     [SerializeField]
     private float angle = 2f;
 
@@ -40,16 +37,16 @@ public class LateralHeadTiltController : MonoBehaviour
 
             transform.localRotation = Quaternion.Lerp(transform.localRotation, rotation, Time.deltaTime * speed);
         }
-        else if (CharacterWallRunController.IsWallRunning)
+        else if (CharacterMovementController.IsWallRunning)
         {
             Quaternion tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, 0);
 
-            if (CharacterWallRunController.IsWallRight)
+            if (CharacterMovementController.IsWallRight)
             {
                 tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, wallRunAngle);
             }
 
-            if (CharacterWallRunController.IsWallLeft)
+            if (CharacterMovementController.IsWallLeft)
             {
                 tiltAngle = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -wallRunAngle);
             }

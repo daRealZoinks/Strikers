@@ -10,6 +10,8 @@ public class Goal : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Ball")) return;
 
+        if (!NetworkManager.Singleton.IsServer) return;
+
         onGoal?.Invoke();
     }
 }

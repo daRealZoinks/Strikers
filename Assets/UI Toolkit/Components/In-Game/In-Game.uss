@@ -1,0 +1,64 @@
+.bottomCorner {
+    flex-direction: column-reverse;
+    flex-grow: 1;
+}
+
+.background {
+    margin: 30px;
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 450px;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 20px;
+}
+
+.menu-button {
+    color: black;
+    background-color: white;
+    font-size: 50px;
+    margin: 10px;
+    transition: 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: rgb(221, 221, 221);
+    scale: 1.1;
+}
+
+.menu-button:active {
+    background-color: rgb(187, 187, 187);
+    scale: 0.9;
+}
+
+.menu-dropdown-field {
+    font-size: 50px;
+    color: white;
+    width: 100%;
+    margin: 10px;
+}
+
+.menu-slider {
+    font-size: 50px;
+    color: white;
+    width: 100%;
+}
+
+.menu-label {
+    font-size: 50px;
+    color: white;
+    margin: 10px;
+    -unity-text-align: middle-center;
+}
+
+.menu-text-field {
+    font-size: 50px;
+    margin: 10px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

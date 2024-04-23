@@ -1,23 +1,21 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HeadBobController : MonoBehaviour
 {
-    [field: SerializeField]
-    public bool HeadBobEnabled { get; set; } = true;
+    [field: SerializeField] public bool HeadBobEnabled { get; set; } = true;
 
-    [field: SerializeField]
-    public CharacterMovementController CharacterMovementController { get; set; }
+    [field: SerializeField] public CharacterMovementController CharacterMovementController { get; set; }
 
-    [field: SerializeField]
-    public CharacterWallRunController CharacterWallRunController { get; set; }
+    [SerializeField] private float amplitude = 0.08f;
 
-    [SerializeField]
-    private float amplitude = 0.08f;
+    [SerializeField] private float frequency = 18.5f;
 
-    [SerializeField]
-    private float frequency = 18.5f;
+    [SerializeField] private UnityEvent onStepTaken;
+    private bool _isStepTaken;
 
     private Vector3 _originalPosition;
+    private Vector3 _endPosition;
 
     private void Start()
     {
@@ -26,20 +24,34 @@ public class HeadBobController : MonoBehaviour
 
     private void Update()
     {
-        if (!HeadBobEnabled) return;
-
-        if (CharacterMovementController.IsGrounded || CharacterWallRunController.IsWallRunning)
+        if (CharacterMovementController.IsGrounded || CharacterMovementController.IsWallRunning)
         {
-            var speed = Mathf.Clamp01(CharacterMovementController.Rigidbody.velocity.magnitude / CharacterMovementController.MaxSpeed);
+            var speed = Mathf.Clamp01(CharacterMovementController.Rigidbody.velocity.magnitude /
+                                      CharacterMovementController.MaxSpeed);
 
-            var endPosition = _originalPosition + speed * GetHeadBobPosition();
+            var position = _originalPosition + speed * GetHeadBobPosition();
 
-            transform.localPosition = endPosition;
+            if (_endPosition.y < position.y && !_isStepTaken &&
+                CharacterMovementController.MovementInput.magnitude > 0 &&
+                speed > 0.7f)
+            {
+                onStepTaken?.Invoke();
+                _isStepTaken = true;
+            }
+            else if (_endPosition.y > position.y)
+            {
+                _isStepTaken = false;
+            }
+
+            _endPosition = position;
         }
         else
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, _originalPosition, Time.deltaTime);
+            _endPosition = Vector3.Lerp(transform.localPosition, _originalPosition, Time.deltaTime);
         }
+
+        if (!HeadBobEnabled) return;
+        transform.localPosition = _endPosition;
     }
 
     private Vector3 GetHeadBobPosition()
