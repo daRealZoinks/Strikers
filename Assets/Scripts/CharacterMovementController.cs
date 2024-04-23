@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Cinemachine;
-using Unity.Netcode;
 using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
@@ -110,11 +109,20 @@ public class CharacterMovementController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
+        foreach (var contactPoint in collision.contacts)
+        {
+            Debug.DrawRay(contactPoint.point, contactPoint.normal, Color.red);
+        }
+
         if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
         {
             IsGrounded = true;
 
             OnLanded?.Invoke(Rigidbody.velocity.y);
+        }
+        else
+        {
+            IsGrounded = false;
         }
     }
 

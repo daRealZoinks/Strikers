@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEngine;
 
 public class GunManager : NetworkBehaviour
 {
@@ -20,7 +19,7 @@ public class GunManager : NetworkBehaviour
         Reload();
     }
 
-    private void ChangeToPistol()
+    public void ChangeToPistol()
     {
         ChangeWeapon(weapons[0]);
     }
