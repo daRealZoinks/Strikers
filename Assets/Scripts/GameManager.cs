@@ -1,8 +1,10 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,10 +27,7 @@ public class GameManager : NetworkBehaviour
     private readonly NetworkList<long> _blueSpawnPointsRandomIndices = new();
     private readonly NetworkList<long> _orangeSpawnPointsRandomIndices = new();
 
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(Screen.width / 2f - 50, 10, 100, 30), $"{_blueScore.Value} - {_orangeScore.Value}");
-    }
+    public event Action<int, int> OnScoreChanged;
 
     private void Start()
     {
@@ -79,12 +78,16 @@ public class GameManager : NetworkBehaviour
     {
         _orangeScore.Value++;
 
+        OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
+
         StartCoroutine(ResetGame());
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
+
+        OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
 
         StartCoroutine(ResetGame());
     }

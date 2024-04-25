@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,8 @@ public class Timer : NetworkBehaviour
     public NetworkVariable<bool> timerIsRunning = new();
 
     public UnityEvent onTimerEnd;
+
+    public event Action<int> OnTimeChanged;
 
     private void Awake()
     {
@@ -46,6 +49,7 @@ public class Timer : NetworkBehaviour
         if (timeRemaining.Value > 0)
         {
             timeRemaining.Value -= Time.deltaTime;
+            OnTimeChanged?.Invoke((int)timeRemaining.Value);
         }
         else
         {
