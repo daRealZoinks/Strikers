@@ -96,7 +96,7 @@ public class GameManager : NetworkBehaviour
     {
         SetBallActiveClientRpc(false);
 
-        Timer.Instance.timerIsRunning.Value = false;
+        Timer.Instance.TimerIsRunning.Value = false;
 
         yield return new WaitForSeconds(3);
 
@@ -104,7 +104,7 @@ public class GameManager : NetworkBehaviour
 
         ResetBall();
 
-        Timer.Instance.timerIsRunning.Value = true;
+        Timer.Instance.TimerIsRunning.Value = true;
 
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);

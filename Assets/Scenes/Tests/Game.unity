@@ -1523,10 +1523,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e01d4480df5084995e23cda9066f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeRemaining:
-    m_InternalValue: 0
-  timerIsRunning:
-    m_InternalValue: 0
+  minutes: 0
+  seconds: 20
   onTimerEnd:
     m_PersistentCalls:
       m_Calls:
