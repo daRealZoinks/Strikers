@@ -516,7 +516,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 0e418a7e92a4a8043b544404a0cd74a8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -941,7 +941,7 @@ MonoBehaviour:
   wallRunAudioSource: {fileID: 5952296128821095587}
   inAirAudioSource: {fileID: 3597695741696959156}
   wallRunSoundEffectVolumeSmoothTime: 20
-  inAirSoundEffectVolumeSmoothTime: 20
+  inAirSoundEffectVolumeSmoothTime: 0.5
   characterMovementController: {fileID: 2758261215101075822}
 --- !u!1 &4314121236562609186
 GameObject:
@@ -1071,7 +1071,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 1d6ba7c34f6bd2e4a85cbe0f24f859de, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

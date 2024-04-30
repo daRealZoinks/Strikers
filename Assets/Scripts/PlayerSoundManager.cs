@@ -21,9 +21,8 @@ public class PlayerSoundManager : MonoBehaviour
             wallRunSoundEffectVolumeSmoothTime * Time.deltaTime);
 
         var playerCurrentSpeed = characterMovementController.Rigidbody.velocity.magnitude;
-        var playerMaxSpeed = characterMovementController.MaxSpeed;
 
-        var targetInAirSoundEffectVolume = playerCurrentSpeed > playerMaxSpeed ? 0 : 1;
+        var targetInAirSoundEffectVolume = playerCurrentSpeed <= 30 ? 0 : 1;
 
         inAirAudioSource.volume = Mathf.Lerp(inAirAudioSource.volume,
             targetInAirSoundEffectVolume,
