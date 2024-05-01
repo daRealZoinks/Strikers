@@ -82,7 +82,7 @@ public class GunManager : NetworkBehaviour
         currentWeapon.CurrentAmmo = 0;
         _isReloading = true;
         Invoke(nameof(ExecuteReloading), currentWeapon.ReloadTime);
-        currentWeapon.PlayReloadAnimation();
+        currentWeapon.PlayReloadSequence();
     }
 
     private void ExecuteReloading()
