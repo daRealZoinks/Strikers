@@ -21,8 +21,6 @@ public class BallSoundManager : MonoBehaviour
 
             var contactDotProduct = Vector3.Dot(_rigidbody.velocity.normalized, contact.normal.normalized);
 
-            Debug.Log(contactDotProduct);
-
             ballBounceAudioSource.volume = contactDotProduct * _rigidbody.velocity.magnitude;
             ballBounceAudioSource.Play();
         }
