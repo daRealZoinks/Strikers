@@ -11,6 +11,7 @@ public class ExplosiveProjectile : Projectile
 
     private void OnCollisionEnter()
     {
+        AudioSource.PlayClipAtPoint(hitSound.clip, transform.position);
         Explode();
     }
 

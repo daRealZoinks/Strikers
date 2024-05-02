@@ -2,6 +2,8 @@
 
 public abstract class Projectile : MonoBehaviour
 {
+    [SerializeField] protected AudioSource hitSound;
+
     private Rigidbody _rigidbody;
 
     private void Awake()
