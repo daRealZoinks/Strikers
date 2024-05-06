@@ -168,14 +168,11 @@ public class GameManager : NetworkBehaviour
     public void OnTimerEnd()
     {
         OnTimerEndClientRpc();
-        Debug.Log("Timer ended");
     }
 
     [ClientRpc]
     private void OnTimerEndClientRpc()
     {
-        Debug.Log("Timer ended ClientRpc");
-
         NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 

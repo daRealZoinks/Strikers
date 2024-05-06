@@ -11,7 +11,6 @@ public class GameUI : MonoBehaviour
     private Label _timerLabel;
     private Label _lastSecondsLabel;
 
-
     private void Awake()
     {
         _gameManager = FindObjectOfType<GameManager>();

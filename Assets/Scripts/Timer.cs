@@ -5,17 +5,17 @@ using UnityEngine.Events;
 
 public class Timer : NetworkBehaviour
 {
-    [SerializeField] private float minutes = 5;
-    [SerializeField] private float seconds = 0;
+    [SerializeField] private int minutes = 5;
+    [SerializeField] private int seconds = 0;
 
     public static Timer Instance { get; private set; }
 
-    private readonly NetworkVariable<float> _timeRemaining = new();
+    public UnityEvent onTimerEnd;
+    public event Action<int> OnTimeChanged;
     public NetworkVariable<bool> TimerIsRunning { get; } = new();
 
-    public UnityEvent onTimerEnd;
-
-    public event Action<int> OnTimeChanged;
+    private readonly NetworkVariable<float> _timeRemaining = new();
+    private int _currentSeconds;
 
     private void Awake()
     {
@@ -27,8 +27,12 @@ public class Timer : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        _timeRemaining.Value = minutes * 60 + seconds;
+        _currentSeconds = minutes * 60 + seconds;
+
+        _timeRemaining.Value = _currentSeconds;
         TimerIsRunning.Value = true;
+
+        OnTimeChanged?.Invoke(_currentSeconds);
     }
 
     public void Update()
@@ -36,10 +40,14 @@ public class Timer : NetworkBehaviour
         if (!IsServer) return;
         if (!TimerIsRunning.Value) return;
 
-        if (_timeRemaining.Value > 1)
+        if (_timeRemaining.Value > 0)
         {
             _timeRemaining.Value -= Time.deltaTime;
-            OnTimeChanged?.Invoke((int)_timeRemaining.Value);
+
+            if (!(_timeRemaining.Value < _currentSeconds)) return;
+
+            _currentSeconds = (int)_timeRemaining.Value;
+            OnTimeChanged?.Invoke(_currentSeconds + 1);
         }
         else
         {
