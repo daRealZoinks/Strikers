@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class HitScanBulletTrail : MonoBehaviour
+public class HitScanBullet : MonoBehaviour
 {
     [SerializeField] private VisualEffect impactEffect;
+    [SerializeField] private AudioSource hitSound;
 
     [SerializeField] private float timeToDestroy = 2f;
 
@@ -41,10 +42,11 @@ public class HitScanBulletTrail : MonoBehaviour
         _lineRenderer.SetPosition(2, end);
     }
 
-    public void PlayImpactEffect(Vector3 position, Quaternion rotation)
+    public void PlayImpactSequence(Vector3 position, Quaternion rotation)
     {
         var impactEffectInstance = Instantiate(impactEffect, position, rotation);
         impactEffectInstance.Play();
         Destroy(impactEffectInstance.gameObject, 1f);
+        AudioSource.PlayClipAtPoint(hitSound.clip, position);
     }
 }

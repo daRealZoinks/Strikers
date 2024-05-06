@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 public class Sniper : HitScanWeapon
 {
     [field: SerializeField] public float Force { get; set; }
 
-    [SerializeField] private HitScanBulletTrail bulletTrailPrefab;
+    [FormerlySerializedAs("bulletTrailPrefab")] [SerializeField] private HitScanBullet bulletPrefab;
 
     [SerializeField] private LayerMask layerMask;
 
@@ -24,14 +25,14 @@ public class Sniper : HitScanWeapon
 
         var hitPoint = firePointPosition + firePointForward * Range;
 
-        var bulletTrail = Instantiate(bulletTrailPrefab, firePointPosition, Quaternion.identity);
+        var bulletTrail = Instantiate(bulletPrefab, firePointPosition, Quaternion.identity);
 
         if (Physics.Raycast(ray, out var hit, Range, layerMask))
         {
             var middlePoint = (firePointPosition + hit.point) / 2f;
 
             bulletTrail.SetPositions(firePointPosition, middlePoint, hit.point);
-            bulletTrail.PlayImpactEffect(hit.point, Quaternion.LookRotation(hit.normal));
+            bulletTrail.PlayImpactSequence(hit.point, Quaternion.LookRotation(hit.normal));
 
             var hitRigidbody = hit.rigidbody;
 
