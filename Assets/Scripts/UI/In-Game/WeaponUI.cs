@@ -12,9 +12,9 @@ public class WeaponUI : MonoBehaviour
     private GunManager _gunManager;
     private CharacterMovementController _characterMovementController;
 
-    private VisualElement crosshair;
-    private Label ammoLeft;
-    private Label maxAmmo;
+    private VisualElement _crosshair;
+    private Label _ammoLeft;
+    private Label _maxAmmo;
 
     private void Awake()
     {
@@ -32,21 +32,22 @@ public class WeaponUI : MonoBehaviour
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        crosshair = root.Q<VisualElement>("Crosshair");
+        _crosshair = root.Q<VisualElement>("Crosshair");
 
-        ammoLeft = root.Q<Label>("AmmoLeft");
-        maxAmmo = root.Q<Label>("MaxAmmo");
+        _ammoLeft = root.Q<Label>("AmmoLeft");
+        _maxAmmo = root.Q<Label>("MaxAmmo");
     }
 
     private void Update()
     {
         if (_gunManager != null)
         {
-            ammoLeft.text = _gunManager.currentWeapon.CurrentAmmo.ToString();
-            maxAmmo.text = _gunManager.currentWeapon.MaxAmmo.ToString();
+            _ammoLeft.text = _gunManager.currentWeapon.CurrentAmmo.ToString();
+            _maxAmmo.text = _gunManager.currentWeapon.MaxAmmo.ToString();
         }
 
-        _characterMovementController = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponentInChildren<CharacterMovementController>();
+        _characterMovementController = NetworkManager.Singleton.LocalClient.PlayerObject
+            .GetComponentInChildren<CharacterMovementController>();
 
         var lookInputMagnitude = _characterMovementController.LookInput.magnitude;
         var velocityMagnitude = _characterMovementController.Rigidbody.velocity.magnitude;
@@ -56,7 +57,9 @@ public class WeaponUI : MonoBehaviour
         float targetWidth = baseScale + crosshairScale;
         float targetHeight = baseScale + crosshairScale;
 
-        crosshair.style.width = Mathf.Lerp(crosshair.style.width.value.value, targetWidth, Time.deltaTime * smoothingFactor);
-        crosshair.style.height = Mathf.Lerp(crosshair.style.height.value.value, targetHeight, Time.deltaTime * smoothingFactor);
+        _crosshair.style.width =
+            Mathf.Lerp(_crosshair.style.width.value.value, targetWidth, Time.deltaTime * smoothingFactor);
+        _crosshair.style.height = Mathf.Lerp(_crosshair.style.height.value.value, targetHeight,
+            Time.deltaTime * smoothingFactor);
     }
 }
