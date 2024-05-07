@@ -28,14 +28,11 @@ public class MainMenu : MonoBehaviour
 
     private void OnOptionsClicked()
     {
-        // Get the root VisualElement
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        // Get the main menu and options menu
         var mainMenu = root.Q<VisualElement>("MainMenu");
         var optionsMenu = root.Q<VisualElement>("OptionsMenu");
 
-        // Hide the main menu and show the options menu
         mainMenu.style.display = DisplayStyle.None;
         optionsMenu.style.display = DisplayStyle.Flex;
     }
@@ -50,7 +47,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnValidate()
     {
-        if (sceneAsset != null) sceneName = sceneAsset.name;
+        if (sceneAsset) sceneName = sceneAsset.name;
     }
 #endif
 }

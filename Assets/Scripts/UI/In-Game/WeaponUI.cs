@@ -4,59 +4,73 @@ using UnityEngine.UIElements;
 
 public class WeaponUI : MonoBehaviour
 {
-    [SerializeField] private float walkingInfluence = 1f;
-    [SerializeField] private float lookingInfluence = 1f;
+    [SerializeField] private float walkingInfluence = 3f;
+    [SerializeField] private float lookingInfluence = 4f;
     [SerializeField] private float smoothingFactor = 10f;
     [SerializeField] private float baseScale = 30f;
 
     private GunManager _gunManager;
     private CharacterMovementController _characterMovementController;
 
-    private VisualElement crosshair;
-    private Label ammoLeft;
-    private Label maxAmmo;
-
-    private void Awake()
-    {
-        var player = NetworkManager.Singleton.LocalClient.PlayerObject;
-        _gunManager = player.GetComponentInChildren<GunManager>();
-        _characterMovementController = player.GetComponent<CharacterMovementController>();
-    }
+    private VisualElement _crosshair;
+    private Label _ammoLeft;
+    private Label _maxAmmo;
 
     private void OnEnable()
     {
         Initialize();
     }
 
-    public void Initialize()
+    private void Initialize()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        crosshair = root.Q<VisualElement>("Crosshair");
+        _crosshair = root.Q<VisualElement>("Crosshair");
 
-        ammoLeft = root.Q<Label>("AmmoLeft");
-        maxAmmo = root.Q<Label>("MaxAmmo");
+        _ammoLeft = root.Q<Label>("AmmoLeft");
+        _maxAmmo = root.Q<Label>("MaxAmmo");
     }
 
     private void Update()
     {
-        if (_gunManager != null)
+        var localClientPlayerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
+
+        if (!localClientPlayerObject) return;
+
+        _gunManager = localClientPlayerObject.GetComponentInChildren<GunManager>();
+
+        if (_gunManager)
         {
-            ammoLeft.text = _gunManager.currentWeapon.CurrentAmmo.ToString();
-            maxAmmo.text = _gunManager.currentWeapon.MaxAmmo.ToString();
+            UpdateAmmoCountDisplay();
         }
 
-        _characterMovementController = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponentInChildren<CharacterMovementController>();
+        _characterMovementController = localClientPlayerObject.GetComponent<CharacterMovementController>();
 
+        if (_characterMovementController)
+        {
+            AdjustCrosshairSize();
+        }
+    }
+
+    private void UpdateAmmoCountDisplay()
+    {
+        _ammoLeft.text = _gunManager.currentWeapon.CurrentAmmo.ToString();
+        _maxAmmo.text = _gunManager.currentWeapon.MaxAmmo.ToString();
+    }
+
+    private void AdjustCrosshairSize()
+    {
         var lookInputMagnitude = _characterMovementController.LookInput.magnitude;
         var velocityMagnitude = _characterMovementController.Rigidbody.velocity.magnitude;
 
-        var crosshairScale = (lookInputMagnitude * lookingInfluence) + (velocityMagnitude * walkingInfluence);
+        var crosshairScale = lookInputMagnitude * lookingInfluence + velocityMagnitude * walkingInfluence;
 
-        float targetWidth = baseScale + crosshairScale;
-        float targetHeight = baseScale + crosshairScale;
+        var targetWidth = baseScale + crosshairScale;
+        var targetHeight = baseScale + crosshairScale;
 
-        crosshair.style.width = Mathf.Lerp(crosshair.style.width.value.value, targetWidth, Time.deltaTime * smoothingFactor);
-        crosshair.style.height = Mathf.Lerp(crosshair.style.height.value.value, targetHeight, Time.deltaTime * smoothingFactor);
+        var factor = Time.deltaTime * smoothingFactor;
+
+        _crosshair.style.width = Mathf.Lerp(_crosshair.style.width.value.value, targetWidth, factor);
+        _crosshair.style.height = Mathf.Lerp(_crosshair.style.height.value.value, targetHeight, factor);
     }
 }

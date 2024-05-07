@@ -2,9 +2,18 @@
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/OptionsMenu/DisplayMenu/DisplayMenu.uss?fileID=7433441132597879392&amp;guid=0b6b87acb267d1c42aadb56d7aa9316c&amp;type=3#DisplayMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
     <ui:VisualElement class="buttonsContainer">
-        <ui:DropdownField name="resolutionDropdown" label="Resolution" index="-1" class="menu-dropdown-field" />
-        <ui:DropdownField name="refreshRateDropdown" label="Refresh Rate" index="-1" class="menu-dropdown-field" />
-        <ui:DropdownField name="fullscreenDropdown" label="Fullscreen" index="-1" class="menu-dropdown-field" />
+        <ui:VisualElement class="menu-dropdown-field" style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Resolution" />
+            <ui:DropdownField name="resolutionDropdown" index="-1" class="menu-dropdown-field" style="width: 60%;" />
+        </ui:VisualElement>
+        <ui:VisualElement class="menu-dropdown-field" style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Refresh Rate" />
+            <ui:DropdownField name="refreshRateDropdown" index="-1" class="menu-dropdown-field" style="width: 60%;" />
+        </ui:VisualElement>
+        <ui:VisualElement class="menu-dropdown-field" style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Fullscreen" />
+            <ui:DropdownField name="fullscreenDropdown" index="-1" class="menu-dropdown-field" style="width: 60%;" />
+        </ui:VisualElement>
         <ui:Button name="backButton" text="Back" class="menu-button" />
     </ui:VisualElement>
 </ui:UXML>

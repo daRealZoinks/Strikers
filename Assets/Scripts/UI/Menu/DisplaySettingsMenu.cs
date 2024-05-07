@@ -59,10 +59,8 @@ public class DisplaySettingsMenu : MonoBehaviour
 
         foreach (var resolution in resolutions)
         {
-            // Add resolution to the list
             resolutionOptions.Add(resolution.width + "x" + resolution.height);
 
-            // Add refresh rate to the list
             refreshRateOptions.Add($"{Math.Round(resolution.refreshRateRatio.value, 2)} Hz");
         }
 
@@ -168,14 +166,11 @@ public class DisplaySettingsMenu : MonoBehaviour
 
     private void OnBackClicked()
     {
-        // Get the root VisualElement
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        // Get the main menu and options menu
         var displayMenu = root.Q<VisualElement>("DisplayMenu");
         var optionsMenu = root.Q<VisualElement>("OptionsMenu");
 
-        // Hide the options menu and show the main menu
         optionsMenu.style.display = DisplayStyle.Flex;
         displayMenu.style.display = DisplayStyle.None;
     }
@@ -187,7 +182,6 @@ public class Settings
     public Resolution Resolution { get; set; }
 
     public FullScreenMode FullscreenMode { get; set; }
-    // Add other settings as needed
 }
 
 public class SettingsManager
@@ -195,11 +189,11 @@ public class SettingsManager
     private readonly string _settingsFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                 "/My Games/Strikers/";
 
-    private readonly string _settingsFileName = "settings.xml";
+    private const string SettingsFileName = "settings.xml";
 
     public Settings LoadSettings()
     {
-        if (!File.Exists(_settingsFilePath + _settingsFileName))
+        if (!File.Exists(_settingsFilePath + SettingsFileName))
         {
             var settings = new Settings
             {
@@ -211,7 +205,7 @@ public class SettingsManager
         }
 
         var serializer = new XmlSerializer(typeof(Settings));
-        using var stream = new FileStream(_settingsFilePath + _settingsFileName, FileMode.Open);
+        using var stream = new FileStream(_settingsFilePath + SettingsFileName, FileMode.Open);
         return (Settings)serializer.Deserialize(stream);
     }
 
@@ -225,7 +219,7 @@ public class SettingsManager
         }
 
         using var stream =
-            XmlWriter.Create(_settingsFilePath + _settingsFileName, new XmlWriterSettings { Indent = true });
+            XmlWriter.Create(_settingsFilePath + SettingsFileName, new XmlWriterSettings { Indent = true });
         serializer.Serialize(stream, settings);
     }
 }
