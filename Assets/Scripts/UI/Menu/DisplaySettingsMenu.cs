@@ -97,7 +97,7 @@ public class DisplaySettingsMenu : MonoBehaviour
         });
     }
 
-    private static void OnResolutionChanged(ChangeEvent<string> evt)
+    private void OnResolutionChanged(ChangeEvent<string> evt)
     {
         var resolutionString = evt.newValue.Split('x');
         var width = int.Parse(resolutionString[0]);
@@ -117,7 +117,7 @@ public class DisplaySettingsMenu : MonoBehaviour
 #endif
     }
 
-    private static void OnRefreshRateChanged(ChangeEvent<string> evt)
+    private void OnRefreshRateChanged(ChangeEvent<string> evt)
     {
         var refreshRate = uint.Parse(evt.newValue.Replace(" Hz", ""));
         var refreshRateRatio = Screen.currentResolution.refreshRateRatio;
@@ -209,7 +209,7 @@ public class SettingsManager
         return (Settings)serializer.Deserialize(stream);
     }
 
-    private void SaveSettings(Settings settings)
+    public void SaveSettings(Settings settings)
     {
         var serializer = new XmlSerializer(typeof(Settings));
 
