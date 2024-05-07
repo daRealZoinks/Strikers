@@ -81,32 +81,38 @@ public class AudioSettingsMenu : MonoBehaviour
 
     private void OnMasterVolumeChanged(ChangeEvent<float> evt)
     {
-        audioMixer.SetFloat(MasterVolume, evt.newValue);
+        var normalizedValue = Mathf.InverseLerp(-80f, 0f, evt.newValue);
+        var volume = normalizedValue > 0.01f ? Mathf.Log10(normalizedValue) * 20 : -80f;
+
+        audioMixer.SetFloat(MasterVolume, volume);
         PlayerPrefs.SetFloat(MasterVolume, evt.newValue);
     }
 
     private void OnSFXVolumeChanged(ChangeEvent<float> evt)
     {
-        audioMixer.SetFloat(SfxVolume, evt.newValue);
+        var normalizedValue = Mathf.InverseLerp(-80f, 0f, evt.newValue);
+        var volume = normalizedValue > 0.01f ? Mathf.Log10(normalizedValue) * 20 : -80f;
+
+        audioMixer.SetFloat(SfxVolume, volume);
         PlayerPrefs.SetFloat(SfxVolume, evt.newValue);
     }
 
     private void OnMusicVolumeChanged(ChangeEvent<float> evt)
     {
-        audioMixer.SetFloat(MusicVolume, evt.newValue);
+        var normalizedValue = Mathf.InverseLerp(-80f, 0f, evt.newValue);
+        var volume = normalizedValue > 0.01f ? Mathf.Log10(normalizedValue) * 20 : -80f;
+
+        audioMixer.SetFloat(MusicVolume, volume);
         PlayerPrefs.SetFloat(MusicVolume, evt.newValue);
     }
 
     private void OnBackClicked()
     {
-        // Get the root VisualElement
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        // Get the main menu and options menu
         var audioMenu = root.Q<VisualElement>("AudioMenu");
         var optionsMenu = root.Q<VisualElement>("OptionsMenu");
 
-        // Hide the options menu and show the main menu
         optionsMenu.style.display = DisplayStyle.Flex;
         audioMenu.style.display = DisplayStyle.None;
     }
