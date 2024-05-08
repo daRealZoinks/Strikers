@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading.Tasks;
 using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
@@ -80,7 +81,7 @@ public class GameManager : NetworkBehaviour
 
         OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
 
-        StartCoroutine(ResetGame());
+        _ = ResetGameAsync();
     }
 
     public void OnOrangeGoal()
@@ -89,16 +90,16 @@ public class GameManager : NetworkBehaviour
 
         OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
 
-        StartCoroutine(ResetGame());
+        _ = ResetGameAsync();
     }
 
-    private IEnumerator ResetGame()
+    private async Task ResetGameAsync()
     {
         SetBallActiveClientRpc(false);
 
         Timer.Instance.TimerIsRunning.Value = false;
 
-        yield return new WaitForSeconds(3);
+        await Task.Delay(3000);
 
         ResetPlayerClientRpc();
 
