@@ -37,10 +37,7 @@ public class GameManager : NetworkBehaviour
         {
             OnScoreChanged?.Invoke(_blueScore.Value, newOrangeScore);
         };
-    }
 
-    private void Start()
-    {
         if (!IsServer) return;
 
         foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
@@ -67,10 +64,10 @@ public class GameManager : NetworkBehaviour
             _orangeSpawnPointsRandomIndices.Add(-1);
         }
 
-        ResetPlayerClientRpc();
-
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
+
+        ResetPlayerClientRpc();
     }
 
     private static void RandomizeSpawnPointIndices(NetworkList<long> spawnPointsRandomIndices)
@@ -161,10 +158,10 @@ public class GameManager : NetworkBehaviour
 
         var spawnPoint = spawnPoints[index];
 
-        playerObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-
         var playerRigidbody = playerObject.GetComponent<Rigidbody>();
 
+        playerRigidbody.position = spawnPoint.position;
+        playerRigidbody.rotation = spawnPoint.rotation;
         playerRigidbody.velocity = Vector3.zero;
         playerRigidbody.angularVelocity = Vector3.zero;
 
