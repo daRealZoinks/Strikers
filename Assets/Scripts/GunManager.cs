@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine;
 
 public class GunManager : NetworkBehaviour
 {
@@ -34,7 +36,15 @@ public class GunManager : NetworkBehaviour
 
         ShootServerRpc();
         currentWeapon.ExecuteShoot();
-        Invoke(nameof(ResetCanShoot), currentWeapon.FireRate);
+
+        StartCoroutine(ResetCanShootCoroutine());
+    }
+
+    private IEnumerator ResetCanShootCoroutine()
+    {
+        yield return new WaitForSeconds(currentWeapon.FireRate);
+
+        ResetCanShoot();
     }
 
     [ServerRpc]
@@ -58,12 +68,21 @@ public class GunManager : NetworkBehaviour
 
     private void ChangeWeapon(Weapon weapon)
     {
+        StopReloadingAndCoroutines();
+
         weapons.ForEach(w => w.gameObject.SetActive(false));
         weapon.gameObject.SetActive(true);
         currentWeapon = weapon;
+
         Reload();
 
         OnWeaponChanged?.Invoke();
+    }
+
+    private void StopReloadingAndCoroutines()
+    {
+        StopAllCoroutines();
+        _isReloading = false;
     }
 
     private void ResetCanShoot()
@@ -81,12 +100,15 @@ public class GunManager : NetworkBehaviour
 
         currentWeapon.CurrentAmmo = 0;
         _isReloading = true;
-        Invoke(nameof(ExecuteReloading), currentWeapon.ReloadTime);
+
+        StartCoroutine(ExecuteReloading());
         currentWeapon.PlayReloadSequence();
     }
 
-    private void ExecuteReloading()
+    private IEnumerator ExecuteReloading()
     {
+        yield return new WaitForSeconds(currentWeapon.ReloadTime);
+
         _isReloading = false;
         currentWeapon.CurrentAmmo = currentWeapon.MaxAmmo;
         ResetCanShoot();

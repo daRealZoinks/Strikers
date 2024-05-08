@@ -3,9 +3,9 @@ using UnityEngine.VFX;
 
 public class ExplosiveProjectile : Projectile
 {
-    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionRadius = 10f;
     [SerializeField] private float explosionForce = 1000f;
-    [SerializeField] private float upwardsModifier = 50f;
+    [SerializeField] private float upwardsModifier = 1f;
 
     [SerializeField] private VisualEffect explosionEffect;
 
@@ -23,7 +23,8 @@ public class ExplosiveProjectile : Projectile
         for (var i = 0; i < size; i++)
         {
             var hitRigidbody = detectedColliders[i].attachedRigidbody;
-            if (hitRigidbody != null)
+
+            if (hitRigidbody)
             {
                 hitRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, upwardsModifier,
                     ForceMode.Impulse);

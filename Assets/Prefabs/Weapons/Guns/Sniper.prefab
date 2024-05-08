@@ -184,8 +184,8 @@ MonoBehaviour:
   <FireRate>k__BackingField: 3
   <ReloadTime>k__BackingField: 3
   range: 100
-  <Force>k__BackingField: 1000
-  bulletTrailPrefab: {fileID: 7510380165430627918, guid: 26455770c33f9a943a0e5312135f70b7,
+  <Force>k__BackingField: 20
+  bulletPrefab: {fileID: 7510380165430627918, guid: 26455770c33f9a943a0e5312135f70b7,
     type: 3}
   layerMask:
     serializedVersion: 2
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 1900851565554571504}
   - component: {fileID: 7956668975772383685}
   m_Layer: 0
-  m_Name: FIrePoint
+  m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

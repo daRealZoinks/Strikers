@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 public class Sniper : HitScanWeapon
 {
-    [field: SerializeField] public float Force { get; set; }
+    [field: SerializeField] public float Force { get; set; } = 20f;
 
-    [FormerlySerializedAs("bulletTrailPrefab")] [SerializeField] private HitScanBullet bulletPrefab;
+    [SerializeField] private HitScanBullet bulletPrefab;
 
     [SerializeField] private LayerMask layerMask;
 
@@ -14,37 +13,37 @@ public class Sniper : HitScanWeapon
 
     protected override void Shoot()
     {
-        var firePointTransform = firePoint.transform;
+        var weaponFirePointTransform = firePoint.transform;
 
         muzzleFlash.Play();
 
-        var firePointForward = firePointTransform.forward;
-        var firePointPosition = firePointTransform.position;
+        var directionOfFire = weaponFirePointTransform.forward;
+        var positionOfFire = weaponFirePointTransform.position;
 
-        var ray = new Ray(firePointPosition, firePointForward);
+        var rayCastFromWeapon = new Ray(positionOfFire, directionOfFire);
 
-        var hitPoint = firePointPosition + firePointForward * Range;
+        var maximumHitPoint = positionOfFire + directionOfFire * Range;
 
-        var bulletTrail = Instantiate(bulletPrefab, firePointPosition, Quaternion.identity);
+        var bulletTrailInstance = Instantiate(bulletPrefab, positionOfFire, Quaternion.identity);
 
-        if (Physics.Raycast(ray, out var hit, Range, layerMask))
+        if (Physics.Raycast(rayCastFromWeapon, out var hitInfo, Range, layerMask))
         {
-            var middlePoint = (firePointPosition + hit.point) / 2f;
+            var midpointBetweenFireAndHit = (positionOfFire + hitInfo.point) / 2f;
 
-            bulletTrail.SetPositions(firePointPosition, middlePoint, hit.point);
-            bulletTrail.PlayImpactSequence(hit.point, Quaternion.LookRotation(hit.normal));
+            bulletTrailInstance.SetPositions(positionOfFire, midpointBetweenFireAndHit, hitInfo.point);
+            bulletTrailInstance.PlayImpactSequence(hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
 
-            var hitRigidbody = hit.rigidbody;
+            var hitObjectRigidbody = hitInfo.rigidbody;
 
-            if (!hitRigidbody) return;
-            var force = firePointTransform.forward * Force;
-            hitRigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+            if (!hitObjectRigidbody) return;
+            var appliedForce = weaponFirePointTransform.forward * Force;
+            hitObjectRigidbody.AddForceAtPosition(appliedForce, hitInfo.point, ForceMode.VelocityChange);
         }
         else
         {
-            var middlePoint = (firePointPosition + hit.point) / 2f;
+            var midpointBetweenFireAndMaxRange = (positionOfFire + maximumHitPoint) / 2f;
 
-            bulletTrail.SetPositions(firePointPosition, middlePoint, hitPoint);
+            bulletTrailInstance.SetPositions(positionOfFire, midpointBetweenFireAndMaxRange, maximumHitPoint);
         }
     }
 }

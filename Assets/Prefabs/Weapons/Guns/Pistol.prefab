@@ -56,8 +56,8 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 3
   projectilePrefab: {fileID: 8565842949440041567, guid: 88018f0d016fd50438dc8e682ddb35a3,
     type: 3}
-  projectileSpeed: 100
-  range: 100
+  projectileSpeed: 200
+  range: 300
 --- !u!1 &3018312201865758706
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 4762549395590035166}
   - component: {fileID: 6897764386108421208}
   m_Layer: 0
-  m_Name: FIrePoint
+  m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -422,6 +422,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4226156463210825400, guid: 3b74c5f376fd7aa41b9f0ce46a120631,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0002257308
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b74c5f376fd7aa41b9f0ce46a120631,
         type: 3}

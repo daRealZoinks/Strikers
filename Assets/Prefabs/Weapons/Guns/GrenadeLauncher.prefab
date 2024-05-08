@@ -56,7 +56,7 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 2
   projectilePrefab: {fileID: -3400298428836583949, guid: b2da0172400050d45aa11350953317ab,
     type: 3}
-  projectileSpeed: 50
+  projectileSpeed: 75
   range: 1000
 --- !u!1 &3940171025934709540
 GameObject:
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 5714578497062030632}
   - component: {fileID: 4270724121867807773}
   m_Layer: 0
-  m_Name: FIrePoint
+  m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
