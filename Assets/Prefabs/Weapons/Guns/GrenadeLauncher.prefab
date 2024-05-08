@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 5714578497062030632}
   - component: {fileID: 4270724121867807773}
   m_Layer: 0
-  m_Name: FIrePoint
+  m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
