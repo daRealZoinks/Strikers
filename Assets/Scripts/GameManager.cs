@@ -3,7 +3,6 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System.Collections;
 using System.Threading.Tasks;
 using Random = UnityEngine.Random;
 
@@ -30,8 +29,15 @@ public class GameManager : NetworkBehaviour
 
     public event Action<int, int> OnScoreChanged;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        _blueScore.OnValueChanged += (_, newBlueScore) => { OnScoreChanged?.Invoke(newBlueScore, _orangeScore.Value); };
+
+        _orangeScore.OnValueChanged += (_, newOrangeScore) =>
+        {
+            OnScoreChanged?.Invoke(_blueScore.Value, newOrangeScore);
+        };
+
         if (!IsServer) return;
 
         foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
@@ -58,10 +64,10 @@ public class GameManager : NetworkBehaviour
             _orangeSpawnPointsRandomIndices.Add(-1);
         }
 
-        ResetPlayerClientRpc();
-
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
+
+        ResetPlayerClientRpc();
     }
 
     private static void RandomizeSpawnPointIndices(NetworkList<long> spawnPointsRandomIndices)
@@ -79,16 +85,12 @@ public class GameManager : NetworkBehaviour
     {
         _orangeScore.Value++;
 
-        OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
-
         _ = ResetGameAsync();
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
-
-        OnScoreChanged?.Invoke(_blueScore.Value, _orangeScore.Value);
 
         _ = ResetGameAsync();
     }
@@ -156,10 +158,10 @@ public class GameManager : NetworkBehaviour
 
         var spawnPoint = spawnPoints[index];
 
-        playerObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-
         var playerRigidbody = playerObject.GetComponent<Rigidbody>();
 
+        playerRigidbody.position = spawnPoint.position;
+        playerRigidbody.rotation = spawnPoint.rotation;
         playerRigidbody.velocity = Vector3.zero;
         playerRigidbody.angularVelocity = Vector3.zero;
 

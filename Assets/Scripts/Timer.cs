@@ -24,15 +24,14 @@ public class Timer : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
+        _timeRemaining.OnValueChanged += (_, newValue) => { OnTimeChanged?.Invoke((int)newValue); };
+
         if (!IsServer) return;
 
         _currentSeconds = minutes * 60 + seconds;
 
         _timeRemaining.Value = _currentSeconds;
         TimerIsRunning.Value = true;
-
-        OnTimeChanged?.Invoke(_currentSeconds);
     }
 
     public void Update()
