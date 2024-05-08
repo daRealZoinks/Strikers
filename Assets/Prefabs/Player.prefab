@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &806944788166698151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4994140982866085139}
+  m_Layer: 0
+  m_Name: Ground Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4994140982866085139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806944788166698151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9174276532502103335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1223743237460030424
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +494,37 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2393356564967973815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9174276532502103335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2527492379802726974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4353151995068621999}
+  m_Layer: 0
+  m_Name: Camera Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4353151995068621999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2527492379802726974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1264,7 +1326,9 @@ Transform:
   m_Children:
   - {fileID: 2479460238211939406}
   - {fileID: 3686235245846276990}
+  - {fileID: 4353151995068621999}
   - {fileID: 5997971073040926838}
+  - {fileID: 4994140982866085139}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &463025270616869114
@@ -1498,7 +1562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 947292821
+  GlobalObjectIdHash: 1495543573
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1520,21 +1584,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 13
-  <Acceleration>k__BackingField: 64
-  <Deceleration>k__BackingField: 128
-  <JumpHeight>k__BackingField: 3
+  <Acceleration>k__BackingField: 96
+  <Deceleration>k__BackingField: 160
+  <JumpHeight>k__BackingField: 2
   <AirControl>k__BackingField: 0.1
   <AirBreak>k__BackingField: 0
   <GravityScale>k__BackingField: 1.5
+  <GroundCheck>k__BackingField: {fileID: 4994140982866085139}
   <VirtualCamera>k__BackingField: {fileID: 4807040188356924075}
   <Sensitivity>k__BackingField: 0.1
   <MinimumAngle>k__BackingField: -90
   <MaximumAngle>k__BackingField: 90
   <WallCheckDistance>k__BackingField: 0.75
-  <WallJumpHeight>k__BackingField: 4
+  <WallJumpHeight>k__BackingField: 3
   <WallRunInitialImpulse>k__BackingField: 7
-  <WallJumpSideForce>k__BackingField: 6
-  <WallJumpForwardForce>k__BackingField: 5
+  <WallJumpSideForce>k__BackingField: 5
+  <WallJumpForwardForce>k__BackingField: 3
 --- !u!114 &5374704892588695544
 MonoBehaviour:
   m_ObjectHideFlags: 0
