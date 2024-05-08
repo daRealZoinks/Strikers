@@ -245,7 +245,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3160357842888223934}
   serializedVersion: 4
-  m_Mass: 50
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -263,7 +263,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &-3400298428836583949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,9 +277,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitSound: {fileID: 5277862695964057603}
-  explosionRadius: 5
+  explosionRadius: 10
   explosionForce: 1000
-  upwardsModifier: 50
+  upwardsModifier: 1
   explosionEffect: {fileID: 1446766090218869955, guid: 2ac2030b626aa004ba77952726db1ad9,
     type: 3}
 --- !u!96 &678930547782514772
