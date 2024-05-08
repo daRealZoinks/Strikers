@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Cinemachine;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ public class CharacterMovementController : MonoBehaviour
 
     [field: Range(0, 1f)]
     [field: SerializeField]
-    public float AirBreak { get; private set; } = 0f; // 0 - 1
+    public float AirBreak { get; private set; } // 0 - 1
 
     [field: SerializeField] public float GravityScale { get; private set; } = 1.5f;
 
@@ -58,14 +57,14 @@ public class CharacterMovementController : MonoBehaviour
     [field: SerializeField]
     public float WallCheckDistance { get; private set; } = 0.75f;
 
-    [field: SerializeField] public float WallJumpHeight { get; private set; } = 4f;
+    [field: SerializeField] public float WallJumpHeight { get; private set; } = 3f;
     [field: SerializeField] public float WallRunInitialImpulse { get; private set; } = 7f;
 
     [field: Header("Wall Jump Settings")]
     [field: SerializeField]
-    public float WallJumpSideForce { get; private set; } = 6f;
+    public float WallJumpSideForce { get; private set; } = 5f;
 
-    [field: SerializeField] public float WallJumpForwardForce { get; private set; } = 5f;
+    [field: SerializeField] public float WallJumpForwardForce { get; private set; } = 3f;
 
     #endregion
 
@@ -74,9 +73,10 @@ public class CharacterMovementController : MonoBehaviour
     public delegate void OnLandedDelegate(float fallSpeed);
 
     public event OnLandedDelegate OnLanded;
+
     public Rigidbody Rigidbody { get; private set; }
     public bool IsGrounded { get; private set; }
-    public bool MovementEnabled { get; set; }
+    private bool MovementEnabled { get; set; }
     public bool IsWallRight { get; private set; }
     public bool IsWallLeft { get; private set; }
     public bool IsWallRunning => IsWallRight || IsWallLeft;
@@ -91,8 +91,6 @@ public class CharacterMovementController : MonoBehaviour
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-
-        OnLanded += fallSpeed => { Debug.Log($"Landed with speed: {fallSpeed}"); };
     }
 
     private void FixedUpdate()
@@ -132,12 +130,9 @@ public class CharacterMovementController : MonoBehaviour
 
         for (var i = 0; i < size; i++)
         {
-            if (detectedColliders[i] == GetComponentInParent<Collider>())
-            {
-                continue;
-            }
+            var detectedCollider = detectedColliders[i];
 
-            if (detectedColliders[i].isTrigger)
+            if (detectedCollider == GetComponentInParent<Collider>() || detectedCollider.isTrigger)
             {
                 continue;
             }
