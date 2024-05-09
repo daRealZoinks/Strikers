@@ -170,13 +170,10 @@ public class GameManager : NetworkBehaviour
 
     public void OnTimerEnd()
     {
-        OnTimerEndClientRpc();
-    }
-
-    [ClientRpc]
-    private void OnTimerEndClientRpc()
-    {
-        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        if (NetworkManager.Singleton.IsServer)
+        {
+            NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
     }
 
 #if UNITY_EDITOR
