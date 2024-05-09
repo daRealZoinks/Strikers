@@ -14,8 +14,8 @@ public class Timer : NetworkBehaviour
     public event Action<int> OnTimeChanged;
     public NetworkVariable<bool> TimerIsRunning { get; } = new();
 
-    private readonly NetworkVariable<float> _timeRemaining = new();
-    private int _currentSeconds;
+    private readonly NetworkVariable<int> _timeRemaining = new();
+    private float _currentTime;
 
     private void Awake()
     {
@@ -24,13 +24,16 @@ public class Timer : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        _timeRemaining.OnValueChanged += (_, newValue) => { OnTimeChanged?.Invoke((int)newValue); };
+        _timeRemaining.OnValueChanged += (_, newValue) =>
+        {
+            OnTimeChanged?.Invoke(newValue);
+        };
 
         if (!IsServer) return;
 
-        _currentSeconds = minutes * 60 + seconds;
+        _timeRemaining.Value = minutes * 60 + seconds;
 
-        _timeRemaining.Value = _currentSeconds;
+        _currentTime = _timeRemaining.Value;
         TimerIsRunning.Value = true;
     }
 
@@ -39,19 +42,18 @@ public class Timer : NetworkBehaviour
         if (!IsServer) return;
         if (!TimerIsRunning.Value) return;
 
-        if (_timeRemaining.Value > 0)
+        if (_currentTime > 0)
         {
-            _timeRemaining.Value -= Time.deltaTime;
+            _currentTime -= Time.deltaTime;
 
-            if (!(_timeRemaining.Value < _currentSeconds)) return;
+            if (!(_currentTime < _timeRemaining.Value)) return;
 
-            _currentSeconds = (int)_timeRemaining.Value;
-            OnTimeChanged?.Invoke(_currentSeconds + 1);
+            _timeRemaining.Value = (int)_currentTime;
         }
         else
         {
             onTimerEnd?.Invoke();
-            _timeRemaining.Value = 0;
+            _currentTime = 0;
             TimerIsRunning.Value = false;
         }
     }
