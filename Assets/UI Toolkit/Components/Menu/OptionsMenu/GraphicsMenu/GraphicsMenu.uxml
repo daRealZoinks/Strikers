@@ -2,7 +2,10 @@
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/OptionsMenu/GraphicsMenu/GraphicsMenu.uss?fileID=7433441132597879392&amp;guid=c33835e4d754e604d93d1e1108ad5956&amp;type=3#GraphicsMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
     <ui:VisualElement class="buttonsContainer">
-        <ui:DropdownField name="qualityDropdown" label="Quality" index="-1" class="menu-dropdown-field" />
+        <ui:VisualElement class="menu-dropdown-field" style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Quality" />
+            <ui:DropdownField name="qualityDropdown" index="-1" class="menu-dropdown-field" style="width: 60%;" />
+        </ui:VisualElement>
         <ui:Button name="backButton" text="Back" class="menu-button" />
     </ui:VisualElement>
 </ui:UXML>

@@ -1,8 +1,10 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System.Collections;
+using System.Threading.Tasks;
+using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,13 +27,17 @@ public class GameManager : NetworkBehaviour
     private readonly NetworkList<long> _blueSpawnPointsRandomIndices = new();
     private readonly NetworkList<long> _orangeSpawnPointsRandomIndices = new();
 
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(Screen.width / 2f - 50, 10, 100, 30), $"{_blueScore.Value} - {_orangeScore.Value}");
-    }
+    public event Action<int, int> OnScoreChanged;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        _blueScore.OnValueChanged += (_, newBlueScore) => { OnScoreChanged?.Invoke(newBlueScore, _orangeScore.Value); };
+
+        _orangeScore.OnValueChanged += (_, newOrangeScore) =>
+        {
+            OnScoreChanged?.Invoke(_blueScore.Value, newOrangeScore);
+        };
+
         if (!IsServer) return;
 
         foreach (var player in NetworkManager.Singleton.ConnectedClientsList)
@@ -58,10 +64,10 @@ public class GameManager : NetworkBehaviour
             _orangeSpawnPointsRandomIndices.Add(-1);
         }
 
-        ResetPlayerClientRpc();
-
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
+
+        ResetPlayerClientRpc();
     }
 
     private static void RandomizeSpawnPointIndices(NetworkList<long> spawnPointsRandomIndices)
@@ -79,29 +85,29 @@ public class GameManager : NetworkBehaviour
     {
         _orangeScore.Value++;
 
-        StartCoroutine(ResetGame());
+        _ = ResetGameAsync();
     }
 
     public void OnOrangeGoal()
     {
         _blueScore.Value++;
 
-        StartCoroutine(ResetGame());
+        _ = ResetGameAsync();
     }
 
-    private IEnumerator ResetGame()
+    private async Task ResetGameAsync()
     {
         SetBallActiveClientRpc(false);
 
-        Timer.Instance.timerIsRunning.Value = false;
+        Timer.Instance.TimerIsRunning.Value = false;
 
-        yield return new WaitForSeconds(3);
+        await Task.Delay(3000);
 
         ResetPlayerClientRpc();
 
         ResetBall();
 
-        Timer.Instance.timerIsRunning.Value = true;
+        Timer.Instance.TimerIsRunning.Value = true;
 
         RandomizeSpawnPointIndices(_blueSpawnPointsRandomIndices);
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
@@ -152,10 +158,10 @@ public class GameManager : NetworkBehaviour
 
         var spawnPoint = spawnPoints[index];
 
-        playerObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-
         var playerRigidbody = playerObject.GetComponent<Rigidbody>();
 
+        playerRigidbody.position = spawnPoint.position;
+        playerRigidbody.rotation = spawnPoint.rotation;
         playerRigidbody.velocity = Vector3.zero;
         playerRigidbody.angularVelocity = Vector3.zero;
 
@@ -164,16 +170,10 @@ public class GameManager : NetworkBehaviour
 
     public void OnTimerEnd()
     {
-        OnTimerEndClientRpc();
-        Debug.Log("Timer ended");
-    }
-
-    [ClientRpc]
-    private void OnTimerEndClientRpc()
-    {
-        Debug.Log("Timer ended ClientRpc");
-
-        NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        if (NetworkManager.Singleton.IsServer)
+        {
+            NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
     }
 
 #if UNITY_EDITOR

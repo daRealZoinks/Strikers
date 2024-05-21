@@ -1,57 +1,60 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Timer : NetworkBehaviour
 {
+    [SerializeField] private int minutes = 5;
+    [SerializeField] private int seconds = 0;
+
     public static Timer Instance { get; private set; }
 
-    public NetworkVariable<float> timeRemaining = new();
-    public NetworkVariable<bool> timerIsRunning = new();
-
     public UnityEvent onTimerEnd;
+    public event Action<int> OnTimeChanged;
+    public NetworkVariable<bool> TimerIsRunning { get; } = new();
+
+    private readonly NetworkVariable<int> _timeRemaining = new();
+    private float _currentTime;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    // ongui
-    private void OnGUI()
-    {
-        var seconds = (int)timeRemaining.Value % 60;
-        var minutes = (int)timeRemaining.Value / 60;
-        GUI.Label(new Rect(Screen.width / 2 - 50, 40, 100, 30), $"{minutes:00}:{seconds:00}");
-
-        if (timeRemaining.Value <= 10)
-        {
-            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100), $"{timeRemaining.Value}");
-        }
-    }
-
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
+        _timeRemaining.OnValueChanged += (_, newValue) =>
+        {
+            OnTimeChanged?.Invoke(newValue);
+        };
+
         if (!IsServer) return;
 
-        timeRemaining.Value = 60 * 5;
-        timerIsRunning.Value = true;
+        _timeRemaining.Value = minutes * 60 + seconds;
+
+        _currentTime = _timeRemaining.Value;
+        TimerIsRunning.Value = true;
     }
 
     public void Update()
     {
         if (!IsServer) return;
-        if (!timerIsRunning.Value) return;
+        if (!TimerIsRunning.Value) return;
 
-        if (timeRemaining.Value > 0)
+        if (_currentTime > 0)
         {
-            timeRemaining.Value -= Time.deltaTime;
+            _currentTime -= Time.deltaTime;
+
+            if (!(_currentTime < _timeRemaining.Value)) return;
+
+            _timeRemaining.Value = (int)_currentTime;
         }
         else
         {
             onTimerEnd?.Invoke();
-            timeRemaining.Value = 0;
-            timerIsRunning.Value = false;
+            _currentTime = 0;
+            TimerIsRunning.Value = false;
         }
     }
 }

@@ -5,6 +5,9 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected FirePoint firePoint;
     [SerializeField] private Animator weaponAnimator;
 
+    [SerializeField] private AudioSource shootAudioSource;
+    [SerializeField] private AudioSource reloadAudioSource;
+
     [field: SerializeField] public int MaxAmmo { get; set; }
     [field: SerializeField] public float FireRate { get; set; }
     [field: SerializeField] public float ReloadTime { get; set; }
@@ -18,12 +21,15 @@ public abstract class Weapon : MonoBehaviour
 
         weaponAnimator.SetTrigger("Shoot");
 
+        shootAudioSource.Play();
+
         CurrentAmmo--;
     }
 
-    public void PlayReloadAnimation()
+    public void PlayReloadSequence()
     {
         weaponAnimator.SetTrigger("Reload");
+        reloadAudioSource.Play();
     }
 
     protected abstract void Shoot();

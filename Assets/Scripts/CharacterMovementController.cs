@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Cinemachine;
 using UnityEngine;
 
@@ -29,9 +28,11 @@ public class CharacterMovementController : MonoBehaviour
 
     [field: Range(0, 1f)]
     [field: SerializeField]
-    public float AirBreak { get; private set; } = 0f; // 0 - 1
+    public float AirBreak { get; private set; } // 0 - 1
 
     [field: SerializeField] public float GravityScale { get; private set; } = 1.5f;
+
+    [field: SerializeField] public Transform GroundCheck { get; private set; }
 
     #endregion
 
@@ -56,14 +57,14 @@ public class CharacterMovementController : MonoBehaviour
     [field: SerializeField]
     public float WallCheckDistance { get; private set; } = 0.75f;
 
-    [field: SerializeField] public float WallJumpHeight { get; private set; } = 4f;
+    [field: SerializeField] public float WallJumpHeight { get; private set; } = 3f;
     [field: SerializeField] public float WallRunInitialImpulse { get; private set; } = 7f;
 
     [field: Header("Wall Jump Settings")]
     [field: SerializeField]
-    public float WallJumpSideForce { get; private set; } = 6f;
+    public float WallJumpSideForce { get; private set; } = 5f;
 
-    [field: SerializeField] public float WallJumpForwardForce { get; private set; } = 5f;
+    [field: SerializeField] public float WallJumpForwardForce { get; private set; } = 3f;
 
     #endregion
 
@@ -72,9 +73,10 @@ public class CharacterMovementController : MonoBehaviour
     public delegate void OnLandedDelegate(float fallSpeed);
 
     public event OnLandedDelegate OnLanded;
+
     public Rigidbody Rigidbody { get; private set; }
     public bool IsGrounded { get; private set; }
-    public bool MovementEnabled { get; set; }
+    private bool MovementEnabled { get; set; }
     public bool IsWallRight { get; private set; }
     public bool IsWallLeft { get; private set; }
     public bool IsWallRunning => IsWallRight || IsWallLeft;
@@ -99,36 +101,52 @@ public class CharacterMovementController : MonoBehaviour
 
         ApplyAdditionalGravity();
 
-        CheckForWallRun();
+        if (!IsGrounded)
+        {
+            CheckForWallRun();
+        }
+        else
+        {
+            IsWallRight = false;
+            IsWallLeft = false;
+        }
     }
 
     private void Update()
     {
         UpdateCameraRotation(LookInput);
+
+        CheckGrounded();
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void CheckGrounded()
     {
-        foreach (var contactPoint in collision.contacts)
+        var wasGrounded = IsGrounded;
+
+        var detectedColliders = new Collider[5];
+        var size = Physics.OverlapSphereNonAlloc(GroundCheck.position, 0.1f, detectedColliders);
+
+        var shouldBeGrounded = false;
+
+        for (var i = 0; i < size; i++)
         {
-            Debug.DrawRay(contactPoint.point, contactPoint.normal, Color.red);
+            var detectedCollider = detectedColliders[i];
+
+            if (detectedCollider == GetComponentInParent<Collider>() || detectedCollider.isTrigger)
+            {
+                continue;
+            }
+
+            shouldBeGrounded = true;
+            break;
         }
 
-        if (collision.contacts.Any(contact => Vector3.Dot(contact.normal, Vector3.up) > 0.5f))
-        {
-            IsGrounded = true;
+        IsGrounded = shouldBeGrounded;
 
+        if (IsGrounded && !wasGrounded)
+        {
             OnLanded?.Invoke(Rigidbody.velocity.y);
         }
-        else
-        {
-            IsGrounded = false;
-        }
-    }
-
-    private void OnCollisionExit()
-    {
-        IsGrounded = false;
     }
 
     private void ApplyAdditionalGravity()
@@ -184,21 +202,28 @@ public class CharacterMovementController : MonoBehaviour
 
     public void Jump()
     {
-        GroundJump();
-        WallJump();
+        if (IsGrounded)
+        {
+            GroundJump();
+        }
+        else
+        {
+            if (IsWallRunning)
+            {
+                WallJump();
+            }
+        }
     }
 
     private void GroundJump()
     {
-        if (!IsGrounded) return;
-
         Rigidbody.velocity = new Vector3
         {
             x = Rigidbody.velocity.x,
             z = Rigidbody.velocity.z
         };
 
-        var jumpForce = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * JumpHeight);
+        var jumpForce = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * GravityScale * JumpHeight);
 
         Rigidbody.AddForce(jumpForce, ForceMode.VelocityChange);
 
@@ -207,13 +232,6 @@ public class CharacterMovementController : MonoBehaviour
 
     private void CheckForWallRun()
     {
-        if (IsGrounded)
-        {
-            IsWallRight = false;
-            IsWallLeft = false;
-            return;
-        }
-
         var rightRay = new Ray(transform.position, transform.right);
         var leftRay = new Ray(transform.position, -transform.right);
 
@@ -254,19 +272,21 @@ public class CharacterMovementController : MonoBehaviour
 
     private void WallJump()
     {
-        if (!IsWallRunning) return;
-
         var sideForce = Vector3.zero;
         if (IsWallRight) sideForce = _rightHitInfo.normal * WallJumpSideForce;
         if (IsWallLeft) sideForce = _leftHitInfo.normal * WallJumpSideForce;
 
-        var jumpForce = Vector3.up * Mathf.Sqrt(WallJumpHeight * -2 * Physics.gravity.y);
+        var jumpForce = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * GravityScale * WallJumpHeight);
 
         var forwardForce = transform.forward * WallJumpForwardForce;
 
         var finalForce = jumpForce + sideForce + forwardForce;
 
-        Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, 0f, Rigidbody.velocity.z);
+        Rigidbody.velocity = new Vector3
+        {
+            x = Rigidbody.velocity.x,
+            z = Rigidbody.velocity.z
+        };
 
         if (IsWallRight)
         {
