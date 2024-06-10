@@ -50,14 +50,14 @@ public class ProceduralCharacterAnimator : MonoBehaviour
         if (!virtualCamera)
             return;
 
-        var rotationEulerAngles = virtualCamera.transform.rotation.eulerAngles;
+        var lookAtPosition = virtualCamera.transform.position + virtualCamera.transform.forward * 100f;
 
-        Debug.Log($"{rotationEulerAngles.x}");
+        head.LookAt(lookAtPosition);
 
-        var targetRotation = Quaternion.Euler(rotationEulerAngles.x, 0, 0);
+        var rotationEulerAngles = head.rotation.eulerAngles;
 
-        targetRotation.eulerAngles -= new Vector3(89.98f, 0, 0);
+        rotationEulerAngles += new Vector3(-89.98f, 0, 0);
 
-        head.rotation = Quaternion.Lerp(head.localRotation, targetRotation, smoothTime);
+        head.rotation = Quaternion.Euler(rotationEulerAngles);
     }
 }

@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 947292821
+  GlobalObjectIdHash: 1495543573
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1712,6 +1712,77 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  doOnIfBlueTeam:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5169405640027288352}
+        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+        m_MethodName: set_material
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2100000, guid: 9b0c4535cce5f404aa8d97aa84eb4f85,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5374704892588695544}
+        m_TargetAssemblyTypeName: NetworkPlayerManager, Assembly-CSharp
+        m_MethodName: ChangeRenderersMaterialToBlue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  doOnIfOrangeTeam:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5169405640027288352}
+        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+        m_MethodName: set_material
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2100000, guid: 0c6af7f17cecc334d9212f7db2c2f3c8,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5374704892588695544}
+        m_TargetAssemblyTypeName: NetworkPlayerManager, Assembly-CSharp
+        m_MethodName: ChangeRenderersMaterialToOrange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  blueMaterial: {fileID: 2100000, guid: 44fda206803660d4d894a609af7014e5, type: 2}
+  orangeMaterial: {fileID: 2100000, guid: 3d36ec8f72958304a9559f2e90ee970b, type: 2}
+  renderers:
+  - {fileID: 7377167480840589872}
+  - {fileID: 4945229154261776927}
+  - {fileID: 2456974233637761759}
+  - {fileID: 1024557560906918408}
+  - {fileID: 9061481134506376918}
+  - {fileID: 1979560383598196246}
+  - {fileID: 3573162128058345681}
+  - {fileID: 3645525749800383753}
+  - {fileID: 1492934908524551118}
+  - {fileID: 208198957007498815}
+  - {fileID: 5577078090622964551}
+  - {fileID: 122450814493548430}
 --- !u!114 &7228158128516191069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1825,6 +1896,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1215573167374323884}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &5169405640027288352 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2926215710920285300, guid: d31a8679362b4bc4d8b837a96ad88adf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1215573167374323884}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7377167480840589872 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -666985854777507172, guid: d31a8679362b4bc4d8b837a96ad88adf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1215573167374323884}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9048809816308086212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7876023681238672744, guid: d31a8679362b4bc4d8b837a96ad88adf,
@@ -1924,6 +2007,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b25fdc47939ee2947af7c96578ada2d8, type: 3}
+--- !u!23 &208198957007498815 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3012605869744334237, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &827833250597640695 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2328443737051943509, guid: b25fdc47939ee2947af7c96578ada2d8,
@@ -1936,9 +2025,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510b815933f244639ecc62902bc09c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &1492934908524551118 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4583185204905316460, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1979560383598196246 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3482840952963972532, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &3045262468725270680 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 103500182588826426, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3573162128058345681 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1926180324356399987, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3645525749800383753 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1854010320867294891, guid: b25fdc47939ee2947af7c96578ada2d8,
     type: 3}
   m_PrefabInstance: {fileID: 3111220753418668962}
   m_PrefabAsset: {fileID: 0}
@@ -1954,6 +2067,12 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 3111220753418668962}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &9061481134506376918 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6263838439292024180, guid: b25fdc47939ee2947af7c96578ada2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3111220753418668962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4720306760279507096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1966,6 +2085,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GrenadeLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 799441313646483135, guid: 0849ba0ec5394904a878665f13a7fe45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2594660754065898887, guid: 0849ba0ec5394904a878665f13a7fe45,
         type: 3}
@@ -2027,6 +2151,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0849ba0ec5394904a878665f13a7fe45, type: 3}
+--- !u!23 &122450814493548430 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4626021042086584086, guid: 0849ba0ec5394904a878665f13a7fe45,
+    type: 3}
+  m_PrefabInstance: {fileID: 4720306760279507096}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &138308126252127808 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4641728520959760088, guid: 0849ba0ec5394904a878665f13a7fe45,
@@ -2042,6 +2172,12 @@ MonoBehaviour:
 --- !u!82 &3035273359986284423 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7754794999705081631, guid: 0849ba0ec5394904a878665f13a7fe45,
+    type: 3}
+  m_PrefabInstance: {fileID: 4720306760279507096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5577078090622964551 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 928910324254888927, guid: 0849ba0ec5394904a878665f13a7fe45,
     type: 3}
   m_PrefabInstance: {fileID: 4720306760279507096}
   m_PrefabAsset: {fileID: 0}
@@ -2069,6 +2205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 863276263577596282, guid: 9f7670d84db34f447b52611cab00626a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
@@ -2130,6 +2271,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f7670d84db34f447b52611cab00626a, type: 3}
+--- !u!23 &1024557560906918408 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8441882770972843902, guid: 9f7670d84db34f447b52611cab00626a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8867695467465520502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2111864091402740628 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7376539092620220130, guid: 9f7670d84db34f447b52611cab00626a,
@@ -2142,9 +2289,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4e9d52d66948ae9c58872b54db97f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &2456974233637761759 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6415534930102290345, guid: 9f7670d84db34f447b52611cab00626a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8867695467465520502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &3342732165902505456 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 6157448986677190790, guid: 9f7670d84db34f447b52611cab00626a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8867695467465520502}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4945229154261776927 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4589337054805102441, guid: 9f7670d84db34f447b52611cab00626a,
     type: 3}
   m_PrefabInstance: {fileID: 8867695467465520502}
   m_PrefabAsset: {fileID: 0}

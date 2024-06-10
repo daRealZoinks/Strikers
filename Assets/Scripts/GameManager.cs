@@ -44,7 +44,7 @@ public class GameManager : NetworkBehaviour
         {
             var playerObject = player.PlayerObject;
 
-            if (playerObject.GetComponent<NetworkPlayerManager>().Team == Team.Blue)
+            if (playerObject.GetComponent<NetworkPlayerManager>().team.Value == Team.Blue)
             {
                 _blueSpawnPointsRandomIndices.Add((long)playerObject.OwnerClientId);
             }
@@ -138,7 +138,7 @@ public class GameManager : NetworkBehaviour
         List<Transform> spawnPoints;
         NetworkList<long> spawnPointsRandomIndices;
 
-        switch (playerObject.GetComponent<NetworkPlayerManager>().Team)
+        switch (playerObject.GetComponent<NetworkPlayerManager>().team.Value)
         {
             case Team.Blue:
                 spawnPoints = blueSpawnPoints;
