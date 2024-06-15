@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.003338656, g: 0.009489004, b: 0.020379435, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -589,7 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55954771dc374b3ab20cd524ed2b4cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: MovementTestScene
+  lobbySceneName: MovementTestScene
+  joinHostScreenSceneName: JoinHostScreen
   blueSpawnPoints:
   - {fileID: 439895952}
   - {fileID: 1460935474}
@@ -600,7 +600,9 @@ MonoBehaviour:
   - {fileID: 1146441423}
   ball: {fileID: 7956859543138042364}
   ballSpawnPoint: {fileID: 138068288}
-  sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  lobbySceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  joinHostScreenSceneAsset: {fileID: 102900000, guid: 7ac5f370b0e001d4e8ccc8df4d52695e,
+    type: 3}
 --- !u!4 &224781749
 Transform:
   m_ObjectHideFlags: 0

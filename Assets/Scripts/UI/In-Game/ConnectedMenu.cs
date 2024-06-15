@@ -68,6 +68,15 @@ public class ConnectedMenu : MonoBehaviour
         IsPaused = false;
     }
 
+    private void Update()
+    {
+        if (!NetworkManager.Singleton.IsClient) return;
+        if (!NetworkManager.Singleton.ShutdownInProgress) return;
+
+        GetComponent<CursorController>().IsCursorLocked = false;
+        LeaveLobby();
+    }
+
     private void OnCopyRoomCodeButtonClicked()
     {
         GUIUtility.systemCopyBuffer = RelayExample.Instance.JoinCodeText;
@@ -80,6 +89,11 @@ public class ConnectedMenu : MonoBehaviour
     }
 
     private void OnLeaveButtonClicked()
+    {
+        LeaveLobby();
+    }
+
+    private void LeaveLobby()
     {
         NetworkManager.Singleton.Shutdown();
         Destroy(NetworkManager.Singleton.gameObject);
