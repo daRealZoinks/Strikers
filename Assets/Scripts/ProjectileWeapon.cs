@@ -6,10 +6,9 @@ public abstract class ProjectileWeapon : Weapon
     [SerializeField] protected float projectileSpeed;
     [SerializeField] protected float range;
 
-    protected override void Shoot()
+    protected override void Shoot(Vector3 firePosition, Quaternion fireRotation)
     {
-        var firePointTransform = firePoint.transform;
-        var projectile = Instantiate(projectilePrefab, firePointTransform.position, firePointTransform.rotation);
+        var projectile = Instantiate(projectilePrefab, firePosition, fireRotation);
         projectile.Launch(projectileSpeed);
 
         Destroy(projectile.gameObject, range / projectileSpeed);

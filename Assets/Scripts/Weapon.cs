@@ -2,7 +2,7 @@
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected FirePoint firePoint;
+    public FirePoint firePoint;
     [SerializeField] private Animator weaponAnimator;
 
     [SerializeField] private AudioSource shootAudioSource;
@@ -15,9 +15,9 @@ public abstract class Weapon : MonoBehaviour
     public int CurrentAmmo { get; set; }
     public bool IsEmpty => CurrentAmmo <= 0;
 
-    public void ExecuteShoot()
+    public void ExecuteShoot(Vector3 firePosition, Quaternion fireRotation)
     {
-        Shoot();
+        Shoot(firePosition, fireRotation);
 
         weaponAnimator.SetTrigger("Shoot");
 
@@ -32,5 +32,5 @@ public abstract class Weapon : MonoBehaviour
         reloadAudioSource.Play();
     }
 
-    protected abstract void Shoot();
+    protected abstract void Shoot(Vector3 firePosition, Quaternion fireRotation);
 }
