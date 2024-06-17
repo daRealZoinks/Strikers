@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 public class AnimeLinesController : MonoBehaviour
@@ -21,7 +20,11 @@ public class AnimeLinesController : MonoBehaviour
 
     private void Update()
     {
-        if (characterMovementController.Rigidbody.velocity.magnitude > maxSpeed)
+        var velocityMagnitude = characterMovementController.Rigidbody.velocity.magnitude;
+
+        var isOverMaxSpeed = velocityMagnitude > maxSpeed;
+
+        if (isOverMaxSpeed)
         {
             animeLines.Play();
         }

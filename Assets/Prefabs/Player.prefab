@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1495543573
+  GlobalObjectIdHash: 947292821
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1466,6 +1466,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0fb1a824b2cb7144a197a2a3e7e59c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team:
+    m_InternalValue: 0
   doOnSpawnIfOwner:
     m_PersistentCalls:
       m_Calls:
