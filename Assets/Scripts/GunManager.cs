@@ -32,10 +32,7 @@ public class GunManager : NetworkBehaviour
 
         _canShoot = false;
 
-        if (!IsOwner) return;
-
-        ShootServerRpc();
-        currentWeapon.ExecuteShoot();
+        currentWeapon.NetworkExecuteShoot();
 
         StartCoroutine(ResetCanShootCoroutine());
     }
@@ -45,18 +42,6 @@ public class GunManager : NetworkBehaviour
         yield return new WaitForSeconds(currentWeapon.FireRate);
 
         ResetCanShoot();
-    }
-
-    [ServerRpc]
-    private void ShootServerRpc()
-    {
-        ShootClientRpc();
-    }
-
-    [ClientRpc]
-    private void ShootClientRpc()
-    {
-        if (!IsOwner) currentWeapon.ExecuteShoot();
     }
 
     public void GiveWeapon(Weapon weapon)

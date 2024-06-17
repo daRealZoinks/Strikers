@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : NetworkBehaviour
 {
     [SerializeField] protected FirePoint firePoint;
     [SerializeField] private Animator weaponAnimator;
@@ -15,9 +16,17 @@ public abstract class Weapon : MonoBehaviour
     public int CurrentAmmo { get; set; }
     public bool IsEmpty => CurrentAmmo <= 0;
 
-    public void ExecuteShoot()
+    public void NetworkExecuteShoot()
     {
-        Shoot();
+        if (!IsOwner) return;
+
+        ExecuteShoot(firePoint.transform.position, firePoint.transform.rotation);
+        ShootServerRpc(firePoint.transform.position, firePoint.transform.rotation);
+    }
+
+    private void ExecuteShoot(Vector3 position, Quaternion rotation)
+    {
+        Shoot(position, rotation);
 
         weaponAnimator.SetTrigger("Shoot");
 
@@ -26,11 +35,23 @@ public abstract class Weapon : MonoBehaviour
         CurrentAmmo--;
     }
 
+    [ServerRpc]
+    private void ShootServerRpc(Vector3 position, Quaternion rotation)
+    {
+        ShootClientRpc(position, rotation);
+    }
+
+    [ClientRpc]
+    private void ShootClientRpc(Vector3 position, Quaternion rotation)
+    {
+        if (!IsOwner) ExecuteShoot(position, rotation);
+    }
+
     public void PlayReloadSequence()
     {
         weaponAnimator.SetTrigger("Reload");
         reloadAudioSource.Play();
     }
 
-    protected abstract void Shoot();
+    protected abstract void Shoot(Vector3 position, Quaternion rotation);
 }
