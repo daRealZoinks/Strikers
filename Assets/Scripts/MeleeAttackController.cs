@@ -10,6 +10,9 @@ public class MeleeAttackController : NetworkBehaviour
     [SerializeField] private Collider playerCollider;
     [SerializeField] private Transform cameraTransform;
 
+    [SerializeField] private AudioSource kickHitAudioSource;
+    [SerializeField] private AudioSource kickMissAudioSource;
+
     private SphereCollider _sphereCollider;
     private float _nextAttackTime;
 
@@ -59,9 +62,15 @@ public class MeleeAttackController : NetworkBehaviour
 
         var filteredColliders = colliders.Where(c => c && c != playerCollider);
 
-        foreach (var filteredCollider in filteredColliders)
+        var filteredCollidersArray = filteredColliders as Collider[] ?? filteredColliders.ToArray();
+
+        var hasHitRigidbody = false;
+
+        foreach (var filteredCollider in filteredCollidersArray)
         {
             if (!filteredCollider.TryGetComponent<Rigidbody>(out var rb)) continue;
+
+            hasHitRigidbody = true;
 
             var direction = cameraTransform.forward.normalized * attackForce;
 
@@ -81,5 +90,7 @@ public class MeleeAttackController : NetworkBehaviour
 
             rb.AddForce(direction, ForceMode.Impulse);
         }
+
+        (hasHitRigidbody ? kickHitAudioSource : kickMissAudioSource).Play();
     }
 }
