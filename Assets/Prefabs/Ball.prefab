@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4047160207
+  GlobalObjectIdHash: 549421205
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbe486f30aa4d3cabfd738165035ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportEnabled: 0
-  teleportIfDistanceGreaterThan: 3
+  teleportEnabled: 1
+  teleportIfDistanceGreaterThan: 10
 --- !u!114 &5415997490822215978
 MonoBehaviour:
   m_ObjectHideFlags: 0

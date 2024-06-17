@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class AdvancedNetworkRigidbody : NetworkBehaviour
 {
-    [SerializeField] private bool teleportEnabled;
-    [SerializeField] private float teleportIfDistanceGreaterThan = 3.0f;
+    [SerializeField] private bool teleportEnabled = true;
+    [SerializeField] private float teleportIfDistanceGreaterThan = 10.0f;
 
     private Rigidbody _rigidbody;
 
