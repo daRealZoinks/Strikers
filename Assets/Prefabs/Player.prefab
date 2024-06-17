@@ -2187,36 +2187,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1987118298355008350}
     m_Modifications:
-    - target: {fileID: 2603412344073777612, guid: b25fdc47939ee2947af7c96578ada2d8,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: m_Name
       value: Sniper
       objectReference: {fileID: 0}
-    - target: {fileID: 6788968713501295463, guid: b25fdc47939ee2947af7c96578ada2d8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6813936634033152280, guid: b25fdc47939ee2947af7c96578ada2d8,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 7956668975772383685, guid: b25fdc47939ee2947af7c96578ada2d8,
-        type: 3}
-      propertyPath: cinemachineVirtualCamera
-      value: 
-      objectReference: {fileID: 4807040188356924075}
     - target: {fileID: 8155309215098431583, guid: b25fdc47939ee2947af7c96578ada2d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2351,11 +2326,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrenadeLauncher
       objectReference: {fileID: 0}
-    - target: {fileID: 799441313646483135, guid: 0849ba0ec5394904a878665f13a7fe45,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2594660754065898887, guid: 0849ba0ec5394904a878665f13a7fe45,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2470,11 +2440,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pistol
-      objectReference: {fileID: 0}
-    - target: {fileID: 863276263577596282, guid: 9f7670d84db34f447b52611cab00626a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1353687711908548256, guid: 9f7670d84db34f447b52611cab00626a,
         type: 3}
