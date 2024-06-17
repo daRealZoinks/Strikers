@@ -11,39 +11,36 @@ public class Sniper : HitScanWeapon
 
     [SerializeField] private VisualEffect muzzleFlash;
 
-    protected override void Shoot()
+    protected override void Shoot(Vector3 firePosition, Quaternion fireRotation)
     {
-        var weaponFirePointTransform = firePoint.transform;
-
         muzzleFlash.Play();
 
-        var directionOfFire = weaponFirePointTransform.forward;
-        var positionOfFire = weaponFirePointTransform.position;
+        var directionOfFire = fireRotation * Vector3.forward;
 
-        var rayCastFromWeapon = new Ray(positionOfFire, directionOfFire);
+        var rayCastFromWeapon = new Ray(firePosition, directionOfFire);
 
-        var maximumHitPoint = positionOfFire + directionOfFire * Range;
+        var maximumHitPoint = firePosition + directionOfFire * Range;
 
-        var bulletTrailInstance = Instantiate(bulletPrefab, positionOfFire, Quaternion.identity);
+        var bulletTrailInstance = Instantiate(bulletPrefab, firePosition, Quaternion.identity);
 
         if (Physics.Raycast(rayCastFromWeapon, out var hitInfo, Range, layerMask))
         {
-            var midpointBetweenFireAndHit = (positionOfFire + hitInfo.point) / 2f;
+            var midpointBetweenFireAndHit = (firePosition + hitInfo.point) / 2f;
 
-            bulletTrailInstance.SetPositions(positionOfFire, midpointBetweenFireAndHit, hitInfo.point);
+            bulletTrailInstance.SetPositions(firePosition, midpointBetweenFireAndHit, hitInfo.point);
             bulletTrailInstance.PlayImpactSequence(hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
 
             var hitObjectRigidbody = hitInfo.rigidbody;
 
             if (!hitObjectRigidbody) return;
-            var appliedForce = weaponFirePointTransform.forward * Force;
+            var appliedForce = directionOfFire * Force;
             hitObjectRigidbody.AddForceAtPosition(appliedForce, hitInfo.point, ForceMode.VelocityChange);
         }
         else
         {
-            var midpointBetweenFireAndMaxRange = (positionOfFire + maximumHitPoint) / 2f;
+            var midpointBetweenFireAndMaxRange = (firePosition + maximumHitPoint) / 2f;
 
-            bulletTrailInstance.SetPositions(positionOfFire, midpointBetweenFireAndMaxRange, maximumHitPoint);
+            bulletTrailInstance.SetPositions(firePosition, midpointBetweenFireAndMaxRange, maximumHitPoint);
         }
     }
 }
