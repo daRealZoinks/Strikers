@@ -1098,9 +1098,9 @@ Transform:
   m_GameObject: {fileID: 6190891944045652428}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5997971073040926838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1137,7 +1137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23eab650838768440b424a8a5eb78960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 1000
+  attackForce: 2000
+  attackCooldown: 1
   playerCollider: {fileID: 463025270616869114}
   cameraTransform: {fileID: 5997971073040926838}
 --- !u!1 &8092133516706228497
