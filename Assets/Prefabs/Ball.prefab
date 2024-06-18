@@ -58,7 +58,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 2.8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6276846181003773167
 Rigidbody:
@@ -70,7 +70,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 80
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.15
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4047160207
+  GlobalObjectIdHash: 549421205
   InScenePlacedSourceGlobalObjectIdHash: 549421205
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -182,6 +182,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02467336212ef30449d064f4b7a44738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 394ef3a0b02fe4c47a832f403ae14458, type: 2}
+  blueGoal: {fileID: 0}
+  orangeGoal: {fileID: 0}
+  blueColor: {r: 0, g: 0.3647059, b: 1, a: 1}
+  middleColor: {r: 1, g: 1, b: 1, a: 1}
+  orangeColor: {r: 1, g: 0.54901963, b: 0, a: 1}
 --- !u!1 &5682479326748762262
 GameObject:
   m_ObjectHideFlags: 0

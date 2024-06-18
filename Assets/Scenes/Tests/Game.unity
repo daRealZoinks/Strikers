@@ -3380,20 +3380,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2388532093
       objectReference: {fileID: 0}
-    - target: {fileID: -5298214089450128767, guid: a1791d49f392d164bb464e9ca936eefd,
-        type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 549421205
-      objectReference: {fileID: 0}
     - target: {fileID: 773421751096326844, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
       propertyPath: m_Name
       value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 773421751096326844, guid: a1791d49f392d164bb464e9ca936eefd,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1316573230464063370, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
@@ -3445,21 +3435,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2708201579249957897, guid: a1791d49f392d164bb464e9ca936eefd,
+    - target: {fileID: 1659520190996772003, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2994787885114064380, guid: a1791d49f392d164bb464e9ca936eefd,
+      propertyPath: blueGoal
+      value: 
+      objectReference: {fileID: 267433266}
+    - target: {fileID: 1659520190996772003, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6545295671468527496, guid: a1791d49f392d164bb464e9ca936eefd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: orangeGoal
+      value: 
+      objectReference: {fileID: 1112387635}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
