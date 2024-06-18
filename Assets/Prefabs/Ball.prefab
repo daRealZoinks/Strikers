@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 549421205
+  GlobalObjectIdHash: 4047160207
   InScenePlacedSourceGlobalObjectIdHash: 549421205
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -182,12 +182,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02467336212ef30449d064f4b7a44738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trailRenderer: {fileID: 2393287708859050495}
+  rigidbody: {fileID: 6276846181003773167}
+  minSpeedForTrail: 15
   material: {fileID: 2100000, guid: 394ef3a0b02fe4c47a832f403ae14458, type: 2}
   blueGoal: {fileID: 0}
   orangeGoal: {fileID: 0}
   blueColor: {r: 0, g: 0.3647059, b: 1, a: 1}
   middleColor: {r: 1, g: 1, b: 1, a: 1}
   orangeColor: {r: 1, g: 0.54901963, b: 0, a: 1}
+  emission: 3
 --- !u!1 &5682479326748762262
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +395,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.7
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -424,8 +428,8 @@ TrailRenderer:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 1}
+      key3: {r: 0, g: 0, b: 0, a: 1}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -440,8 +444,8 @@ TrailRenderer:
       ctime7: 0
       atime0: 0
       atime1: 65535
-      atime2: 0
-      atime3: 0
+      atime2: 65535
+      atime3: 65535
       atime4: 0
       atime5: 0
       atime6: 0

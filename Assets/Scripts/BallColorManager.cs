@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class BallColorManager : MonoBehaviour
 {
+    [SerializeField] private TrailRenderer trailRenderer;
+    [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private float minSpeedForTrail = 5f;
+
     [SerializeField] private Material material;
     [SerializeField] private Goal blueGoal;
     [SerializeField] private Goal orangeGoal;
@@ -18,6 +22,8 @@ public class BallColorManager : MonoBehaviour
 
     private void Update()
     {
+        trailRenderer.emitting = rigidbody.velocity.magnitude > minSpeedForTrail;
+
         var distanceToBlueGoal = Vector3.Distance(blueGoal.transform.position, transform.position);
         var distanceToOrangeGoal = Vector3.Distance(orangeGoal.transform.position, transform.position);
 
