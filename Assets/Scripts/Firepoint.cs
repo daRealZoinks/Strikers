@@ -24,6 +24,13 @@ public class FirePoint : MonoBehaviour
         Gizmos.color = Color.red;
         var thisTransform = transform;
         var position = thisTransform.position;
-        Gizmos.DrawLine(position, position + thisTransform.forward * 10);
+
+        if (!cinemachineVirtualCamera) return;
+        var cinemachineVirtualCameraTransform = cinemachineVirtualCamera.transform;
+        var ray = new Ray(cinemachineVirtualCameraTransform.position, cinemachineVirtualCameraTransform.forward);
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
+        {
+            Gizmos.DrawLine(position, hit.point);
+        }
     }
 }
