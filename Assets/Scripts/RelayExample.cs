@@ -71,7 +71,7 @@ public class RelayExample : MonoBehaviour
         {
             var a = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
-            JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
+            JoinCodeText = joinCode;
 
             _transport.SetClientRelayData(a);
 
