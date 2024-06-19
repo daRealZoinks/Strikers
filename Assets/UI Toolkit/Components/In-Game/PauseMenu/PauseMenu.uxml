@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Components/In-Game/PauseMenu/PauseMenu.uss?fileID=7433441132597879392&amp;guid=28e97fce6b0f4534ea4fd1f1dcec0e3f&amp;type=3#PauseMenu" />
+    <Style src="project://database/Assets/UI%20Toolkit/Components/In-Game/In-Game.uss?fileID=7433441132597879392&amp;guid=15334390ee96ab64ebf800c03f36be12&amp;type=3#In-Game" />
+    <ui:VisualElement class="background buttonsContainer">
+        <ui:Label name="roomCodeLabel" class="menu-label" />
+        <ui:Button name="copyRoomCodeButton" text="Copy Room Code" class="menu-button" />
+        <ui:Button name="leaveToLobbyButton" text="Leave to lobby" class="menu-button" style="display: none;" />
+        <ui:VisualElement class="spacer" />
+        <ui:Button name="exitButton" text="Exit" class="menu-button" />
+    </ui:VisualElement>
+</ui:UXML>
