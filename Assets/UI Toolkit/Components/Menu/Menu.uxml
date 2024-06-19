@@ -5,8 +5,8 @@
     <ui:Template name="DisplayMenu" src="project://database/Assets/UI%20Toolkit/Components/Menu/OptionsMenu/DisplayMenu/DisplayMenu.uxml?fileID=9197481963319205126&amp;guid=2b79d0c8a93621947ad8eedf872feea4&amp;type=3#DisplayMenu" />
     <ui:Template name="GraphicsMenu" src="project://database/Assets/UI%20Toolkit/Components/Menu/OptionsMenu/GraphicsMenu/GraphicsMenu.uxml?fileID=9197481963319205126&amp;guid=787e95e2b5cf1174fb75421036bcf753&amp;type=3#GraphicsMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
-    <ui:VisualElement class="bottomCorner background" style="background-color: rgba(0, 0, 0, 0);">
-        <ui:Instance template="MainMenu" name="MainMenu" />
+    <ui:VisualElement class="bottomCorner background" style="background-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;">
+        <ui:Instance template="MainMenu" name="MainMenu" style="width: 100%; height: 100%;" />
         <ui:Instance template="OptionsMenu" name="OptionsMenu" style="display: none;" />
         <ui:Instance template="AudioMenu" name="AudioMenu" style="display: none;" />
         <ui:Instance template="DisplayMenu" name="DisplayMenu" style="display: none;" />
