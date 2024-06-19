@@ -9,9 +9,14 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private string sceneName;
 
+    private TextField _nameTextField;
+
     private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
+
+        _nameTextField = root.Q<TextField>("nameTextField");
+
         var playButton = root.Q<Button>("playButton");
         var optionsButton = root.Q<Button>("optionsButton");
         var exitButton = root.Q<Button>("exitButton");
@@ -23,6 +28,9 @@ public class MainMenu : MonoBehaviour
 
     private void OnPlayClicked()
     {
+        var playerName = _nameTextField.text;
+        PlayerPrefs.SetString("PlayerName", playerName);
+
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
