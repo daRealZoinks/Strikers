@@ -32,6 +32,8 @@ public class RelayExample : MonoBehaviour
         if (!AuthenticationService.Instance.IsSignedIn)
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(PlayerPrefs.GetString("PlayerName", "Player"));
         }
 
         _transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
