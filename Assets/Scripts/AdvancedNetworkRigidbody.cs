@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class AdvancedNetworkRigidbody : NetworkBehaviour
 {
-    [SerializeField] private bool teleportEnabled;
-    [SerializeField] private float teleportIfDistanceGreaterThan = 3.0f;
+    [SerializeField] private bool teleportEnabled = true;
+    [SerializeField] private float teleportIfDistanceGreaterThan = 10.0f;
 
     private Rigidbody _rigidbody;
 
@@ -32,25 +32,30 @@ public class AdvancedNetworkRigidbody : NetworkBehaviour
     {
         if (IsOwner) return;
 
-        _networkPosition = newValue.Position;
+        var localTime = (float)NetworkManager.NetworkTimeSystem.LocalTime;
+        var serverTime = (float)NetworkManager.NetworkTimeSystem.ServerTime;
+        var timeDifference = localTime - serverTime;
 
-        if (teleportEnabled)
+        // Calculate the predicted position and rotation
+        var predictedPosition = newValue.Position + newValue.Velocity * timeDifference;
+        var predictedRotation = Quaternion.Euler(newValue.AngularVelocity * timeDifference) * newValue.Rotation;
+
+        // Check if the distance between the current position and the predicted position is greater than the threshold
+        if (teleportEnabled && Vector3.Distance(_rigidbody.position, predictedPosition) > teleportIfDistanceGreaterThan)
         {
-            if (Vector3.Distance(_rigidbody.position, _networkPosition) > teleportIfDistanceGreaterThan)
-            {
-                _rigidbody.position = _networkPosition;
-            }
+            // Teleport the object to the predicted position
+            _rigidbody.position = predictedPosition;
+            _rigidbody.rotation = predictedRotation;
+        }
+        else
+        {
+            // Smoothly interpolate between the current state and the predicted state
+            _rigidbody.position = Vector3.Lerp(_rigidbody.position, predictedPosition, 0.1f);
+            _rigidbody.rotation = Quaternion.Lerp(_rigidbody.rotation, predictedRotation, 0.1f);
         }
 
-        _networkRotation = newValue.Rotation;
-
-        _rigidbody.rotation = _networkRotation;
-
-        _rigidbody.velocity = _physicsSnapshot.Value.Velocity;
-        _distance = Vector3.Distance(_rigidbody.position, _networkPosition);
-
-        _rigidbody.angularVelocity = _physicsSnapshot.Value.AngularVelocity;
-        _angle = Quaternion.Angle(_rigidbody.rotation, _networkRotation);
+        _rigidbody.velocity = newValue.Velocity;
+        _rigidbody.angularVelocity = newValue.AngularVelocity;
     }
 
     private void FixedUpdate()

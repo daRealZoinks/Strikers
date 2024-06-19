@@ -183,8 +183,9 @@ MonoBehaviour:
   <MaxAmmo>k__BackingField: 3
   <FireRate>k__BackingField: 3
   <ReloadTime>k__BackingField: 3
-  range: 100
-  <Force>k__BackingField: 20
+  range: 300
+  <Force>k__BackingField: 125
+  <SpinPercentage>k__BackingField: 0.5
   bulletPrefab: {fileID: 7510380165430627918, guid: 26455770c33f9a943a0e5312135f70b7,
     type: 3}
   layerMask:

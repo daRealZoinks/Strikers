@@ -12,7 +12,9 @@ using UnityEditor;
 
 public class GameManager : NetworkBehaviour
 {
-    [SerializeField] private string sceneName;
+    [SerializeField] private string lobbySceneName;
+
+    [SerializeField] private string joinHostScreenSceneName;
 
     [SerializeField] private List<Transform> blueSpawnPoints;
     [SerializeField] private List<Transform> orangeSpawnPoints;
@@ -44,7 +46,7 @@ public class GameManager : NetworkBehaviour
         {
             var playerObject = player.PlayerObject;
 
-            if (playerObject.GetComponent<NetworkPlayerManager>().Team == Team.Blue)
+            if (playerObject.GetComponent<NetworkPlayerManager>().team.Value == Team.Blue)
             {
                 _blueSpawnPointsRandomIndices.Add((long)playerObject.OwnerClientId);
             }
@@ -68,6 +70,26 @@ public class GameManager : NetworkBehaviour
         RandomizeSpawnPointIndices(_orangeSpawnPointsRandomIndices);
 
         ResetPlayerClientRpc();
+    }
+
+    private void Update()
+    {
+        if (!NetworkManager.Singleton.IsClient) return;
+
+        if (NetworkManager.Singleton.ShutdownInProgress)
+        {
+            LeaveGame();
+        }
+    }
+
+    private void LeaveGame()
+    {
+        NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+        SceneManager.LoadScene(joinHostScreenSceneName);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private static void RandomizeSpawnPointIndices(NetworkList<long> spawnPointsRandomIndices)
@@ -138,7 +160,7 @@ public class GameManager : NetworkBehaviour
         List<Transform> spawnPoints;
         NetworkList<long> spawnPointsRandomIndices;
 
-        switch (playerObject.GetComponent<NetworkPlayerManager>().Team)
+        switch (playerObject.GetComponent<NetworkPlayerManager>().team.Value)
         {
             case Team.Blue:
                 spawnPoints = blueSpawnPoints;
@@ -172,16 +194,20 @@ public class GameManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.IsServer)
         {
-            NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            NetworkManager.SceneManager.LoadScene(lobbySceneName, LoadSceneMode.Single);
         }
     }
 
 #if UNITY_EDITOR
-    [SerializeField] private SceneAsset sceneAsset;
+    [SerializeField] private SceneAsset lobbySceneAsset;
+
+    [SerializeField] private SceneAsset joinHostScreenSceneAsset;
 
     private void OnValidate()
     {
-        if (sceneAsset != null) sceneName = sceneAsset.name;
+        if (lobbySceneAsset) lobbySceneName = lobbySceneAsset.name;
+
+        if (joinHostScreenSceneAsset) joinHostScreenSceneName = joinHostScreenSceneAsset.name;
     }
 #endif
 }

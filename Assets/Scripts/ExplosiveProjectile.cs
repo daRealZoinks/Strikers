@@ -11,7 +11,9 @@ public class ExplosiveProjectile : Projectile
 
     private void OnCollisionEnter()
     {
-        AudioSource.PlayClipAtPoint(hitSound.clip, transform.position);
+        var audioSource = Instantiate(hitSound, transform.position, Quaternion.identity);
+        Destroy(audioSource.gameObject, hitSound.clip.length);
+
         Explode();
     }
 

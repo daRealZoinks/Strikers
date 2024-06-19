@@ -76,7 +76,7 @@ public class ConnectMenu : MonoBehaviour
     private void OnExitButtonClicked()
     {
         OnBackToMenu?.Invoke();
-        RelayExample.Instance.Deauthenticate();
+        RelayExample.DeAuthenticate();
         SceneManager.LoadScene(menuSceneName, LoadSceneMode.Single);
     }
 

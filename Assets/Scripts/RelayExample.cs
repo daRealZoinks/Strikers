@@ -38,7 +38,7 @@ public class RelayExample : MonoBehaviour
         Instance = this;
     }
 
-    public void Deauthenticate()
+    public static void DeAuthenticate()
     {
         AuthenticationService.Instance.SignOut();
     }
@@ -47,7 +47,9 @@ public class RelayExample : MonoBehaviour
     {
         try
         {
-            var a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
+            var numberOfPlayers = MaxPlayers - 1;
+
+            var a = await RelayService.Instance.CreateAllocationAsync(numberOfPlayers);
 
             JoinCodeText = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 

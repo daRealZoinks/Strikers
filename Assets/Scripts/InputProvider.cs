@@ -55,6 +55,6 @@ public class InputProvider : MonoBehaviour
     {
         if (context.phase != InputActionPhase.Started) return;
 
-        meleeAttackController.Attack();
+        meleeAttackController.ExecuteAttack();
     }
 }

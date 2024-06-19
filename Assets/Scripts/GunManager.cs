@@ -34,8 +34,11 @@ public class GunManager : NetworkBehaviour
 
         if (!IsOwner) return;
 
-        ShootServerRpc();
-        currentWeapon.ExecuteShoot();
+        var firePosition = currentWeapon.firePoint.transform.position;
+        var fireRotation = currentWeapon.firePoint.transform.rotation;
+
+        ShootServerRpc(firePosition, fireRotation);
+        currentWeapon.ExecuteShoot(firePosition, fireRotation);
 
         StartCoroutine(ResetCanShootCoroutine());
     }
@@ -48,15 +51,15 @@ public class GunManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void ShootServerRpc()
+    private void ShootServerRpc(Vector3 firePosition, Quaternion fireRotation)
     {
-        ShootClientRpc();
+        ShootClientRpc(firePosition, fireRotation);
     }
 
     [ClientRpc]
-    private void ShootClientRpc()
+    private void ShootClientRpc(Vector3 firePosition, Quaternion fireRotation)
     {
-        if (!IsOwner) currentWeapon.ExecuteShoot();
+        if (!IsOwner) currentWeapon.ExecuteShoot(firePosition, fireRotation);
     }
 
     public void GiveWeapon(Weapon weapon)

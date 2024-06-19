@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.003338656, g: 0.009489004, b: 0.020379435, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -589,7 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55954771dc374b3ab20cd524ed2b4cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: MovementTestScene
+  lobbySceneName: MovementTestScene
+  joinHostScreenSceneName: JoinHostScreen
   blueSpawnPoints:
   - {fileID: 439895952}
   - {fileID: 1460935474}
@@ -600,7 +600,9 @@ MonoBehaviour:
   - {fileID: 1146441423}
   ball: {fileID: 7956859543138042364}
   ballSpawnPoint: {fileID: 138068288}
-  sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  lobbySceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  joinHostScreenSceneAsset: {fileID: 102900000, guid: 7ac5f370b0e001d4e8ccc8df4d52695e,
+    type: 3}
 --- !u!4 &224781749
 Transform:
   m_ObjectHideFlags: 0
@@ -3378,20 +3380,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2388532093
       objectReference: {fileID: 0}
-    - target: {fileID: -5298214089450128767, guid: a1791d49f392d164bb464e9ca936eefd,
-        type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 549421205
-      objectReference: {fileID: 0}
     - target: {fileID: 773421751096326844, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
       propertyPath: m_Name
       value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 773421751096326844, guid: a1791d49f392d164bb464e9ca936eefd,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1316573230464063370, guid: a1791d49f392d164bb464e9ca936eefd,
         type: 3}
@@ -3443,6 +3435,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1659520190996772003, guid: a1791d49f392d164bb464e9ca936eefd,
+        type: 3}
+      propertyPath: blueGoal
+      value: 
+      objectReference: {fileID: 267433266}
+    - target: {fileID: 1659520190996772003, guid: a1791d49f392d164bb464e9ca936eefd,
+        type: 3}
+      propertyPath: orangeGoal
+      value: 
+      objectReference: {fileID: 1112387635}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
