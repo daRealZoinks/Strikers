@@ -47,6 +47,8 @@ public class HitScanBullet : MonoBehaviour
         var impactEffectInstance = Instantiate(impactEffect, position, rotation);
         impactEffectInstance.Play();
         Destroy(impactEffectInstance.gameObject, 1f);
-        AudioSource.PlayClipAtPoint(hitSound.clip, position);
+
+        var audioSource = Instantiate(hitSound, transform.position, Quaternion.identity);
+        Destroy(audioSource.gameObject, hitSound.clip.length);
     }
 }
