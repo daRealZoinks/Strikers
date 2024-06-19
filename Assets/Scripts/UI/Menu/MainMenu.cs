@@ -21,6 +21,8 @@ public class MainMenu : MonoBehaviour
         var optionsButton = root.Q<Button>("optionsButton");
         var exitButton = root.Q<Button>("exitButton");
 
+        _nameTextField.value = PlayerPrefs.GetString("PlayerName", "Player");
+
         playButton.clicked += OnPlayClicked;
         optionsButton.clicked += OnOptionsClicked;
         exitButton.clicked += OnExitClicked;

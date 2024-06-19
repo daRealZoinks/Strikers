@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,22 @@ public class NetworkPlayerManager : NetworkBehaviour
 
     [SerializeField] private List<Renderer> renderers;
 
+    [SerializeField] private TextMeshPro playerNameText;
+
+    private readonly NetworkList<char> _playerName = new(readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Owner);
+
+    private void Awake()
+    {
+        _playerName.OnListChanged += _ =>
+        {
+            if (!IsOwner)
+            {
+                playerNameText.text = ReadPlayerName();
+            }
+        };
+    }
+
     public override void OnNetworkSpawn()
     {
         team.OnValueChanged += OnValueChanged;
@@ -30,6 +47,37 @@ public class NetworkPlayerManager : NetworkBehaviour
         }
 
         InvokeOnTeamChange(team.Value);
+
+        if (IsOwner)
+        {
+            WritePlayerName();
+        }
+        else
+        {
+            playerNameText.text = ReadPlayerName();
+        }
+    }
+
+    private string ReadPlayerName()
+    {
+        var playerName = string.Empty;
+
+        foreach (var letter in _playerName)
+        {
+            playerName += letter;
+        }
+
+        return playerName;
+    }
+
+    private void WritePlayerName()
+    {
+        var playerName = PlayerPrefs.GetString("PlayerName", "Player");
+
+        foreach (var letter in playerName)
+        {
+            _playerName.Add(letter);
+        }
     }
 
     private void OnValueChanged(Team previousValue, Team newValue)
