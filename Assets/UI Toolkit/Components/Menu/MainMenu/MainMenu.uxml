@@ -2,6 +2,11 @@
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=50fe05c2da019d9459cad891c6a34cec&amp;type=3#MainMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Components/Menu/Menu.uss?fileID=7433441132597879392&amp;guid=e300c84a7d388e344a2a94cc82fc7ce0&amp;type=3#Menu" />
     <ui:VisualElement class="buttonsContainer">
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Label text="Username" style="font-size: 50px; color: white; -unity-text-align: middle-center;" />
+            <ui:TextField name="nameTextField" class="menu-text-field" style="width: 432px;" />
+        </ui:VisualElement>
+        <ui:VisualElement class="spacer" />
         <ui:Button name="playButton" text="Play" class="menu-button" />
         <ui:Button name="optionsButton" text="Options" class="menu-button" />
         <ui:Button name="exitButton" text="Exit" class="menu-button" />
