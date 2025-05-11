@@ -8,7 +8,7 @@ The movement is physics based to make it more fun and chaotic. You can run, jump
 
 $finalForce = (playerInputVector -normalizedVelocityVector) * acceleration$
 
-<video controls src="README/Untitled.mp4" title="Title"></video>
+![alt text](README/Untitled.gif)
 
 The result is that, unaffected, you will get to the maximum speed by yourself, but if you gain any speed over that, if you keep walking in the same direction, you will not slow down.
 
@@ -40,11 +40,11 @@ Sound effects are either royalty free or made by me (Right after I typed this se
 
 3d models are made by me in Blender. Guns have been keyframe animated in Unity (I didn't have time to learn how to animate in Blender).
 
-<video controls src="README/Recording 2025-05-09 123009.mp4" title="Title"></video>
+![alt text](<README/Screen Recording 2025-05-09 122945.gif>)
 
 The character is procedurally animated based on it's own velocity inside [ProceduralCharacterAnimator.cs](Assets/Scripts/ProceduralCharacterAnimator.cs) (for some reason the head is not animating looking up and down).
 
-<video controls src="README/Recording 2025-05-09 123315.mp4" title="Title"></video>
+![alt text](<README/Screen Recording 2025-05-09 123243.gif>)
 
 ## Screenshots
 
