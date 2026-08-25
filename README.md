@@ -1,7 +1,6 @@
 # Strikers
 
 A unique first-person shooter that merges competitive soccer with fast-paced FPS action.
-First person shooter combined with soccer where you have to shoot the ball into the opponent team's goal.
 
 ## Movement
 
