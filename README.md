@@ -1,18 +1,17 @@
 # Strikers
 
+A unique first-person shooter that merges competitive soccer with fast-paced FPS action.
 First person shooter combined with soccer where you have to shoot the ball into the opponent team's goal.
 
 ## Movement
 
-The movement is physics based to make it more fun and chaotic. You can run, jump, wallrun, and walljump (check the `Move()` function inside [CharacterMovementController](Assets/Scripts/CharacterMovementController.cs)). It uses a vector equation that I was very proud of myself for making.
+The game features a custom-built, physics-driven movement system enabling dynamic maneuvers such as wall-running and wall-jumping, made to be fun and chaotic. The movement uses a satisfying acceleration and momentum keeping system that feels very responsive when changing direction very fast, using the following physics equation: 
 
-$finalForce = (playerInputVector -normalizedVelocityVector) * acceleration$
+$finalForce = (playerInputVector - normalizedVelocityVector) * acceleration$
 
 ![alt text](README/Untitled.gif)
 
-The result is that, unaffected, you will get to the maximum speed by yourself, but if you gain any speed over that, if you keep walking in the same direction, you will not slow down.
-
-Since the player is a rigidbody, he can be affected by collisions or forces applied to him such as explosions. This will allow you to gain ludicrous speed.
+Since the player object is a Rigidbody3D, it can be affected by collisions or forces applied to him such as explosions, which allow you to build up speed over the maximum speed, and not losing it if going the same direction.
 
 ## Weapons
 
@@ -22,27 +21,23 @@ There are 3 weapons:
 - The sniper
 - The grenade launcher
 
-The game is designed to be fast paced and chaotic, with a focus on skill based gameplay.
+The game is designed to be fast paced and chaotic, with a focus on accuracy, positioning and using the environment to move fast.
 
 ## Multiplayer
 
-The game is multiplayer, with up to 6 players in a match. It's designed to be played with friends. Using Unity Network for Game Objects it uses a peer to peer system where one player hosts the game and the others connect to them. It's client authoritative, meaning that the players are sending their positions to the host. The ball is simulated on the host. To combat the latency I'm extrapolating the phyiscs objects' position using the delay time from the client to the server and the current velocity of the object. This is done in the [AdvancedNetworkRigidbody.cs](Assets/Scripts/AdvancedNetworkRigidbody.cs) script.
+The game features multiplayer, with up to 6 players in a 3v3 match, designed to be played with friends.
 
-## Music
+Using Unity's Network for Game Objects, it uses a peer to peer system where one player hosts the game and the others connect to them.
 
-Music brought from a royalty free music site. I forgot which one.
-
-## Sound Effects
-
-Sound effects are either royalty free or made by me (Right after I typed this sentence, Copilot said "The gun sounds are made by me, and the ball sounds are from a royalty free sound effects site.". I don't own any guns 💀💀💀).
+The game features a client authoritative architecture, meaning that the players are processing their movement on their machines and sending their positions to the host. The ball is simulated on the host, alongside with weapon dispensers and goal detection. This ensures player's inputs are processed instantly with the tradeoff of latency. To combat that, the game features a physics objects' position extrapolation system using the delay time from the client to the server and the current velocity of the object. This is done in the [AdvancedNetworkRigidbody.cs](Assets/Scripts/AdvancedNetworkRigidbody.cs) script.
 
 ## 3D Models and Animations
 
-3d models are made by me in Blender. Guns have been keyframe animated in Unity (I didn't have time to learn how to animate in Blender).
+The 3d models were made in Blender. Guns use keyframe animations made in Unity.
 
 ![alt text](<README/Screen Recording 2025-05-09 122945.gif>)
 
-The character is procedurally animated based on it's own velocity inside [ProceduralCharacterAnimator.cs](Assets/Scripts/ProceduralCharacterAnimator.cs) (for some reason the head is not animating looking up and down).
+The player characters are procedurally animated using their own velocity inside [ProceduralCharacterAnimator.cs](Assets/Scripts/ProceduralCharacterAnimator.cs).
 
 ![alt text](<README/Screen Recording 2025-05-09 123243.gif>)
 
@@ -56,6 +51,4 @@ The character is procedurally animated based on it's own velocity inside [Proced
 
 ![me and the bois](<README/Screenshot 2025-05-09 132039.png>)
 
-If this doesn't convince you to play my game, I don't know what will.
-
-It's hosted on [itch.io](https://darealzoinks.itch.io/strikers) and is free to play right now. Whachu waiting for?
+It's hosted on [itch.io](https://darealzoinks.itch.io/strikers) and is free to play.
